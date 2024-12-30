@@ -96,6 +96,7 @@ const EditSensorParameter = () => {
                 required
               />
             </div>
+            
 
             <div className="flex justify-start items-center space-x-4 ml-4">
               <label className="w-1/4 text-sm font-medium text-gray-700 mb-1">Parameter</label>
