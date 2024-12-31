@@ -1,0 +1,174 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../component/header";
+import showicon from "../ikon/show.png"; // Ikon untuk "Show Password"
+import hideicon from "../ikon/hide.png"; // Ikon untuk "Hide Password"
+
+const CreateUserAdmin = () => {
+  const [photo, setPhoto] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [status, setStatus] = useState("Active");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State untuk toggle password
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("User Created:", { photo, name, email, role, status, password });
+    navigate("/user&admin");
+  };
+
+  const handleBack = () => {
+    navigate("/user&admin");
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setPhoto(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  return (
+    <div className="flex h-screen bg-[#F9F4F4] flex-col">
+      <Header pageName="Create Users Admin" databaseName="Database / List Users Admin / Create Users Admin" notifications={0} />
+      <div className="flex-1 p-6">
+        <div className="bg-white shadow-lg rounded-lg border border-gray-300 p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-semibold text-gray-800">Create Users Admin</h2>
+            <div className="flex space-x-4">
+              <button
+                onClick={handleBack}
+                className="px-6 py-2 w-36 text-sm bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+              >
+                Back
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="px-6 py-2 w-36 text-sm bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Photo Input */}
+            <div className="flex justify-start items-center space-x-4 ml-4">
+              <label className="w-1/4 text-sm font-medium text-gray-700">Photo</label>
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-black">
+                  {photo ? (
+                    <img src={photo} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-gray-500">No Image</span>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  onChange={handlePhotoChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-start items-center space-x-4 ml-4">
+              <label className="w-1/4 text-sm font-medium text-gray-700">Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                placeholder="Enter Name"
+                required
+              />
+            </div>
+
+            <div className="flex justify-start items-center space-x-4 ml-4">
+              <label className="w-1/4 text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                placeholder="Enter Email"
+                required
+              />
+            </div>
+
+            <div className="flex justify-start items-center space-x-4 ml-4">
+              <label className="w-1/4 text-sm font-medium text-gray-700">Role</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                required
+              >
+                <option value="">Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="Super Admin">Super Admin</option>
+              </select>
+            </div>
+
+            <div className="flex justify-start items-center space-x-4 ml-4">
+              <label className="w-1/4 text-sm font-medium text-gray-700">Status</label>
+              <div className="flex space-x-4">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    value="Active"
+                    checked={status === "Active"}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="h-4 w-4"
+                  />
+                  <span>Active</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    value="Non Active"
+                    checked={status === "Non Active"}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="h-4 w-4"
+                  />
+                  <span>Non Active</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="flex justify-start items-center space-x-4 ml-4">
+              <label className="w-1/4 text-sm font-medium text-gray-700">Password</label>
+              <div className="w-3/4 relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                  placeholder="Enter Password"
+                  required
+                />
+                <img
+                  src={showPassword ? showicon : hideicon}
+                  alt="Toggle Password Visibility"
+                  onClick={toggleShowPassword}
+                  className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CreateUserAdmin;

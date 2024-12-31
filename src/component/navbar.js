@@ -83,7 +83,9 @@ const Navbar = () => {
           <ul className="ml-8 space-y-2">
             {/* User Admin Menu */}
             <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-              <span className="font-bold">User Admin</span>
+              <Link to="/user&admin">
+                <span className="font-bold">User Admin</span>
+              </Link>
             </li>
             {/* Roles & Permission Menu */}
             <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
