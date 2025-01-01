@@ -40,7 +40,7 @@ function App() {
           <Route path="/user&adminedit/:id" element={<EditUserAdmin />} /> {/* Tambahkan :id */}
           <Route path="/roles&permission" element={<RolesPermission />} />
           <Route path="/roles&permissionadd" element={<AddRolesPermission />} /> 
-          <Route path="roles&permissionedit:id" element={<EditRolesPermission />} /> {/* Tambahkan :id */}
+          <Route path="/roles&permissionedit/:id" element={<EditRolesPermission />} /> {/* Tambahkan :id */}
         </Routes>
       </div>
     </div>

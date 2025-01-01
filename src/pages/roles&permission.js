@@ -41,12 +41,12 @@ const RolesPermission = () => {
 
   // Navigate to Add Role page
   const handleAddData = () => {
-    navigate("/rolespermissionadd");
+    navigate("/roles&permissionadd");
   };
 
   // Navigate to Edit Role page
   const handleEditData = (id) => {
-    navigate(`/rolespermissionedit/${id}`);
+    navigate(`/roles&permissionedit/${id}`);
   };
 
   return (
@@ -95,9 +95,7 @@ const RolesPermission = () => {
                     <td className="px-4 py-2 text-sm text-gray-800">{role.name}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">
                       <span
-                        className={`px-3 py-1 rounded-full text-white ${
-                          role.role === "Super Admin" ? "bg-green-500" : "bg-gray-500"
-                        }`}
+                        className={`px-3 py-1 rounded-full text-white ${role.role === "Super Admin" ? "bg-green-500" : "bg-blue-500"}`}
                       >
                         {role.role}
                       </span>
