@@ -11,6 +11,9 @@ import EditSensorParameter from "./pages/sensor&parameteredit"; // Import EditSe
 import UserAdmin from "./pages/user&admin";
 import AddUserAdmin from "./pages/user&adminadd";
 import EditUserAdmin from "./pages/user&adminedit";
+import RolesPermission from "./pages/roles&permission";
+import AddRolesPermission from "./pages/roles&permissionadd";
+import EditRolesPermission from "./pages/roles&permissionedit";
 import Navbar from "./component/navbar";
 
 function App() {
@@ -35,6 +38,9 @@ function App() {
           <Route path="/user&admin" element={<UserAdmin />} />
           <Route path="/user&adminadd" element={<AddUserAdmin />} /> 
           <Route path="/user&adminedit/:id" element={<EditUserAdmin />} /> {/* Tambahkan :id */}
+          <Route path="/roles&permission" element={<RolesPermission />} />
+          <Route path="/roles&permissionadd" element={<AddRolesPermission />} /> 
+          <Route path="roles&permissionedit:id" element={<EditRolesPermission />} /> {/* Tambahkan :id */}
         </Routes>
       </div>
     </div>

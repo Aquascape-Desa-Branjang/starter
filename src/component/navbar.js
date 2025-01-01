@@ -89,7 +89,9 @@ const Navbar = () => {
             </li>
             {/* Roles & Permission Menu */}
             <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-              <span className="font-bold">Roles & Permission</span>
+              <Link to="/roles&permission">
+                <span className="font-bold">Roles & Permission</span>
+              </Link>
             </li>
           </ul>
 
