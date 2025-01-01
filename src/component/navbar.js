@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../ikon/icon.png";
 import profile from "../ikon/profile.png";
@@ -11,13 +11,20 @@ import modulemanagement from "../ikon/halaman/modulemanagement.png";
 import logout from "../ikon/logout.png";
 
 const Navbar = () => {
+  const [isUserManagementOpen, setIsUserManagementOpen] = useState(false);
+
+  // Toggle the submenu visibility for User Management
+  const toggleUserManagement = () => {
+    setIsUserManagementOpen(!isUserManagementOpen);
+  };
+
   return (
     <div className="w-[300px] h-screen bg-[#055E6E] text-white flex flex-col sticky top-0">
       {/* ======================== Profile Section ======================== */}
-      <div className="flex items-center py-6">
+      <div className="flex items-center py-6 px-4 border-b border-gray-700">
         <img
           src={logo}
-          alt="Profile Icon"
+          alt="Logo"
           className="w-16 h-16 rounded-full bg-gray-300 mr-4"
         />
         <div className="text-center">
@@ -37,75 +44,81 @@ const Navbar = () => {
       </div>
 
       {/* ======================== Navigation Menu ======================== */}
-      <nav className="flex-1 px-4 overflow-y-auto">
-        <ul className="space-y-2">
+      <nav className="flex-1 px-4 py-4 overflow-y-auto">
+        <ul className="space-y-4">
           {/* Dashboard Menu */}
-          <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
             <Link to="/dashboard" className="flex items-center space-x-3">
               <img src={dashboard} alt="Dashboard" className="w-5 h-5" />
               <span className="font-bold">Dashboard</span>
             </Link>
           </li>
           {/* Monitoring Menu */}
-          <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <Link to="/monitoring">
+          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+            <Link to="/monitoring" className="flex items-center space-x-3">
               <img src={monitoring} alt="Monitoring" className="w-5 h-5" />
               <span className="font-bold">Monitoring</span>
             </Link>
           </li>
 
           {/* PLTS Menu */}
-          <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <Link to="/plts">
+          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+            <Link to="/plts" className="flex items-center space-x-3">
               <img src={plts} alt="PLTS" className="w-5 h-5" />
               <span className="font-bold">PLTS</span>
             </Link>
           </li>
 
           {/* Sensors Menu */}
-          <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <Link to="/sensor&parameter">  
+          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+            <Link to="/sensor&parameter" className="flex items-center space-x-3">  
               <img src={sensor} alt="SensorParameter" className="w-5 h-5" />
               <span className="font-bold">Sensors & Parameters</span>
             </Link>
           </li>
 
           {/* Admin Portal Section */}
-          <li className="text-gray-400 text-sm mt-4 uppercase tracking-wide">Admin Portal</li>
+          <li className="text-gray-400 text-sm mt-6 uppercase tracking-wide">Admin Portal</li>
 
           {/* User Management Menu */}
-          <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <img src={usermanagement} alt="User Management" className="w-5 h-5" />
-            <span className="font-bold">User Management</span>
+          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer" onClick={toggleUserManagement}>
+            <Link to="#" className="flex items-center space-x-3">
+              <img src={usermanagement} alt="User Management" className="w-5 h-5" />
+              <span className="font-bold">User Management</span>
+            </Link>
           </li>
 
           {/* Submenus under User Management */}
-          <ul className="ml-8 space-y-2">
-            {/* User Admin Menu */}
-            <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-              <Link to="/user&admin">
-                <span className="font-bold">User Admin</span>
-              </Link>
-            </li>
-            {/* Roles & Permission Menu */}
-            <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-              <Link to="/roles&permission">
-                <span className="font-bold">Roles & Permission</span>
-              </Link>
-            </li>
-          </ul>
+          {isUserManagementOpen && (
+            <ul className="ml-8 space-y-2">
+              {/* User Admin Menu */}
+              <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+                <Link to="/user&admin" className="flex items-center space-x-3">
+                  <span className="font-bold">User Admin</span>
+                </Link>
+              </li>
+              {/* Roles & Permission Menu */}
+              <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+                <Link to="/roles&permission" className="flex items-center space-x-3">
+                  <span className="font-bold">Roles & Permission</span>
+                </Link>
+              </li>
+            </ul>
+          )}
 
           {/* Module Management Menu */}
-          <li className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <img src={modulemanagement} alt="Module Management" className="w-5 h-5" />
-            <span className="font-bold">Module Management</span>
+          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+            <Link to="/modulemanagement" className="flex items-center space-x-3">
+              <img src={modulemanagement} alt="Module Management" className="w-5 h-5" />
+              <span className="font-bold">Module Management</span>
+            </Link>
           </li>
         </ul>
       </nav>
 
       {/* ======================== Logout Section ======================== */}
-      <div className="px-4 py-4">
-        <div className="flex items-center space-x-3 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+      <div className="px-4 py-4 border-t border-gray-700">
+        <div className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
           <img src={logout} alt="Logout" className="w-5 h-5" />
           <span className="font-bold">Log Out</span>
         </div>
