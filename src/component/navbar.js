@@ -97,22 +97,9 @@ const Navbar = () => {
                   <span className="font-bold">User Admin</span>
                 </Link>
               </li>
-              {/* Roles & Permission Menu */}
-              <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-                <Link to="/roles&permission" className="flex items-center space-x-3">
-                  <span className="font-bold">Roles & Permission</span>
-                </Link>
-              </li>
             </ul>
           )}
 
-          {/* Module Management Menu */}
-          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <Link to="/modulemanagement" className="flex items-center space-x-3">
-              <img src={modulemanagement} alt="Module Management" className="w-5 h-5" />
-              <span className="font-bold">Module Management</span>
-            </Link>
-          </li>
         </ul>
       </nav>
 
