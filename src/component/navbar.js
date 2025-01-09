@@ -7,7 +7,6 @@ import monitoring from "../ikon/halaman/monitoring.png";
 import plts from "../ikon/halaman/plts.png";
 import sensor from "../ikon/halaman/sensor.png";
 import usermanagement from "../ikon/halaman/usermanagement.png";
-import modulemanagement from "../ikon/halaman/modulemanagement.png";
 import logout from "../ikon/logout.png";
 
 const Navbar = () => {
@@ -47,14 +46,15 @@ const Navbar = () => {
       <nav className="flex-1 px-4 py-4 overflow-y-auto">
         <ul className="space-y-4">
           {/* Dashboard Menu */}
-          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+          <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
             <Link to="/dashboard" className="flex items-center space-x-3">
               <img src={dashboard} alt="Dashboard" className="w-5 h-5" />
               <span className="font-bold">Dashboard</span>
             </Link>
           </li>
+
           {/* Monitoring Menu */}
-          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+          <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
             <Link to="/monitoring" className="flex items-center space-x-3">
               <img src={monitoring} alt="Monitoring" className="w-5 h-5" />
               <span className="font-bold">Monitoring</span>
@@ -62,7 +62,7 @@ const Navbar = () => {
           </li>
 
           {/* PLTS Menu */}
-          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+          <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
             <Link to="/plts" className="flex items-center space-x-3">
               <img src={plts} alt="PLTS" className="w-5 h-5" />
               <span className="font-bold">PLTS</span>
@@ -70,8 +70,8 @@ const Navbar = () => {
           </li>
 
           {/* Sensors Menu */}
-          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <Link to="/sensor&parameter" className="flex items-center space-x-3">  
+          <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
+            <Link to="/sensor&parameter" className="flex items-center space-x-3">
               <img src={sensor} alt="SensorParameter" className="w-5 h-5" />
               <span className="font-bold">Sensors & Parameters</span>
             </Link>
@@ -81,34 +81,32 @@ const Navbar = () => {
           <li className="text-gray-400 text-sm mt-6 uppercase tracking-wide">Admin Portal</li>
 
           {/* User Management Menu */}
-          <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer" onClick={toggleUserManagement}>
-            <Link to="#" className="flex items-center space-x-3">
+          <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer" onClick={toggleUserManagement}>
+            <div className="flex items-center space-x-3">
               <img src={usermanagement} alt="User Management" className="w-5 h-5" />
               <span className="font-bold">User Management</span>
-            </Link>
+            </div>
           </li>
 
           {/* Submenus under User Management */}
           {isUserManagementOpen && (
             <ul className="ml-8 space-y-2">
-              {/* User Admin Menu */}
-              <li className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+              <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
                 <Link to="/user&admin" className="flex items-center space-x-3">
                   <span className="font-bold">User Admin</span>
                 </Link>
               </li>
             </ul>
           )}
-
         </ul>
       </nav>
 
       {/* ======================== Logout Section ======================== */}
       <div className="px-4 py-4 border-t border-gray-700">
-        <div className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
+        <Link to="/logout" className="flex items-center space-x-4 hover:bg-green-700 p-2 rounded-md cursor-pointer">
           <img src={logout} alt="Logout" className="w-5 h-5" />
           <span className="font-bold">Log Out</span>
-        </div>
+        </Link>
       </div>
     </div>
   );
