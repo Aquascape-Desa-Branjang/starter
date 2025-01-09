@@ -61,7 +61,7 @@ const EditUserAdmin = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[#F9F4F4] flex-col">
+    <div className="flex h-fullscreen bg-[#F9F4F4] flex-col">
       <Header pageName="Edit Users Admin" databaseName="Database / List Users Admin / Edit Users Admin" notifications={0} />
       <div className="flex-1 p-6">
         <div className="bg-white shadow-lg rounded-lg border border-gray-300 p-6">

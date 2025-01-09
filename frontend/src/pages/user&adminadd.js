@@ -39,7 +39,7 @@ const CreateUserAdmin = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[#F9F4F4] flex-col">
+    <div className="flex h-fullscreen bg-[#F9F4F4] flex-col">
       <Header pageName="Create Users Admin" databaseName="Database / List Users Admin / Create Users Admin" notifications={0} />
       <div className="flex-1 p-6">
         <div className="bg-white shadow-lg rounded-lg border border-gray-300 p-6">

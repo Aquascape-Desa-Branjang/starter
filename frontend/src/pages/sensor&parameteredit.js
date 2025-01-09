@@ -55,7 +55,7 @@ const EditSensorParameter = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[#F9F4F4] flex-col">
+    <div className="flex h-fullscreen bg-[#F9F4F4] flex-col">
       {/* Include Header */}
       <Header pageName="Edit Sensor & Parameter" databaseName="Database / Sensor & Parameter" notifications={0} />
       

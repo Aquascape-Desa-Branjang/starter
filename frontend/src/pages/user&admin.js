@@ -33,7 +33,7 @@ const UserAdmin = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[#F9F4F4] flex-col">
+    <div className="flex h-fullscreen bg-[#F9F4F4] flex-col">
       <Header pageName="Users Admin" databaseName="Database / List Users Admin" notifications={0} />
       <div className="flex h-full">
 
