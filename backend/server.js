@@ -2,8 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const routes = require('./routes/api');
-const {mongo} = require("mongoose");
+const dataRoutes = require('./routes/dissolvedOxygen');
 
 const app = express();
 
@@ -15,7 +14,7 @@ app.use((req,res,next) => {
 })
 
 //routes
-
+app.use('/api/data', dataRoutes)
 
 //connect to db
 mongoose.connect(process.env.MONGODB_URI)

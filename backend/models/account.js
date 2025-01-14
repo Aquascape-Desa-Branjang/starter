@@ -30,3 +30,5 @@ const accountSchema = new Schema({
         default: 'active'
     }
 })
+
+module.exports = mongoose.model('account', accountSchema);

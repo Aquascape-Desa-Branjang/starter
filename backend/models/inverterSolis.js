@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const inverterSolistSchema = new Schema({
+const inverterSolisSchema = new Schema({
     active_power: {
         type: Number,
     },
@@ -40,3 +40,5 @@ const inverterSolistSchema = new Schema({
         type: Number,
     }
 }, {timestamps: true});
+
+module.exports = mongoose.model('inverterSolis', inverterSolisSchema);

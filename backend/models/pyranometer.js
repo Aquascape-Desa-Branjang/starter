@@ -7,3 +7,5 @@ const pyranometerSchema = new Schema({
         type: Number
     }
 }, {timestamps: true});
+
+module.exports = mongoose.model('pyranometer', pyranometerSchema);

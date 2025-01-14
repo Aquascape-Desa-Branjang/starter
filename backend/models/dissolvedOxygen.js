@@ -7,3 +7,5 @@ const dissolvedOxygenSchema = new Schema({
         type: Number
     }
 }, {timestamps: true});
+
+module.exports = mongoose.model('DO', dissolvedOxygenSchema);

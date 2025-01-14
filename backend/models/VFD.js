@@ -127,3 +127,5 @@ const VFDSchema = new Schema({
         type: Number,
     }
 })
+
+module.exports = mongoose.model('VFD', VFDSchema)

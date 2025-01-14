@@ -7,3 +7,5 @@ const RTDSchema = new Schema({
         type: Number
     }
 }, {timestamps: true});
+
+module.exports = mongoose.model('RTD', RTDSchema);
