@@ -1,34 +1,33 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema
+const accountSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true, // Pastikan email unik
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  photo: {
+    type: Buffer, // Menyimpan foto sebagai buffer
+    required: false,
+  },
+}, { timestamps: true }); // Menambahkan timestamps otomatis
 
-const accountSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    profilepicture: {
-        type: String,
-        required: false,
-    },
-    role: {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
-    },
-    status: {
-        type: String,
-        enum: ['active', 'inactive'],
-        default: 'active'
-    }
-})
+const Account = mongoose.model('Account', accountSchema);
 
-module.exports = mongoose.model('account', accountSchema);
+module.exports = Account;

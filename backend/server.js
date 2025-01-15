@@ -1,28 +1,26 @@
-require('dotenv').config();
-
-const express = require('express');
-const mongoose = require('mongoose');
-const dataRoutes = require('./routes/dissolvedOxygen');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const accountRoutes = require("./routes/accountRoutes");
 
 const app = express();
+const PORT = 5000;
 
-//middleware
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use((req,res,next) => {
-    console.log(req.path, req.method);
-    next();
-})
 
-//routes
-app.use('/api/data', dataRoutes)
+// MongoDB Connection
+mongoose
+  .connect("mongodb://localhost:27017/akun", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected successfully!"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-//connect to db
-mongoose.connect(process.env.MONGODB_URI)
-.then(() => {
-    app.listen(process.env.PORT, () => {
-        console.log(`Connected to DB & Server started on port ${process.env.PORT}`);
-    })
-})
-.catch((err) => {
-    console.error(err);
-})
+// Routes
+app.use("/accounts", accountRoutes);
+
+// Start server
+app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
