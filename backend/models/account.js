@@ -8,7 +8,7 @@ const accountSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Pastikan email unik
+    unique: true,
   },
   password: {
     type: String,
@@ -23,10 +23,10 @@ const accountSchema = new mongoose.Schema({
     required: true,
   },
   photo: {
-    type: Buffer, // Menyimpan foto sebagai buffer
+    type: Buffer,
     required: false,
   },
-}, { timestamps: true }); // Menambahkan timestamps otomatis
+}, { timestamps: true });
 
 const Account = mongoose.model('Account', accountSchema);
 

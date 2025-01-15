@@ -12,18 +12,17 @@ const CreateUserAdmin = () => {
   const [status, setStatus] = useState("Active");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // Untuk menampilkan pesan error
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Memeriksa ukuran foto
       if (file.size > 50 * 1024 * 1024) {
         setErrorMessage("Photo exceeds the maximum size limit of 50MB.");
         return;
       }
-      setErrorMessage(""); // Reset error message jika ukuran foto valid
+      setErrorMessage("");
       const reader = new FileReader();
       reader.onload = () => setPhoto(reader.result);
       reader.readAsDataURL(file);
@@ -52,10 +51,9 @@ const CreateUserAdmin = () => {
 
       const result = await response.json();
       if (response.ok) {
-        console.log(result.message);
         navigate("/user&admin");
       } else {
-        setErrorMessage(result.message); // Menampilkan pesan error dari server
+        setErrorMessage(result.message);
       }
     } catch (error) {
       console.error("Error submitting account:", error);
@@ -98,7 +96,6 @@ const CreateUserAdmin = () => {
             </div>
           </div>
 
-          {/* Menampilkan error message jika ada */}
           {errorMessage && (
             <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
               {errorMessage}
@@ -106,7 +103,6 @@ const CreateUserAdmin = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Photo Input */}
             <div className="flex justify-start items-center space-x-4 ml-4">
               <label className="w-1/4 text-sm font-medium text-gray-700">Photo</label>
               <div className="relative">
@@ -126,7 +122,6 @@ const CreateUserAdmin = () => {
               </div>
             </div>
 
-            {/* Name Input */}
             <div className="flex justify-start items-center space-x-4 ml-4">
               <label className="w-1/4 text-sm font-medium text-gray-700">Name</label>
               <input
@@ -139,7 +134,6 @@ const CreateUserAdmin = () => {
               />
             </div>
 
-            {/* Email Input */}
             <div className="flex justify-start items-center space-x-4 ml-4">
               <label className="w-1/4 text-sm font-medium text-gray-700">Email</label>
               <input
@@ -152,7 +146,6 @@ const CreateUserAdmin = () => {
               />
             </div>
 
-            {/* Role Input */}
             <div className="flex justify-start items-center space-x-4 ml-4">
               <label className="w-1/4 text-sm font-medium text-gray-700">Role</label>
               <select
@@ -167,7 +160,6 @@ const CreateUserAdmin = () => {
               </select>
             </div>
 
-            {/* Status Input */}
             <div className="flex justify-start items-center space-x-4 ml-4">
               <label className="w-1/4 text-sm font-medium text-gray-700">Status</label>
               <div className="flex space-x-4">
@@ -194,7 +186,6 @@ const CreateUserAdmin = () => {
               </div>
             </div>
 
-            {/* Password Input */}
             <div className="flex justify-start items-center space-x-4 ml-4">
               <label className="w-1/4 text-sm font-medium text-gray-700">Password</label>
               <div className="w-3/4 relative">
