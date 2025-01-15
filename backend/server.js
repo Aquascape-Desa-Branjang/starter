@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const accountRoutes = require('./routes/accountRoutes');
+const dissolvedOxygen = require('./routes/dissolvedOxygen');
 
 const app = express();
 const PORT = 5000;
@@ -12,7 +13,7 @@ app.use(express.json());
 
 // Koneksi MongoDB
 mongoose
-  .connect('mongodb://localhost:27017/akun', {
+  .connect('mongodb://localhost:27017/capstone', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -20,7 +21,8 @@ mongoose
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // Routes
-app.use('/accounts', accountRoutes);
+app.use('/api/accounts', accountRoutes);
+app.use('/api/DO', dissolvedOxygen)
 
 // Start server
 app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));

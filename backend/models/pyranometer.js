@@ -6,6 +6,6 @@ const pyranometerSchema = new Schema({
     radiasi_matahari: {
         type: Number
     }
-}, {timestamps: true});
+}, {timestamps: true, versionKey: false});
 
 module.exports = mongoose.model('pyranometer', pyranometerSchema);

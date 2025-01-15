@@ -1,11 +1,15 @@
 const express = require('express');
 const {
-    getDO
+    getDO,
+    addDO
 } = require('../controllers/doController');
 
 const router = express.Router();
 
 //get
-router.get('/do', getDO);
+router.get('/', getDO);
+
+//post
+router.post('/', addDO);
 
 module.exports = router;

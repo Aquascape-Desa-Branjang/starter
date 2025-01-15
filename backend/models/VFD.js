@@ -126,6 +126,6 @@ const VFDSchema = new Schema({
     torque_upper_limit: {
         type: Number,
     }
-})
+}, {timestamps: true, versionKey: false})
 
 module.exports = mongoose.model('VFD', VFDSchema)

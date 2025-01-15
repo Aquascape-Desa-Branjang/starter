@@ -6,6 +6,6 @@ const RTDSchema = new Schema({
     suhu_permukaan_photovoltaic: {
         type: Number
     }
-}, {timestamps: true});
+}, {timestamps: true, versionKey: false});
 
 module.exports = mongoose.model('RTD', RTDSchema);

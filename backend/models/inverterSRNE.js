@@ -75,6 +75,6 @@ const inverterSRNESchema = new Schema({
     load_ratio: {
         type: Number
     }
-}, {timestamps: true});
+}, {timestamps: true, versionKey: false});
 
 module.exports = mongoose.model('inverterSRNE', inverterSRNESchema);

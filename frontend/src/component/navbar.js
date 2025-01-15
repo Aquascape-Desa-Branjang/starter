@@ -5,7 +5,8 @@ import profile from "../ikon/profile.png";
 import dashboard from "../ikon/halaman/dashboard.png";              
 import monitoring from "../ikon/halaman/monitoring.png";              
 import plts from "../ikon/halaman/plts.png";              
-import sensor from "../ikon/halaman/sensor.png";              
+import sensor from "../ikon/halaman/sensor.png";
+import dummy from "../ikon/halaman/database.png"
 import usermanagement from "../ikon/halaman/usermanagement.png";              
 import logout from "../ikon/logout.png";              
             
@@ -85,8 +86,16 @@ const Navbar = () => {
               <img src={sensor} alt="SensorParameter" className="w-5 h-5" />              
               <span className="font-bold">Sensors & Parameters</span>              
             </Link>              
-          </li>              
-              
+          </li>
+
+          {/* Dummy Menu */}
+          <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
+            <Link to="/dummydata" className="flex items-center space-x-3">
+              <img src={dummy} alt="DummyData" className="w-5 h-5" />
+              <span className="font-bold">Bikin dummy data</span>
+            </Link>
+          </li>
+
           {/* Admin Portal Section */}              
           <li className="text-gray-400 text-sm mt-6 uppercase tracking-wide">Admin Portal</li>              
               

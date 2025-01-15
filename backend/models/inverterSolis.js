@@ -39,6 +39,6 @@ const inverterSolisSchema = new Schema({
     ac_frequency: {
         type: Number,
     }
-}, {timestamps: true});
+}, {timestamps: true, versionKey: false});
 
 module.exports = mongoose.model('inverterSolis', inverterSolisSchema);

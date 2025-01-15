@@ -36,6 +36,6 @@ const weatherStationSchema = new Schema({
     light: {
         type: Number,
     }
-}, {timestamps: true})
+}, {timestamps: true, versionKey: false})
 
 module.exports = mongoose.model('weatherStation', weatherStationSchema);
