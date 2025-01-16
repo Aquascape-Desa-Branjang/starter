@@ -44,7 +44,7 @@ const CreateUserAdmin = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/accounts/add", {
+      const response = await fetch("http://localhost:5000/api/accounts/add", {
         method: "POST",
         body: formData,
       });
