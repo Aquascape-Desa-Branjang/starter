@@ -1,20 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const multer = require("multer");
-const Account = require("./models/account"); // Model untuk akun
+const accountRoutes = require("./routes/accountRoutes");
 
 const app = express();
 const port = 5000;
 
 // Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Multer untuk meng-handle file upload
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+app.use(cors()); // Menangani masalah CORS
+app.use(express.json()); // Menangani parsing JSON
+app.use(express.urlencoded({ extended: true })); // Menangani URL encoded data
 
 // MongoDB Connection
 mongoose
@@ -25,28 +20,8 @@ mongoose
   .then(() => console.log("Connected to MongoDB (capstone database)"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
-// API Endpoint untuk menambahkan akun
-app.post("/api/accounts/add", upload.single("photo"), async (req, res) => {
-  try {
-    const { name, email, password, role, status } = req.body;
-    const photo = req.file ? req.file.buffer.toString("base64") : null;
-
-    const newAccount = new Account({
-      name,
-      email,
-      password,
-      role,
-      status,
-      photo,
-    });
-
-    await newAccount.save();
-    res.status(201).json({ message: "Account created successfully" });
-  } catch (error) {
-    console.error("Error creating account:", error);
-    res.status(500).json({ message: "Error creating account" });
-  }
-});
+// API Routes
+app.use("/api/accounts", accountRoutes); // Rute untuk akun
 
 // Start Server
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
