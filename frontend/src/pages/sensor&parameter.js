@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import Header from '../component/header';
+import Pagination from "../component/pagination";
 import SearchIkon from "../ikon/search.png";
 
 // Dummy data for sensors
@@ -99,6 +100,8 @@ const SensorParameter = () => {
               ))}
             </tbody>
           </table>
+
+          <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
         </div>
       </div>
     </div>
