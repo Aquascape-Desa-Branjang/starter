@@ -44,7 +44,7 @@ const CreateUserAdmin = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/accounts/add", {
+      const response = await fetch("http://localhost:5000/api/accounts/add", {
         method: "POST",
         body: formData,
       });
@@ -156,7 +156,7 @@ const CreateUserAdmin = () => {
               >
                 <option value="">Select Role</option>
                 <option value="Admin">Admin</option>
-                <option value="Super Admin">Super Admin</option>
+                <option value="User">User</option>
               </select>
             </div>
 
