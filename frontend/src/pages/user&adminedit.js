@@ -1,47 +1,61 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../component/header";
-import showicon from "../ikon/show.png"; // Ikon untuk "Show Password"
-import hideicon from "../ikon/hide.png"; // Ikon untuk "Hide Password"
-
-// Dummy data for users
-const usersData = [
-  { id: 1, name: "John Doe", email: "portal@admin.com", role: "Super Admin", status: "Active", profile: null, password: "admin123" },
-  { id: 2, name: "Jane Smith", email: "jane@admin.com", role: "Admin", status: "Inactive", profile: null, password: "password123" },
-];
+import showicon from "../ikon/show.png"; // Icon for "Show Password"
+import hideicon from "../ikon/hide.png"; // Icon for "Hide Password"
 
 const EditUserAdmin = () => {
-  const { id } = useParams(); // Get the user ID from the URL
+  const { _id } = useParams(); // Get _id from URL
   const navigate = useNavigate();
 
   // State
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState(null); // Base64 photo
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("Active");
-  const [password, setPassword] = useState(""); // Password bisa kosong jika tidak diubah
-  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
+  const [password, setPassword] = useState(""); // Optional new password
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    // Fetch user data by ID
-    const user = usersData.find((user) => user.id === parseInt(id));
-    if (user) {
-      setPhoto(user.profile || null);
-      setName(user.name);
-      setEmail(user.email);
-      setRole(user.role);
-      setStatus(user.status);
-      setPassword(user.password); // Load existing password
+    if (!_id) {
+      setErrorMessage("Invalid user ID.");
+      return;
     }
-  }, [id]);
 
-  // Handle photo upload
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`http://localhost:5000/api/accounts/${_id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const user = await response.json();
+        setPhoto(user.photo || null);
+        setName(user.name);
+        setEmail(user.email);
+        setRole(user.role);
+        setStatus(user.status.toLowerCase() === "active" ? "Active" : "Non Active");
+        setPassword(""); // Clear password in UI
+        setErrorMessage("");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setErrorMessage("Failed to fetch user data. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [_id]);
+
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => setPhoto(reader.result);
+      reader.onload = () => setPhoto(reader.result); // Convert to Base64
       reader.readAsDataURL(file);
     }
   };
@@ -50,10 +64,40 @@ const EditUserAdmin = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("User Updated:", { id, photo, name, email, role, status, password });
-    navigate("/user&admin"); // Redirect back to the list
+    setLoading(true);
+
+    const updatedUser = {
+      name,
+      email,
+      role,
+      status: status.toLowerCase(),
+      photo, // Base64 image
+    };
+
+    if (password) {
+      updatedUser.password = password;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/accounts/${_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedUser),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update user");
+      }
+
+      navigate("/user&admin");
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setErrorMessage("Failed to update user. Please check your inputs and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBack = () => {
@@ -62,7 +106,11 @@ const EditUserAdmin = () => {
 
   return (
     <div className="flex h-fullscreen bg-[#F9F4F4] flex-col">
-      <Header pageName="Edit Users Admin" databaseName="Database / List Users Admin / Edit Users Admin" notifications={0} />
+      <Header
+        pageName="Edit Users Admin"
+        databaseName="Database / List Users Admin / Edit Users Admin"
+        notifications={0}
+      />
       <div className="flex-1 p-6">
         <div className="bg-white shadow-lg rounded-lg border border-gray-300 p-6">
           <div className="flex justify-between items-center mb-6">
@@ -77,11 +125,14 @@ const EditUserAdmin = () => {
               <button
                 onClick={handleSubmit}
                 className="px-6 py-2 w-36 text-sm bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+                disabled={loading}
               >
-                Save
+                {loading ? "Saving..." : "Save"}
               </button>
             </div>
           </div>
+
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Photo Input */}
@@ -139,8 +190,8 @@ const EditUserAdmin = () => {
                 required
               >
                 <option value="">Select Role</option>
+                <option value="User">User</option>
                 <option value="Admin">Admin</option>
-                <option value="Super Admin">Super Admin</option>
               </select>
             </div>
 
