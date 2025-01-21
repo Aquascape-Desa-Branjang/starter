@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const accountRoutes = require('./routes/accountRoutes');
 const dissolvedOxygen = require('./routes/dissolvedOxygen');
+const pyranometerRoutes = require('./routes/pyranometerRoutes');
 
 const app = express();
 const PORT = 5000;
@@ -13,16 +14,14 @@ app.use(express.json());
 
 // Koneksi MongoDB
 mongoose
-  .connect('mongodb://localhost:27017/capstone', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect('mongodb://localhost:27017/capstone')
   .then(() => console.log('MongoDB connected successfully!'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // Routes
 app.use('/api/accounts', accountRoutes);
-app.use('/api/DO', dissolvedOxygen)
+app.use('/api/DO', dissolvedOxygen);
+app.use('/api/pyranometer', pyranometerRoutes);
 
 // Start server
 app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
