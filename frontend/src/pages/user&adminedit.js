@@ -67,30 +67,33 @@ const EditUserAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
+    // Hapus prefix "data:image/png;base64,"
+    const processedPhoto = photo?.replace(/^data:image\/[a-z]+;base64,/, "") || null;
+  
     const updatedUser = {
       name,
       email,
       role,
       status: status.toLowerCase(),
-      photo, // Base64 image
+      photo: processedPhoto, // Hanya data Base64
     };
-
+  
     if (password) {
       updatedUser.password = password;
     }
-
+  
     try {
       const response = await fetch(`http://localhost:5000/api/accounts/${_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedUser),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to update user");
       }
-
+  
       navigate("/user&admin");
     } catch (error) {
       console.error("Error updating user:", error);
