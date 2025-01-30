@@ -1,3 +1,4 @@
+// Navbar.js
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../ikon/icon.png";
@@ -7,7 +8,7 @@ import monitoring from "../ikon/halaman/monitoring.png";
 import plts from "../ikon/halaman/plts.png";
 import usermanagement from "../ikon/halaman/usermanagement.png";
 import logout from "../ikon/logout.png";
-import { jwtDecode } from "jwt-decode"; // Gunakan default import yang benar
+import {jwtDecode} from "jwt-decode"; // Perbaiki import
 
 const Navbar = () => {
   const [isUserManagementOpen, setIsUserManagementOpen] = useState(false);
@@ -21,16 +22,21 @@ const Navbar = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
       try {
-        const decodedToken = jwtDecode(token); // Decode token JWT
-        setUserRole(decodedToken.role || "User"); // Simpan role dari token, default ke "User"
-        setUserName(decodedToken.name || "Guest"); // Simpan nama pengguna, fallback ke "Guest" jika kosong
-        const storedPhoto = localStorage.getItem("userPhoto");
-        setProfileImage(storedPhoto || defaultProfile); // Ambil foto profil dari localStorage
+        const decodedToken = jwtDecode(token);
+        setUserRole(decodedToken.role || "User");
+        setUserName(decodedToken.name || "Guest");
+
+        const storedPhoto = decodedToken.photo; // Ambil dari token langsung
+        if (storedPhoto) {
+          setProfileImage(storedPhoto); // Simpan foto profil dari token
+        } else {
+          setProfileImage(defaultProfile); // Gunakan default jika tidak ada foto
+        }
       } catch (error) {
         console.error("Error decoding JWT:", error);
         setUserRole("User");
         setUserName("Guest");
-        setProfileImage(defaultProfile);
+        setProfileImage(defaultProfile); // Gunakan default jika error
       }
     }
   }, []);
@@ -40,10 +46,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Hapus token dari localStorage
-    localStorage.removeItem("userName"); // Hapus nama pengguna dari localStorage
-    localStorage.removeItem("userRole"); // Hapus role dari localStorage
-    localStorage.removeItem("userPhoto"); // Hapus foto profil dari localStorage
+    localStorage.clear(); // Hapus semua data dari localStorage
     navigate("/"); // Redirect ke halaman login
   };
 
@@ -66,8 +69,8 @@ const Navbar = () => {
         <div className="text-gray-400 text-sm uppercase tracking-wide">Profile</div>
         <div className="flex items-center mt-2">
           <img
-            src={profileImage}
-            alt="Profile"
+            src={profileImage ? `data:image/png;base64,${profileImage}` : defaultProfile}
+            alt={userName}
             className="w-10 h-10 rounded-full"
           />
           <div className="ml-4 text-left">
@@ -101,7 +104,6 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* Admin Portal - Tampilkan hanya jika userRole adalah Admin */}
           {userRole === "Admin" && (
             <>
               <li className="text-gray-400 text-sm mt-6 uppercase tracking-wide">Admin Portal</li>
@@ -121,6 +123,11 @@ const Navbar = () => {
                   <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
                     <Link to="/sensor&parameter" className="flex items-center space-x-3">
                       <span className="font-bold">Sensors & Parameters</span>
+                    </Link>
+                  </li>
+                  <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
+                    <Link to="/sensorlist" className="flex items-center space-x-3">
+                      <span className="font-bold">Sensors</span>
                     </Link>
                   </li>
                   <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
