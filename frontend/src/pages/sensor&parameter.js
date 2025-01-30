@@ -1,36 +1,69 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import Header from '../component/header';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../component/header";
 import SearchIkon from "../ikon/search.png";
-
-// Dummy data for sensors
-const sensorsData = [
-  { id: 1, sensor: "Inverter SRNE", parameter: "cih_uy", name: "Battery Last Equalization", unit: "kwh" },
-  { id: 2, sensor: "Inverter Solis", parameter: "Inverter Solis", name: "Active Power", unit: "Watt" },
-  { id: 3, sensor: "Pyranometer", parameter: "UV_Radiation", name: "UV Level", unit: "lvl" },
-  { id: 4, sensor: "Inverter Solis", parameter: "Inverter Solis", name: "Total Energy", unit: "Energy" },
-  { id: 5, sensor: "RTD", parameter: "Temperature", name: "Temperature", unit: "C" },
-];
+import axios from "axios";
 
 const SensorParameter = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [sensorsData, setSensorsData] = useState([]); // State untuk menyimpan data sensor
+  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal
+  const [modalMessage, setModalMessage] = useState(""); // Pesan modal
+  const [selectedSensorId, setSelectedSensorId] = useState(null); // Sensor yang akan dihapus
+  const [modalType, setModalType] = useState("info"); // Modal type: "info", "success", "error"
   const navigate = useNavigate(); // Navigation hook
 
-  // Handle page change
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= 3) {
-      setCurrentPage(newPage);
+  // Mengambil data sensor dari backend ketika komponen dimuat
+  useEffect(() => {
+    const fetchSensorsData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/parameters");
+        setSensorsData(response.data);
+      } catch (error) {
+        console.error("Error fetching sensors:", error);
+      }
+    };
+
+    fetchSensorsData();
+  }, []);
+
+  // Fungsi untuk menampilkan modal konfirmasi penghapusan
+  const confirmDelete = (id) => {
+    setSelectedSensorId(id);
+    setModalMessage("Are you sure you want to delete this sensor?");
+    setModalType("info");
+    setIsModalOpen(true);
+  };
+
+  // Fungsi untuk menghapus sensor
+  const handleDeleteData = async () => {
+    if (!selectedSensorId) return;
+
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/parameters/${selectedSensorId}`);
+
+      if (response.status === 200) {
+        setSensorsData(sensorsData.filter((sensor) => sensor._id !== selectedSensorId));
+        setModalMessage("Sensor deleted successfully!");
+        setModalType("success");
+      } else {
+        setModalMessage("Failed to delete sensor.");
+        setModalType("error");
+      }
+    } catch (error) {
+      console.error("Error deleting sensor:", error);
+      setModalMessage("Error deleting sensor. Please try again.");
+      setModalType("error");
+    } finally {
+      setSelectedSensorId(null);
+      setIsModalOpen(true);
     }
   };
 
-  // Navigate to Add Sensor page
-  const handleAddData = () => {
-    navigate("/sensor&parameteradd");
-  };
-
-  // Navigate to Edit Sensor page
-  const handleEditData = (id) => {
-    navigate(`/sensor&parameteredit/${id}`); // Navigasi dengan ID sensor
+  // Fungsi untuk menutup modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedSensorId(null);
+    setModalMessage("");
   };
 
   return (
@@ -51,9 +84,8 @@ const SensorParameter = () => {
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
               />
             </div>
-
             <button
-              onClick={handleAddData}
+              onClick={() => navigate("/sensor&parameteradd")}
               className="ml-4 px-6 py-2 w-48 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
             >
               Add Data
@@ -71,36 +103,89 @@ const SensorParameter = () => {
               </tr>
             </thead>
             <tbody>
-              {sensorsData.map((data, index) => (
-                <tr
-                  key={data.id}
-                  className={`border-t ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}
-                >
-                  <td className="px-4 py-2 text-sm text-gray-800">{data.sensor}</td>
-                  <td className="px-4 py-2 text-sm text-gray-800">{data.parameter}</td>
-                  <td className="px-4 py-2 text-sm text-gray-800">{data.name}</td>
-                  <td className="px-4 py-2 text-sm text-gray-800">{data.unit}</td>
-                  <td className="px-4 py-2 text-sm text-center">
-                    <div className="flex flex-col items-center space-y-2">
-                      <button
-                        className="px-3 py-1 w-24 bg-red-500 text-white font-semibold rounded-full hover:bg-red-600"
-                      >
-                        Delete
-                      </button>
-                      <button
-                        onClick={() => handleEditData(data.id)}  // Navigasi dengan ID
-                        className="px-3 py-1 w-24 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
-                      >
-                        Edit
-                      </button>
-                    </div>
+              {sensorsData.length > 0 ? (
+                sensorsData.map((data, index) => (
+                  <tr
+                    key={data._id}
+                    className={`border-t ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}
+                  >
+                    <td className="px-4 py-2 text-sm text-gray-800">{data.sensor?.name || "Unknown Sensor"}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800">{data.parameter}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800">{data.name}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800">{data.unit}</td>
+                    <td className="px-4 py-2 text-sm text-center">
+                      <div className="flex flex-col items-center space-y-2">
+                        <button
+                          onClick={() => confirmDelete(data._id)}
+                          className="px-3 py-1 w-24 bg-red-500 text-white font-semibold rounded-full hover:bg-red-600"
+                        >
+                          Delete
+                        </button>
+                        <button
+                          onClick={() => navigate(`/sensor&parameteredit/${data._id}`)}
+                          className="px-3 py-1 w-24 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="px-4 py-2 text-center text-sm text-gray-800">
+                    No sensors found
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 w-96">
+            <h3
+              className={`text-lg font-semibold ${
+                modalType === "success"
+                  ? "text-green-500"
+                  : modalType === "error"
+                  ? "text-red-500"
+                  : "text-gray-800"
+              }`}
+            >
+              {modalMessage}
+            </h3>
+            <div className="mt-4 flex justify-end space-x-4">
+              {modalType === "info" ? (
+                <>
+                  <button
+                    onClick={handleCloseModal}
+                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-full hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDeleteData}
+                    className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
+                >
+                  Close
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

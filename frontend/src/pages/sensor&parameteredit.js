@@ -1,38 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from '../component/header';
-
-// Dummy data for sensors
-const sensorsData = [
-    { id: 1, sensor: "Inverter SRNE", parameter: "cih_uy", name: "Battery Last Equalization", unit: "kwh", path: "dummy/path1" },
-    { id: 2, sensor: "Inverter Solis", parameter: "Inverter Solis", name: "Active Power", unit: "Watt", path: "dummy/path2" },
-    { id: 3, sensor: "Pyranometer", parameter: "UV_Radiation", name: "UV Level", unit: "lvl", path: "dummy/path3" },
-    { id: 4, sensor: "Inverter Solis", parameter: "Inverter Solis", name: "Total Energy", unit: "Energy", path: "dummy/path4" },
-    { id: 5, sensor: "RTD", parameter: "Temperature", name: "Temperature", unit: "C", path: "dummy/path5" },
-];
+import axios from "axios";
+import Header from "../component/header";
 
 const EditSensorParameter = () => {
-  const { id } = useParams(); // Mendapatkan id dari URL
+  const { _id } = useParams();
   const navigate = useNavigate();
 
-  // Mencari data sensor yang sesuai dengan id
-  const sensorToEdit = sensorsData.find((sensor) => sensor.id === parseInt(id));
-
-  // Jika tidak ada sensor yang cocok, arahkan kembali ke halaman daftar sensor
-  if (!sensorToEdit) {
-    navigate("/sensor&parameter");
-  }
-
-  // State untuk menyimpan data yang diedit
+  // State untuk menyimpan data parameter
   const [formData, setFormData] = useState({
-    sensor: sensorToEdit.sensor,
-    parameter: sensorToEdit.parameter,
-    name: sensorToEdit.name,
-    unit: sensorToEdit.unit,
-    path: sensorToEdit.path, // Menambahkan path ke formData
+    sensor: "", // Tetap menyimpan sensor agar tidak berubah
+    parameter: "",
+    name: "",
+    unit: "",
+    path: "",
   });
 
-  // Handle perubahan form
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Fetch data parameter
+  useEffect(() => {
+    const fetchParameterData = async () => {
+      setLoading(true);
+      try {
+        // Ambil data parameter berdasarkan _id
+        const response = await axios.get(`http://localhost:5000/api/parameters/${_id}`);
+        const parameterData = response.data;
+
+        setFormData({
+          sensor: parameterData.sensor, // Simpan sensor agar tidak berubah
+          parameter: parameterData.parameter,
+          name: parameterData.name,
+          unit: parameterData.unit,
+          path: parameterData.path,
+        });
+
+        setError("");
+      } catch (error) {
+        console.error("Error fetching parameter data:", error);
+        setError("Failed to fetch parameter data. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchParameterData();
+  }, [_id]);
+
+  // Handle perubahan input form
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -41,30 +57,40 @@ const EditSensorParameter = () => {
     }));
   };
 
-  // Handle pengiriman form
-  const handleSubmit = (e) => {
+  // Handle submit data ke backend
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Biasanya di sini Anda akan mengirim data yang sudah diperbarui ke server
-    console.log("Updated Sensor Data:", formData);
-    navigate("/sensor&parameter"); // Arahkan kembali ke halaman sensor
+
+    const updatedData = {
+      parameter: formData.parameter,
+      name: formData.name,
+      unit: formData.unit,
+      path: formData.path, // Hanya update path parameter
+    };
+
+    try {
+      await axios.put(`http://localhost:5000/api/parameters/${_id}`, updatedData);
+      navigate("/sensor&parameter");
+    } catch (error) {
+      console.error("Error updating parameter:", error);
+      setError("Failed to update parameter.");
+    }
   };
 
-  // Fungsi untuk kembali
+  // Fungsi kembali ke halaman sebelumnya
   const handleBack = () => {
     navigate("/sensor&parameter");
   };
 
   return (
     <div className="flex h-fullscreen bg-[#F9F4F4] flex-col">
-      {/* Include Header */}
       <Header pageName="Edit Sensor & Parameter" databaseName="Database / Sensor & Parameter" notifications={0} />
-      
+
       <div className="flex-1 p-6">
         <div className="bg-white shadow-lg rounded-lg border border-gray-300 p-6">
           {/* Header dengan tombol Back dan Save */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">Edit Sensor & Parameter</h2>
-            {/* Tombol Back dan Save */}
             <div className="flex space-x-4">
               <button
                 onClick={handleBack}
@@ -81,76 +107,70 @@ const EditSensorParameter = () => {
             </div>
           </div>
 
-          {/* Form untuk mengedit sensor dan parameter */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Menggunakan flexbox untuk mengatur dan menggeser form */}
-            <div className="flex justify-start items-center space-x-4 ml-4">
-              <label className="w-1/4 text-sm font-medium text-gray-700 mb-1">Sensor</label>
-              <input
-                type="text"
-                name="sensor"
-                value={formData.sensor}
-                onChange={handleChange}
-                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                placeholder="Enter Sensor Name"
-                required
-              />
-            </div>
-            
+          {/* Tampilkan pesan loading atau error jika ada */}
+          {loading ? (
+            <p className="text-center text-gray-600">Loading...</p>
+          ) : error ? (
+            <p className="text-center text-red-500">{error}</p>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Parameter (Editable) */}
+              <div className="flex justify-start items-center space-x-4 ml-4">
+                <label className="w-1/4 text-sm font-medium text-gray-700">Parameter</label>
+                <input
+                  type="text"
+                  name="parameter"
+                  value={formData.parameter}
+                  onChange={handleChange}
+                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                  placeholder="Enter Parameter"
+                  required
+                />
+              </div>
 
-            <div className="flex justify-start items-center space-x-4 ml-4">
-              <label className="w-1/4 text-sm font-medium text-gray-700 mb-1">Parameter</label>
-              <input
-                type="text"
-                name="parameter"
-                value={formData.parameter}
-                onChange={handleChange}
-                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                placeholder="Enter Parameter"
-                required
-              />
-            </div>
+              {/* Name (Editable) */}
+              <div className="flex justify-start items-center space-x-4 ml-4">
+                <label className="w-1/4 text-sm font-medium text-gray-700">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                  placeholder="Enter Name"
+                  required
+                />
+              </div>
 
-            <div className="flex justify-start items-center space-x-4 ml-4">
-              <label className="w-1/4 text-sm font-medium text-gray-700 mb-1">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                placeholder="Enter Name"
-                required
-              />
-            </div>
+              {/* Unit (Editable) */}
+              <div className="flex justify-start items-center space-x-4 ml-4">
+                <label className="w-1/4 text-sm font-medium text-gray-700">Unit</label>
+                <input
+                  type="text"
+                  name="unit"
+                  value={formData.unit}
+                  onChange={handleChange}
+                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                  placeholder="Enter Unit"
+                  required
+                />
+              </div>
 
-            <div className="flex justify-start items-center space-x-4 ml-4">
-              <label className="w-1/4 text-sm font-medium text-gray-700 mb-1">Unit</label>
-              <input
-                type="text"
-                name="unit"
-                value={formData.unit}
-                onChange={handleChange}
-                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                placeholder="Enter Unit"
-                required
-              />
-            </div>
-
-            {/* Menambahkan field untuk path */}
-            <div className="flex justify-start items-center space-x-4 ml-4">
-              <label className="w-1/4 text-sm font-medium text-gray-700 mb-1">Path</label>
-              <input
-                type="text"
-                name="path"
-                value={formData.path}
-                onChange={handleChange}
-                className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                placeholder="Enter Path"
-                required
-              />
-            </div>
-          </form>
+              {/* Path (Editable) */}
+              <div className="flex justify-start items-center space-x-4 ml-4">
+                <label className="w-1/4 text-sm font-medium text-gray-700">Path</label>
+                <input
+                  type="text"
+                  name="path"
+                  value={formData.path}
+                  onChange={handleChange}
+                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                  placeholder="Enter Path Parameter"
+                  required
+                />
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>
