@@ -5,6 +5,7 @@ import showicon from '../ikon/show.png';
 import hideicon from '../ikon/hide.png';
 import logo from '../ikon/icon.png';
 import {jwtDecode} from 'jwt-decode'; // Import jwt-decode
+import {useAuthStore} from "../store/useAuthStore";
 
 const Login = () => {
   const [passwordType, setPasswordType] = useState('password');
@@ -12,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const {connectSocket} = useAuthStore()
 
   const togglePasswordVisibility = () => {
     setPasswordType(passwordType === 'password' ? 'text' : 'password');
@@ -42,6 +44,8 @@ const Login = () => {
         localStorage.setItem('userName', userName);
         localStorage.setItem('userRole', decodedToken.role);
         localStorage.setItem('userPhoto', userPhoto); // Simpan foto profil
+
+        connectSocket()
 
         navigate('/dashboard');
       } else {

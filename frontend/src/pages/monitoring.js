@@ -1,24 +1,47 @@
 // Monitoring.js
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import CardSensor from '../component/cardsensor'; // Import komponen CardSensor
-import Header from '../component/header'; // Import komponen Header
+import Header from '../component/header';
+import {useDOStore} from "../store/useDOStore"; // Import komponen Header
 
-const sensors = [
-  { id: 1, name: "pH (pH)", value: 50, data: [50, 55, 45, 60, 52] },
-  { id: 2, name: "Dissolved Oxygen (mg/L)", value: 46, data: [46, 48, 45, 50, 43] },
-  { id: 3, name: "Temperature (°C)", value: 22, data: [20, 22, 23, 21, 22] },
-  { id: 4, name: "Humidity (%)", value: 35, data: [33, 36, 38, 30, 35] },
-  { id: 5, name: "Pressure (Bar)", value: 1.2, data: [1.2, 1.3, 1.1, 1.4, 1.2] },
-  { id: 6, name: "Flow Rate (L/min)", value: 32, data: [32, 34, 30, 33, 31] },
-  { id: 7, name: "Turbidity (NTU)", value: 15, data: [15, 16, 14, 17, 15] },
-  { id: 8, name: "Voltage (V)", value: 3.7, data: [3.6, 3.7, 3.8, 3.5, 3.7] },
-  { id: 9, name: "Light Intensity (Lux)", value: 22, data: [20, 25, 22, 24, 22] },
-  { id: 10, name: "Speed (m/s)", value: 12, data: [11, 12, 13, 10, 12] },
-  { id: 11, name: "CO2 (ppm)", value: 10, data: [9, 10, 11, 10, 12] },
-  { id: 12, name: "Oxygen Level (%)", value: 21, data: [20, 22, 21, 20, 21] },
-];
+// const sensors = [
+//   { id: 1, name: "pH (pH)", value: 50, data: [50, 55, 45, 60, 52] },
+//   { id: 2, name: "Dissolved Oxygen (mg/L)", value: 46, data: [46, 48, 45, 50, 43] },
+//   { id: 3, name: "Temperature (°C)", value: 22, data: [20, 22, 23, 21, 22] },
+//   { id: 4, name: "Humidity (%)", value: 35, data: [33, 36, 38, 30, 35] },
+//   { id: 5, name: "Pressure (Bar)", value: 1.2, data: [1.2, 1.3, 1.1, 1.4, 1.2] },
+//   { id: 6, name: "Flow Rate (L/min)", value: 32, data: [32, 34, 30, 33, 31] },
+//   { id: 7, name: "Turbidity (NTU)", value: 15, data: [15, 16, 14, 17, 15] },
+//   { id: 8, name: "Voltage (V)", value: 3.7, data: [3.6, 3.7, 3.8, 3.5, 3.7] },
+//   { id: 9, name: "Light Intensity (Lux)", value: 22, data: [20, 25, 22, 24, 22] },
+//   { id: 10, name: "Speed (m/s)", value: 12, data: [11, 12, 13, 10, 12] },
+//   { id: 11, name: "CO2 (ppm)", value: 10, data: [9, 10, 11, 10, 12] },
+//   { id: 12, name: "Oxygen Level (%)", value: 21, data: [20, 22, 21, 20, 21] },
+// ];
 
 const Monitoring = () => {
+  // const [DO, setDO] = useState({value: null})
+  const {subscribeSocket, getLatestDO, latestDO, DO, getDO} = useDOStore()
+
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await fetch('http://localhost:5000/api/do/')
+    //     const data = await response.json();
+    //     setDO({value: data[0].oksigen_terlarut});
+    //   } catch (error) {
+    //     console.log("Failed to fetch DO: ", error)
+    //   }
+    // }
+
+    // fetchData()
+    getDO()
+
+    getLatestDO()
+
+    subscribeSocket()
+  }, [])
+
   return (
     <div className="flex h-fullscreen bg-[#F9F4F4]">
 
@@ -42,9 +65,10 @@ const Monitoring = () => {
 
           {/* Sensor Data */}
           <div className="grid grid-cols-4 gap-4">
-            {sensors.map((sensor) => (
-              <CardSensor key={sensor.id} name={sensor.name} value={sensor.value} data={sensor.data} />
-            ))}
+            {/*{DO.map((d) => (*/}
+            {/*  // <CardSensor key={sensor.id} name={sensor.name} value={sensor.value} data={sensor.data} />*/}
+              <CardSensor key={1} name={"Dissolved Oxygen (mg/L)"} value={latestDO} data={DO} />
+            {/*))}*/}
           </div>
         </div>
       </div>

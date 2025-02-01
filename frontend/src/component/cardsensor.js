@@ -59,6 +59,18 @@ const CardSensor = ({ name, value, data }) => {
         intersect: false,
       },
     },
+    scales: {
+      x: {
+        reverse: true
+      },
+      y: {
+        ticks: {
+          stepSize: 5,
+        },
+        min: 50,
+        max: 100
+      }
+    }
   };
 
   const downloadChart = () => {

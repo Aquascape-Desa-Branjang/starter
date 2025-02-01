@@ -2,14 +2,16 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema
 
-const dissolvedOxygenSchema = new Schema({
-    oksigen_terlarut: {
+const deviceSchema = new Schema({
+    name: {
         type: Number,
     },
     deviceId: {
         type: String,
-        required: true,
+    },
+    description: {
+      type: String
     }
 }, {timestamps: true, versionKey: false});
 
-module.exports = mongoose.model('dissolvedOxygen', dissolvedOxygenSchema);
+module.exports = mongoose.model('device', deviceSchema);
