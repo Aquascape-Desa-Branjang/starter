@@ -9,6 +9,7 @@ const sensorRoutes = require("./routes/sensorRoutes");
 const parameterRoutes = require("./routes/parameterRoutes");
 const authRoutes = require("./routes/authRoutes");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 const {io, app, server} = require("./lib/socket")
 
@@ -24,10 +25,10 @@ app.use(cors({
     credentials: true
 })); // Menangani masalah CORS
 app.use(express.json()); // Menangani parsing JSON
-app.use(express.urlencoded({ extended: true })); // Menangani URL encoded data
-// app.use(cors()); // Menangani masalah CORS
-app.use(bodyParser.json({ limit: "20mb" })); // Menguraikan JSON
-app.use(bodyParser.urlencoded({ extended: true, limit: "20mb" })); // Menguraikan URL-encoded
+app.use(cookieParser()); // Menangani cookie
+// app.use(express.urlencoded({ extended: true })); // Menangani URL encoded data
+// app.use(bodyParser.json({ limit: "20mb" })); // Menguraikan JSON
+// app.use(bodyParser.urlencoded({ extended: true, limit: "20mb" })); // Menguraikan URL-encoded
 
 // MongoDB Connection
 
