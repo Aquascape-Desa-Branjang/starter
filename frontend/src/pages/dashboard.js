@@ -1,5 +1,7 @@
 import React from "react";
 import Header from "../component/header";
+import ImageSlider from "../component/slide"; // Impor komponen slider
+import SCADADiagram from "../component/scada"; // Impor komponen SCADA (pastikan file ini ada)
 
 const Dashboard = () => {
   return (
@@ -8,9 +10,25 @@ const Dashboard = () => {
         {/* Header */}
         <Header pageName="Dashboard" databaseName="Home / Dashboard" notifications={3} />
 
-        {/* Kontainer Konten Kosong */}
+        {/* Judul Halaman */}
+        <div className="text-center mt-6 drop-shadow-lg">
+          <h1 className="text-8xl font-extrabold text-gray-800">Selamat Datang</h1>
+          <h2 className="text-5xl font-extrabold text-gray-700 mt-4">
+            Monitoring Tambak Udang Vaname
+          </h2>
+          <h3 className="text-3xl font-semibold text-gray-600 mt-4">
+            Petarukan, Kabupaten Pemalang
+          </h3>
+        </div>
+
+        {/* Rangkaian SCADA */}
+        <div className="flex justify-center mt-8">
+          <SCADADiagram /> {/* Pastikan komponen ini tersedia */}
+        </div>
+
+        {/* Slider Gambar */}
         <div className="p-4">
-          {/* Konten kosong */}
+          <ImageSlider /> {/* Panggil komponen slider */}
         </div>
       </div>
     </div>
