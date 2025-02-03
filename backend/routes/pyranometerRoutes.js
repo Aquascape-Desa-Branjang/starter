@@ -1,15 +1,18 @@
 const express = require('express');
+const router = express.Router();
 const {
     getPyranometerData,
+    getPyranometerGraph,
     addPyranometerData
 } = require('../controllers/pyranometerController')
 
-const router = express.Router();
 
 //get
 router.get('/', getPyranometerData);
 
+router.get('/graph', getPyranometerGraph)
+
 //post
-router.post('/', addPyranometerData);
+router.post('/:deviceId', addPyranometerData);
 
 module.exports = router;

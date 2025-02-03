@@ -4,7 +4,12 @@ const Schema = mongoose.Schema
 
 const pyranometerSchema = new Schema({
     radiasi_matahari: {
-        type: Number
+        type: Number,
+        required: true,
+    },
+    deviceId: {
+        type: String,
+        required: true,
     }
 }, {timestamps: true, versionKey: false});
 

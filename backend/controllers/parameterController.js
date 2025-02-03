@@ -1,5 +1,6 @@
 const Parameter = require("../models/parameter");
 const Sensor = require("../models/sensor");
+const mongoose = require("mongoose");
 
 exports.addParameter = async (req, res) => {
   try {
@@ -40,8 +41,18 @@ exports.addParameter = async (req, res) => {
 
 exports.getParameters = async (req, res) => {
   try {
-    const parameters = await Parameter.find().populate("sensor", "name");
-    res.status(200).json(parameters);
+    const {name: collection} = req.params
+    // const parameters = await Parameter.find().populate("sensor", "name");
+    const response = await mongoose.connection.db.collection(`${collection}`).find({}, {projection: {deviceId: 0, createdAt: 0, updatedAt: 0}}).sort({createdAt: -1}).limit(1).toArray()
+    const fieldNames = new Set()
+    response.forEach(item => {
+      Object.keys(item).forEach(key => {
+        if (key !== '_id') {
+          fieldNames.add(key);
+        }
+      })
+    })
+    res.status(200).json(Array.from(fieldNames))
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch parameters", error: error.message });
   }
@@ -114,8 +125,12 @@ exports.deleteParameter = async (req, res) => {
 
 exports.getSensors = async (req, res) => {
   try {
-    const sensors = await Sensor.find({}, "customId name _id path");
-    res.json(sensors);
+    // const sensors = await Sensor.find({}, "customId name _id path");
+    const collection = await mongoose.connection.db.listCollections().toArray()
+    const filteredCollection = collection.filter(item => item.name !== 'accounts' && item.name !== 'parameters' && item.name !== 'sensors');
+    const collectionNames = filteredCollection.map(item => item.name);
+
+    res.status(200).json(collectionNames);
   } catch (error) {
     res.status(500).json({ message: "Error fetching sensors" });
   }

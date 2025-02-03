@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 const dissolvedOxygenSchema = new Schema({
     oksigen_terlarut: {
         type: Number,
+        required: true,
     },
     deviceId: {
         type: String,

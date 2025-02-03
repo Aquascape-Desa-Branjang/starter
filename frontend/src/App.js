@@ -7,9 +7,6 @@ import Plts from "./pages/plts";
 import SensorParameter from "./pages/sensor&parameter";
 import AddSensorParameter from "./pages/sensor&parameteradd"; // Import AddSensorParameter
 import EditSensorParameter from "./pages/sensor&parameteredit"; // Import EditSensorParameter
-import Sensor from "./pages/sensorlist";
-import AddSensor from "./pages/sensoradd"; 
-import EditSensor from "./pages/sensoredit";  
 import UserAdmin from "./pages/user&admin";
 import AddUserAdmin from "./pages/user&adminadd";
 import EditUserAdmin from "./pages/user&adminedit";
@@ -35,9 +32,6 @@ function App() {
           <Route path="/sensor&parameter" element={<SensorParameter />} />
           <Route path="/sensor&parameteradd" element={<AddSensorParameter />} />
           <Route path="/sensor&parameteredit/:_id" element={<EditSensorParameter />} /> {/* Tambahkan :id */}
-          <Route path="/sensorlist" element={<Sensor />} />
-          <Route path="/sensoradd" element={<AddSensor />} />
-          <Route path="/sensoredit/:_id" element={<EditSensor />} /> {/* Tambahkan :id */}
           <Route path="/user&admin" element={<UserAdmin />} />
           <Route path="/user&adminadd" element={<AddUserAdmin />} /> 
           <Route path="/user&adminedit/:_id" element={<EditUserAdmin />} /> {/* Tambahkan :id */}

@@ -2,19 +2,26 @@ const mongoose = require('mongoose');
 const dissolvedOxygen = require('../models/dissolvedOxygen');
 const {io} = require('../lib/socket');
 
-//get
 const getDO = async (req, res) => {
-    const DO = await mongoose.connection.db.collection('dissolvedoxygens').find({}).sort({createdAt: -1}).limit(1).toArray()
-    res.status(200).json(DO)
+    try {
+        const DO = await mongoose.connection.db.collection('dissolvedoxygens').find({}).sort({createdAt: -1}).limit(1).toArray()
+        res.status(200).json(DO)
+    } catch (error) {
+        console.error("Error fetching DO:", error);
+        res.status(500).json({error: error.message})
+    }
 }
 
-//get graph
 const getDOgraph = async (req, res) => {
-    const DO = await mongoose.connection.db.collection('dissolvedoxygens').find({}).sort({createdAt: -1}).limit(10).toArray()
-    res.status(200).json(DO)
+    try {
+        const DO = await mongoose.connection.db.collection('dissolvedoxygens').find({}).sort({createdAt: -1}).limit(10).toArray()
+        res.status(200).json(DO)
+    } catch (error) {
+        console.error("Error fetching DO graph:", error);
+        res.status(500).json({error: error.message})
+    }
 }
 
-//add
 const addDO = async (req, res) => {
     const requestBody = req.body
     const { deviceId } = req.params
