@@ -53,9 +53,10 @@ router.post('/login', async (req, res) => {
 
     // Buat JWT token
     const token = jwt.sign(
+      // { id: user._id },
       { id: user._id, role: user.role, name: user.name, photo: user.photo },
       'secretKey', // Ganti dengan kunci rahasia Anda
-      { expiresIn: '1h' } // Token akan kedaluwarsa setelah 1 jam
+      { expiresIn: '7d' } // Token akan kedaluwarsa setelah 1 jam
     );
 
     // Kirimkan respon

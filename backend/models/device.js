@@ -2,15 +2,16 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema
 
-const pyranometerSchema = new Schema({
-    radiasi_matahari: {
+const deviceSchema = new Schema({
+    name: {
         type: Number,
-        required: true,
     },
     deviceId: {
         type: String,
-        required: true,
+    },
+    description: {
+      type: String
     }
 }, {timestamps: true, versionKey: false});
 
-module.exports = mongoose.model('pyranometer', pyranometerSchema);
+module.exports = mongoose.model('device', deviceSchema);

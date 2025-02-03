@@ -4,7 +4,12 @@ const Schema = mongoose.Schema
 
 const RTDSchema = new Schema({
     suhu_permukaan_photovoltaic: {
-        type: Number
+        type: Number,
+        required: true,
+    },
+    deviceId: {
+        type: String,
+        required: true,
     }
 }, {timestamps: true, versionKey: false});
 

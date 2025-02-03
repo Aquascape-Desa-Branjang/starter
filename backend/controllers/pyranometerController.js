@@ -1,25 +1,48 @@
 const pyr = require ('../models/pyranometer');
 const mongoose = require('mongoose');
+const {io} = require('../lib/socket');
+
 
 //get
 const getPyranometerData = async (req, res) => {
-    const pyranometer = await pyr.findOne()
+    const pyranometer = await mongoose.connection.db.collection('pyranometers').find({}).sort({createdAt: -1}).limit(1).toArray()
+    res.status(200).json(pyranometer);
+}
+
+const getPyranometerGraph = async (req, res) => {
+    const pyranometer = await mongoose.connection.db.collection('pyranometers').find({}).sort({createdAt: -1}).limit(10).toArray()
     res.status(200).json(pyranometer);
 }
 
 //post
 const addPyranometerData = async (req, res) => {
-    const {radiasi_matahari} = req.body
+    const requestBody = req.body
+    const { deviceId } = req.params
 
     try {
-        const pyranometer = await pyr.create({radiasi_matahari})
+        requestBody.deviceId = deviceId
+        for (const key in requestBody) {
+            if (!pyr.schema.path(key)) {
+                pyr.schema.add({
+                    [key]: {
+                        type: Number
+                    }
+                })
+            }
+        }
+        const pyranometer = await pyr.create(requestBody)
+
+        io.emit("newData", requestBody.radiasi_matahari)
+
         res.status(200).json(pyranometer)
     } catch (error) {
         res.status(400).json({error: error.message})
     }
 }
 
+
 module.exports = {
     getPyranometerData,
+    getPyranometerGraph,
     addPyranometerData
 }

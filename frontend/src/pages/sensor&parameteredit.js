@@ -5,35 +5,37 @@ import Header from "../component/header";
 
 const EditSensorParameter = () => {
   const { _id } = useParams();
+  const [sensorOptions, setSensorOptions] = useState([]);
+  const [deviceOptions, setDeviceOptions] = useState([]);
+  const [parameterOptions, setParameterOptions] = useState([]);
   const navigate = useNavigate();
 
-  // State untuk menyimpan data parameter
   const [formData, setFormData] = useState({
-    sensor: "", // Tetap menyimpan sensor agar tidak berubah
+    displayName: "",
+    sensor: "",
+    device: "",
     parameter: "",
-    name: "",
     unit: "",
-    path: "",
-  });
+  })
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   // Fetch data parameter
   useEffect(() => {
-    const fetchParameterData = async () => {
+    const fetchData = async () => {
       setLoading(true);
       try {
         // Ambil data parameter berdasarkan _id
-        const response = await axios.get(`http://localhost:5000/api/parameters/${_id}`);
-        const parameterData = response.data;
+        const response = await axios.get(`http://localhost:5000/api/displayitems/${_id}`);
+        const data = response.data;
 
         setFormData({
-          sensor: parameterData.sensor, // Simpan sensor agar tidak berubah
-          parameter: parameterData.parameter,
-          name: parameterData.name,
-          unit: parameterData.unit,
-          path: parameterData.path,
+          sensor: data.sensor, // Simpan sensor agar tidak berubah
+          device: data.device,
+          parameter: data.parameter,
+          displayName: data.displayName,
+          unit: data.unit,
         });
 
         setError("");
@@ -45,8 +47,50 @@ const EditSensorParameter = () => {
       }
     };
 
-    fetchParameterData();
+    fetchData();
   }, [_id]);
+
+  // Fetch options based on formData
+  useEffect(() => {
+    const fetchOptions = async () => {
+      if (formData.sensor) {
+        try {
+          const sensorResponse = await axios.get("http://localhost:5000/api/sensors");
+          setSensorOptions(sensorResponse.data);
+
+          const deviceResponse = await axios.get(`http://localhost:5000/api/sensors/${formData.sensor}/devices`);
+          setDeviceOptions(deviceResponse.data);
+
+          const parameterResponse = await axios.get(`http://localhost:5000/api/parameters/${formData.sensor}`);
+          setParameterOptions(parameterResponse.data);
+        } catch (error) {
+          console.error("Error fetching options:", error);
+        }
+      }
+    };
+
+    fetchOptions();
+  }, [formData.sensor]); // Trigger when formData.sensor changes
+
+  const handleSensorChange = async (e) => {
+    setFormData({ ...formData, sensor: e.target.value });
+    try {
+      const device = await axios.get(`http://localhost:5000/api/sensors/${e.target.value}/devices`);
+      const parameter = await axios.get(`http://localhost:5000/api/parameters/${e.target.value}`);
+      setDeviceOptions(device.data)
+      setParameterOptions(parameter.data)
+    } catch (error) {
+      console.error("Error fetching devices or paramaters:", error);
+    }
+  }
+
+  const handleDeviceChange = (e) => {
+    setFormData({ ...formData, device: e.target.value });
+  }
+
+  const handleParameterChange = (e) => {
+    setFormData({ ...formData, parameter: e.target.value });
+  }
 
   // Handle perubahan input form
   const handleChange = (e) => {
@@ -62,14 +106,15 @@ const EditSensorParameter = () => {
     e.preventDefault();
 
     const updatedData = {
+      displayName: formData.displayName,
+      sensor: formData.sensor,
+      device: formData.device,
       parameter: formData.parameter,
-      name: formData.name,
       unit: formData.unit,
-      path: formData.path, // Hanya update path parameter
     };
 
     try {
-      await axios.put(`http://localhost:5000/api/parameters/${_id}`, updatedData);
+      await axios.put(`http://localhost:5000/api/displayitems/${_id}`, updatedData);
       navigate("/sensor&parameter");
     } catch (error) {
       console.error("Error updating parameter:", error);
@@ -88,24 +133,7 @@ const EditSensorParameter = () => {
 
       <div className="flex-1 p-6">
         <div className="bg-white shadow-lg rounded-lg border border-gray-300 p-6">
-          {/* Header dengan tombol Back dan Save */}
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800">Edit Sensor & Parameter</h2>
-            <div className="flex space-x-4">
-              <button
-                onClick={handleBack}
-                className="px-6 py-2 w-36 text-sm bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
-              >
-                Back
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="px-6 py-2 w-36 text-sm bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
-              >
-                Save
-              </button>
-            </div>
-          </div>
+
 
           {/* Tampilkan pesan loading atau error jika ada */}
           {loading ? (
@@ -113,63 +141,113 @@ const EditSensorParameter = () => {
           ) : error ? (
             <p className="text-center text-red-500">{error}</p>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Parameter (Editable) */}
-              <div className="flex justify-start items-center space-x-4 ml-4">
-                <label className="w-1/4 text-sm font-medium text-gray-700">Parameter</label>
-                <input
-                  type="text"
-                  name="parameter"
-                  value={formData.parameter}
-                  onChange={handleChange}
-                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                  placeholder="Enter Parameter"
-                  required
-                />
-              </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Header dengan tombol Back dan Save */}
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-800">Edit Sensor & Parameter</h2>
+                  <div className="flex space-x-4">
+                    <button
+                        onClick={handleBack}
+                        className="px-6 py-2 w-36 text-sm bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+                    >
+                      Back
+                    </button>
+                    <button
+                        type="submit"
+                        className="px-6 py-2 w-36 text-sm bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
 
-              {/* Name (Editable) */}
-              <div className="flex justify-start items-center space-x-4 ml-4">
-                <label className="w-1/4 text-sm font-medium text-gray-700">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                  placeholder="Enter Name"
-                  required
-                />
-              </div>
+                {/* Parameter (Editable) */}
+                <div className="flex justify-start items-center space-x-4 ml-4">
+                  <label className="w-1/4 text-sm font-medium text-gray-700">Sensor</label>
+                  <select
+                      value={formData.sensor}
+                      onChange={(e) => handleSensorChange(e)}
+                      className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                      required
+                  >
+                    <option value="" disabled>
+                      Select Sensor
+                    </option>
+                    {sensorOptions.map((option) => (
+                        <option key={option._id} value={option.name}>
+                          {option.name}
+                        </option>
+                    ))}
+                  </select>
+                </div>
 
-              {/* Unit (Editable) */}
-              <div className="flex justify-start items-center space-x-4 ml-4">
-                <label className="w-1/4 text-sm font-medium text-gray-700">Unit</label>
-                <input
-                  type="text"
-                  name="unit"
-                  value={formData.unit}
-                  onChange={handleChange}
-                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                  placeholder="Enter Unit"
-                  required
-                />
-              </div>
+                <div className="flex justify-start items-center space-x-4 ml-4">
+                  <label className="w-1/4 text-sm font-medium text-gray-700">Device</label>
+                  <select
+                      value={formData.device}
+                      onChange={(e) => handleDeviceChange(e)}
+                      className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                      required
+                  >
+                    <option value="" disabled>
+                      Select Device
+                    </option>
+                    {deviceOptions.map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                    ))}
+                  </select>
+                </div>
 
-              {/* Path (Editable) */}
-              <div className="flex justify-start items-center space-x-4 ml-4">
-                <label className="w-1/4 text-sm font-medium text-gray-700">Path</label>
-                <input
-                  type="text"
-                  name="path"
-                  value={formData.path}
-                  onChange={handleChange}
-                  className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
-                  placeholder="Enter Path Parameter"
-                  required
-                />
-              </div>
-            </form>
+                <div className="flex justify-start items-center space-x-4 ml-4">
+                  <label className="w-1/4 text-sm font-medium text-gray-700">Parameter</label>
+                  <select
+                      value={formData.parameter}
+                      onChange={(e) => handleParameterChange(e)}
+                      className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                      required
+                  >
+                    <option value="" disabled>
+                      Select Parameter
+                    </option>
+                    {parameterOptions.map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Name (Editable) */}
+                <div className="flex justify-start items-center space-x-4 ml-4">
+                  <label className="w-1/4 text-sm font-medium text-gray-700">Display Name</label>
+                  <input
+                      type="text"
+                      name="displayName"
+                      value={formData.displayName}
+                      onChange={handleChange}
+                      className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                      placeholder="Enter Name"
+                      required
+                  />
+                </div>
+
+                {/* Unit (Editable) */}
+                <div className="flex justify-start items-center space-x-4 ml-4">
+                  <label className="w-1/4 text-sm font-medium text-gray-700">Unit</label>
+                  <input
+                      type="text"
+                      name="unit"
+                      value={formData.unit}
+                      onChange={handleChange}
+                      className="w-3/4 h-10 px-4 py-1 border border-gray-300 rounded-lg"
+                      placeholder="Enter Unit"
+                      required
+                  />
+                </div>
+
+              </form>
           )}
         </div>
       </div>

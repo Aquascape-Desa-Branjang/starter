@@ -9,6 +9,7 @@ import plts from "../ikon/halaman/plts.png";
 import usermanagement from "../ikon/halaman/usermanagement.png";
 import logout from "../ikon/logout.png";
 import {jwtDecode} from "jwt-decode"; // Perbaiki import
+import {useAuthStore} from "../store/useAuthStore";
 
 const Navbar = () => {
   const [isUserManagementOpen, setIsUserManagementOpen] = useState(false);
@@ -16,6 +17,7 @@ const Navbar = () => {
   const [userRole, setUserRole] = useState("Guest"); // Default: Guest
   const [userName, setUserName] = useState("Guest"); // Default: Guest
   const [profileImage, setProfileImage] = useState(defaultProfile); // Default image
+  const {disconnectSocket} = useAuthStore()
 
   // Ambil token dan data pengguna dari localStorage
   useEffect(() => {
@@ -47,6 +49,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.clear(); // Hapus semua data dari localStorage
+    disconnectSocket()
     navigate("/"); // Redirect ke halaman login
   };
 
@@ -123,11 +126,6 @@ const Navbar = () => {
                   <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
                     <Link to="/sensor&parameter" className="flex items-center space-x-3">
                       <span className="font-bold">Sensors & Parameters</span>
-                    </Link>
-                  </li>
-                  <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
-                    <Link to="/sensorlist" className="flex items-center space-x-3">
-                      <span className="font-bold">Sensors</span>
                     </Link>
                   </li>
                   <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">

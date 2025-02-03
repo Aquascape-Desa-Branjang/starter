@@ -1,17 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const parameterController = require("../controllers/parameterController");
+const {
+    addParameter,
+    getParameters,
+    getParameter,
+    editParameter,
+    deleteParameter,
+    getSensors,
+    getSensor
+} = require("../controllers/parameterController");
 
-if (!parameterController.addParameter) {
-  console.error("Error: addParameter function is not defined in parameterController");
-}
-
-router.post("/add", parameterController.addParameter);
-router.get("/", parameterController.getParameters);
-router.get("/:id", parameterController.getParameter);
-router.put("/:id", parameterController.editParameter);
-router.delete("/:id", parameterController.deleteParameter);
-router.get("/sensors", parameterController.getSensors);
-router.get("/sensor", parameterController.getSensor);
+router.post("/add", addParameter);
+router.get("/:name", getParameters);
+// router.get("/:id", getParameter);
+router.put("/:id", editParameter);
+router.delete("/:id", deleteParameter);
+router.get("/sensors", getSensors);
+router.get("/sensor", getSensor);
 
 module.exports = router;

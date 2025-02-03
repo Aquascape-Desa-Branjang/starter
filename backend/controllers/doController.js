@@ -1,18 +1,46 @@
-const disOxy = require ('../models/dissolvedOxygen');
 const mongoose = require('mongoose');
+const dissolvedOxygen = require('../models/dissolvedOxygen');
+const {io} = require('../lib/socket');
 
-//get
 const getDO = async (req, res) => {
-    const DO = await disOxy.findOne({}, null, { sort: { createdAt: -1 } });
-    res.status(200).json(DO)
+    try {
+        const DO = await mongoose.connection.db.collection('dissolvedoxygens').find({}).sort({createdAt: -1}).limit(1).toArray()
+        res.status(200).json(DO)
+    } catch (error) {
+        console.error("Error fetching DO:", error);
+        res.status(500).json({error: error.message})
+    }
 }
 
-//add
+const getDOgraph = async (req, res) => {
+    try {
+        const DO = await mongoose.connection.db.collection('dissolvedoxygens').find({}).sort({createdAt: -1}).limit(10).toArray()
+        res.status(200).json(DO)
+    } catch (error) {
+        console.error("Error fetching DO graph:", error);
+        res.status(500).json({error: error.message})
+    }
+}
+
 const addDO = async (req, res) => {
-    const {oksigen_terlarut} = req.body
+    const requestBody = req.body
+    const { deviceId } = req.params
 
     try {
-        const DO = await disOxy.create({oksigen_terlarut})
+        requestBody.deviceId = deviceId
+        for (const key in requestBody) {
+            if (!dissolvedOxygen.schema.path(key)) {
+                dissolvedOxygen.schema.add({
+                    [key]: {
+                        type: Number
+                    }
+                })
+            }
+        }
+        const DO = await dissolvedOxygen.create(requestBody)
+
+        io.emit("newData", requestBody.oksigen_terlarut)
+
         res.status(200).json(DO)
     } catch (error) {
         res.status(400).json({error: error.message})
@@ -21,5 +49,6 @@ const addDO = async (req, res) => {
 
 module.exports = {
     getDO,
+    getDOgraph,
     addDO
 }

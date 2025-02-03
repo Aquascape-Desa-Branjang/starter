@@ -20,6 +20,7 @@ const EditUserAdmin = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
+      console.log(_id)
     if (!_id) {
       setErrorMessage("Invalid user ID.");
       return;

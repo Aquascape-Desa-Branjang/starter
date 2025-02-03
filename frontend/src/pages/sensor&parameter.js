@@ -5,19 +5,18 @@ import SearchIkon from "../ikon/search.png";
 import axios from "axios";
 
 const SensorParameter = () => {
-  const [sensorsData, setSensorsData] = useState([]); // State untuk menyimpan data sensor
+  const [displayItems, setDisplayItems] = useState([]); // State untuk menyimpan data sensor
   const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal
   const [modalMessage, setModalMessage] = useState(""); // Pesan modal
-  const [selectedSensorId, setSelectedSensorId] = useState(null); // Sensor yang akan dihapus
+  const [selectedItem, setSelectedItem] = useState(null); // Sensor yang akan dihapus
   const [modalType, setModalType] = useState("info"); // Modal type: "info", "success", "error"
   const navigate = useNavigate(); // Navigation hook
 
-  // Mengambil data sensor dari backend ketika komponen dimuat
   useEffect(() => {
     const fetchSensorsData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/parameters");
-        setSensorsData(response.data);
+        const response = await axios.get("http://localhost:5000/api/displayitems/");
+        setDisplayItems(response.data);
       } catch (error) {
         console.error("Error fetching sensors:", error);
       }
@@ -28,7 +27,7 @@ const SensorParameter = () => {
 
   // Fungsi untuk menampilkan modal konfirmasi penghapusan
   const confirmDelete = (id) => {
-    setSelectedSensorId(id);
+    setSelectedItem(id);
     setModalMessage("Are you sure you want to delete this sensor?");
     setModalType("info");
     setIsModalOpen(true);
@@ -36,13 +35,13 @@ const SensorParameter = () => {
 
   // Fungsi untuk menghapus sensor
   const handleDeleteData = async () => {
-    if (!selectedSensorId) return;
+    if (!selectedItem) return;
 
     try {
-      const response = await axios.delete(`http://localhost:5000/api/parameters/${selectedSensorId}`);
+      const response = await axios.delete(`http://localhost:5000/api/displayitems/${selectedItem}`);
 
       if (response.status === 200) {
-        setSensorsData(sensorsData.filter((sensor) => sensor._id !== selectedSensorId));
+        setDisplayItems(displayItems.filter((sensor) => sensor._id !== selectedItem));
         setModalMessage("Sensor deleted successfully!");
         setModalType("success");
       } else {
@@ -54,7 +53,7 @@ const SensorParameter = () => {
       setModalMessage("Error deleting sensor. Please try again.");
       setModalType("error");
     } finally {
-      setSelectedSensorId(null);
+      setSelectedItem(null);
       setIsModalOpen(true);
     }
   };
@@ -62,7 +61,7 @@ const SensorParameter = () => {
   // Fungsi untuk menutup modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedSensorId(null);
+    setSelectedItem(null);
     setModalMessage("");
   };
 
@@ -96,6 +95,7 @@ const SensorParameter = () => {
             <thead className="bg-gray-200">
               <tr>
                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Sensor</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Device</th>
                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Parameter</th>
                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Name</th>
                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Unit</th>
@@ -103,15 +103,16 @@ const SensorParameter = () => {
               </tr>
             </thead>
             <tbody>
-              {sensorsData.length > 0 ? (
-                sensorsData.map((data, index) => (
+              {displayItems.length > 0 ? (
+                displayItems.map((data, index) => (
                   <tr
                     key={data._id}
                     className={`border-t ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}
                   >
-                    <td className="px-4 py-2 text-sm text-gray-800">{data.sensor?.name || "Unknown Sensor"}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800">{data.sensor || "Unknown Sensor"}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800">{data.device}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{data.parameter}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{data.name}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800">{data.displayName}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{data.unit}</td>
                     <td className="px-4 py-2 text-sm text-center">
                       <div className="flex flex-col items-center space-y-2">
