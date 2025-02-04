@@ -11,7 +11,6 @@ import UserAdmin from "./pages/user&admin";
 import AddUserAdmin from "./pages/user&adminadd";
 import EditUserAdmin from "./pages/user&adminedit";
 import Navbar from "./component/navbar";
-import Dummydata from "./pages/dummydata";
 
 function App() {
   const location = useLocation();
@@ -28,7 +27,6 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/monitoring" element={<Monitoring />} />
           <Route path="/plts" element={<Plts />} />
-          <Route path="/dummydata" element={<Dummydata />} />
           <Route path="/sensor&parameter" element={<SensorParameter />} />
           <Route path="/sensor&parameteradd" element={<AddSensorParameter />} />
           <Route path="/sensor&parameteredit/:_id" element={<EditSensorParameter />} /> {/* Tambahkan :id */}

@@ -128,11 +128,6 @@ const Navbar = () => {
                       <span className="font-bold">Sensors & Parameters</span>
                     </Link>
                   </li>
-                  <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
-                    <Link to="/dummydata" className="flex items-center space-x-3">
-                      <span className="font-bold">Bikin dummy data</span>
-                    </Link>
-                  </li>
                 </ul>
               )}
             </>
