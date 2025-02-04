@@ -2,7 +2,8 @@
 import React, {useEffect, useState} from 'react';
 import CardSensor from '../component/cardsensor'; // Import komponen CardSensor
 import Header from '../component/header';
-import {useDOStore} from "../store/useDOStore"; // Import komponen Header
+import {useDOStore} from "../store/useDOStore";
+import {useDataStore} from "../store/useDataStore"; // Import komponen Header
 
 // const sensors = [
 //   { id: 1, name: "pH (pH)", value: 50, data: [50, 55, 45, 60, 52] },
@@ -22,8 +23,9 @@ import {useDOStore} from "../store/useDOStore"; // Import komponen Header
 const Monitoring = () => {
   // const [DO, setDO] = useState({value: null})
   const {subscribeSocket, getLatestDO, latestDO, DO, getDO} = useDOStore()
+  const {latestData, getLatestData, isValueLoading, getGraph, isGraphLoading, graph} = useDataStore()
 
-  useEffect(() => {
+  useEffect( () => {
     // const fetchData = async () => {
     //   try {
     //     const response = await fetch('http://localhost:5000/api/do/')
@@ -36,11 +38,22 @@ const Monitoring = () => {
 
     // fetchData()
     getDO()
+    //
+    // getLatestDO()
 
-    getLatestDO()
+    getLatestData()
+    getGraph()
 
-    subscribeSocket()
-  }, [])
+    // subscribeSocket()
+  }, [getLatestData, getGraph, getDO])
+
+  useEffect(() => {
+    if (latestData && graph && DO !== null) {
+      console.log('Latest Data:', latestData);
+      console.log('Graph data:', graph)
+      console.log('DOG: ', DO)
+    }
+  }, [latestData, graph]); // Log latestData whenever it changes
 
   return (
     <div className="flex h-fullscreen bg-[#F9F4F4]">
@@ -64,11 +77,20 @@ const Monitoring = () => {
           </div>
 
           {/* Sensor Data */}
-          <div className="grid grid-cols-4 gap-4">
-            {/*{DO.map((d) => (*/}
-            {/*  // <CardSensor key={sensor.id} name={sensor.name} value={sensor.value} data={sensor.data} />*/}
-              <CardSensor key={1} name={"Dissolved Oxygen (mg/L)"} value={latestDO} data={DO} />
-            {/*))}*/}
+          <div>
+            {isValueLoading || isGraphLoading ? (
+                <p>loading</p>
+            ) : (
+            <div className="grid grid-cols-4 gap-4">
+              {latestData && latestData.length > 0 ? (
+                  latestData.map((data, index) => (
+                    <CardSensor key={index} name={`${data[0]} ${data[1]}`} value={data[2]} data={graph[index]} />
+                  ))) : (
+                      <div>Not found</div>
+              )}
+                {/*<CardSensor key={1} name={"Dissolved Oxygen (mg/L)"} value={latestDO} data={DO} />*/}
+            </div>
+              )}
           </div>
         </div>
       </div>

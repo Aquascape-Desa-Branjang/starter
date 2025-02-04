@@ -5,10 +5,10 @@ function getRandomNumber() {
 
 // Function to send data to the API
 async function sendDataToAPI() {
-    const apiUrl = 'http://localhost:5000/api/DO/A'; // Replace with your API endpoint
+    const apiUrl = 'http://localhost:5000/api/inverterSolis/A'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
-        oksigen_terlarut: randomNumber
+        dc_current: randomNumber
     }; // Replace with the data you want to send
 
     try {

@@ -8,6 +8,7 @@ const SensorParameterAdd = () => {
   const [deviceOptions, setDeviceOptions] = useState([]);
   const [parameterOptions, setParameterOptions] = useState([]);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [formData, setFormData] = useState({
     displayName: "",
@@ -56,6 +57,9 @@ const SensorParameterAdd = () => {
       await axios.post("http://localhost:5000/api/displayitems", formData);
       navigate("/sensor&parameter");
     } catch (error) {
+      if(error.status === 409) {
+        return setErrorMessage("Item already existed!")
+      }
       console.error("Error adding sensor & parameter:", error);
     }
   };
@@ -164,6 +168,7 @@ const SensorParameterAdd = () => {
                   required
               />
             </div>
+            {errorMessage && <div className="mt-4 text-red-500 text-center">{errorMessage}</div>}
           </form>
         </div>
       </div>

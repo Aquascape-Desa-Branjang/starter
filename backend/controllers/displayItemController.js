@@ -1,9 +1,16 @@
 const displayItem = require('../models/displayItem');
 const {io} = require('../lib/socket');
 const Parameter = require("../models/parameter");
+const mongoose = require("mongoose")
 
 const addDisplayItem = async (req, res) => {
+    const {sensor, device, parameter} = req.body
     try {
+        const exist = await displayItem.findOne({sensor: sensor, device: device, parameter: parameter})
+        if (exist) {
+            return res.status(409).json({error: "Item already exist!"})
+        }
+
         const response = await displayItem.create(req.body)
         res.status(201).json(response)
     } catch (error) {
@@ -66,10 +73,93 @@ const deleteDisplayItem = async (req, res) => {
     }
 };
 
+const getData = async (req, res) => {
+    try {
+        const response = await displayItem.find({});
+        const results = [];
+
+        for (const item of response) {
+            const { sensor, device, parameter } = item;
+
+            try {
+                const projection = {}
+                projection[parameter] = 1
+
+                const collection = mongoose.connection.db.collection(sensor);
+                const latestData = await collection
+                    .find({deviceId: device})
+                    .project(projection)
+                    .sort({ createdAt: -1 })
+                    .limit(1)
+                    .toArray();
+
+                if (latestData.length > 0) {
+                    results.push(latestData[0]);
+                }
+            } catch (error) {
+                console.error(`Error fetching data for sensor: ${sensor}, device: ${device}, parameter: ${parameter}`, error);
+            }
+        }
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error("Error getting display data:", error)
+        res.status(500).json({ message: "Error getting display data"})
+    }
+}
+
+const getGraph = async (req, res) => {
+    try {
+        const response = await displayItem.find({});
+        const results = [];
+
+        for (const item of response) {
+            const { sensor, device, parameter } = item;
+
+            try {
+                const collection = mongoose.connection.db.collection(sensor);
+
+                // Query the collection and project the fields
+                const latestData = await collection.find(
+                    { deviceId: device },
+                    {
+                        // Project the parameter as 'value' and include 'createdAt'
+                        projection: {
+                            [parameter]: 1, // This will be renamed to 'value'
+                            createdAt: 1
+                        }
+                    }
+                ).sort({ createdAt: -1 }).limit(10).toArray();
+
+                // Transform the latestData to keep the original structure
+                const transformedData = latestData.map(dataItem => ({
+                    value: dataItem[parameter], // Rename the field to 'value'
+                    createdAt: dataItem.createdAt // Keep the createdAt field
+                }));
+
+                // Push the transformed data into results
+                results.push(transformedData);
+            } catch (error) {
+                console.error(`Error fetching data for sensor: ${sensor}, device: ${device}, parameter: ${parameter}`, error);
+            }
+        }
+
+        // Send the results back to the client
+        res.status(200).json(results);
+    } catch (error) {
+        console.error("Error getting graph data:", error);
+        res.status(500).json({ message: "Error getting graph data" });
+    }
+};
+
+
+
 module.exports = {
     addDisplayItem,
     getDisplayItems,
     getDisplayItem,
     deleteDisplayItem,
-    updateDisplayItem
+    updateDisplayItem,
+    getData,
+    getGraph
 }
