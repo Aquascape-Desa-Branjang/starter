@@ -16,6 +16,8 @@ const inverterSolisRoutes = require("./routes/inverterSolisRoutes");
 const inverterSRNERoutes = require("./routes/inverterSRNERoutes");
 const pyranometerRoutes = require("./routes/pyranometerRoutes");
 const rtdRoutes = require("./routes/rtdRoutes");
+const vfdRoutes = require("./routes/vfdRoutes");
+const wsRoutes = require("./routes/wsRoutes");
 const customRoutes = require("./routes/customRoutes")
 
 const {io, app, server} = require("./lib/socket")
@@ -47,6 +49,8 @@ app.use('/api/InverterSolis', inverterSolisRoutes)
 app.use('/api/InverterSRNE', inverterSRNERoutes)
 app.use('/api/pyranometer', pyranometerRoutes)
 app.use('/api/rtd', rtdRoutes)
+app.use('/api/vfd', vfdRoutes)
+app.use('/api/ws', wsRoutes)
 app.use("/api/custom", customRoutes)
 
 server.listen(port, () => {
