@@ -13,6 +13,7 @@ const parameterRoutes = require("./routes/parameterRoutes");
 
 const dissolvedOxygenRoutes = require("./routes/dissolvedOxygenRoutes");
 const inverterSolisRoutes = require("./routes/inverterSolisRoutes");
+const inverterSRNERoutes = require("./routes/inverterSRNERoutes");
 const pyranometerRoutes = require("./routes/pyranometerRoutes");
 const rtdRoutes = require("./routes/rtdRoutes");
 const customRoutes = require("./routes/customRoutes")
@@ -43,6 +44,7 @@ app.use("/api/parameters", parameterRoutes);
 
 app.use('/api/dissolvedoxygen', dissolvedOxygenRoutes)
 app.use('/api/InverterSolis', inverterSolisRoutes)
+app.use('/api/InverterSRNE', inverterSRNERoutes)
 app.use('/api/pyranometer', pyranometerRoutes)
 app.use('/api/rtd', rtdRoutes)
 app.use("/api/custom", customRoutes)
