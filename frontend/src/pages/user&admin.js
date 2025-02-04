@@ -4,7 +4,6 @@ import Header from "../component/header";
 import SearchIkon from "../ikon/search.png";
 
 const UserAdmin = () => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [usersData, setUsersData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,12 +25,6 @@ const UserAdmin = () => {
 
     fetchData();
   }, []);
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= 3) {
-      setCurrentPage(newPage);
-    }
-  };
 
   const handleAddData = () => {
     navigate("/user&adminadd");
