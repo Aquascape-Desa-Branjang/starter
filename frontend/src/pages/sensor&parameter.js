@@ -11,7 +11,7 @@ const SensorParameter = () => {
   const [modalMessage, setModalMessage] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalType, setModalType] = useState("info");
-  const [loading, setLoading] = useState(true); // Loader state
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const SensorParameter = () => {
             <div className="flex-1 relative">
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search by Sensor"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full max-w-3xl h-10 px-4 pl-10 border border-gray-300 rounded-lg"
@@ -156,10 +156,15 @@ const SensorParameter = () => {
       </div>
 
       {isModalOpen && (
-        <div key="modal" className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg p-6 w-96">
             <h3 className="text-lg font-semibold text-gray-800">{modalMessage}</h3>
             <div className="mt-4 flex justify-end space-x-4">
+              {modalType === "info" && (
+                <button onClick={handleDeleteData} className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600">
+                  Delete
+                </button>
+              )}
               <button onClick={handleCloseModal} className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600">
                 Close
               </button>
