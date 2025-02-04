@@ -5,6 +5,7 @@ const cors = require("cors");
 const accountRoutes = require("./routes/accountRoutes");
 const displayItemRoutes = require("./routes/displayItemRoutes");
 const dissolvedOxygenRoutes = require("./routes/dissolvedOxygenRoutes");
+const inverterSolisRoutes = require("./routes/inverterSolisRoutes");
 const pyranometerRoutes = require("./routes/pyranometerRoutes");
 const rtdRoutes = require("./routes/rtdRoutes");
 const sensorRoutes = require("./routes/sensorRoutes");
@@ -39,6 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "20mb" })); // Menguraika
 
 // API Routes
 app.use('/api/DO', dissolvedOxygenRoutes)
+app.use('/api/InverterSolis', inverterSolisRoutes)
 app.use('/api/pyranometer', pyranometerRoutes)
 app.use('/api/rtd', rtdRoutes)
 app.use('/api/displayitems', displayItemRoutes)
