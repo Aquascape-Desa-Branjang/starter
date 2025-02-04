@@ -2,26 +2,25 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+
 const accountRoutes = require("./routes/accountRoutes");
 const displayItemRoutes = require("./routes/displayItemRoutes");
+const authRoutes = require("./routes/authRoutes");
+const sensorRoutes = require("./routes/sensorRoutes");
+const parameterRoutes = require("./routes/parameterRoutes");
+
 const dissolvedOxygenRoutes = require("./routes/dissolvedOxygenRoutes");
 const inverterSolisRoutes = require("./routes/inverterSolisRoutes");
 const pyranometerRoutes = require("./routes/pyranometerRoutes");
 const rtdRoutes = require("./routes/rtdRoutes");
-const sensorRoutes = require("./routes/sensorRoutes");
-const parameterRoutes = require("./routes/parameterRoutes");
-const authRoutes = require("./routes/authRoutes");
-const master = require("./routes/master");
-const TESTROUTES = require("./routes/TESTROUTES")
-const dotenv = require("dotenv");
-const cookieParser = require("cookie-parser");
+const customRoutes = require("./routes/customRoutes")
 
 const {io, app, server} = require("./lib/socket")
 
 dotenv.config()
 
-
-// const app = express();
 const port = 5000;
 
 // Middleware
@@ -35,24 +34,18 @@ app.use(express.urlencoded({ extended: true })); // Menangani URL encoded data
 app.use(bodyParser.json({ limit: "20mb" })); // Menguraikan JSON
 app.use(bodyParser.urlencoded({ extended: true, limit: "20mb" })); // Menguraikan URL-encoded
 
-// MongoDB Connection
-
-
 // API Routes
-app.use('/api/DO', dissolvedOxygenRoutes)
+app.use("/api/accounts", accountRoutes);
+app.use('/api/displayitems', displayItemRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/sensors", sensorRoutes);
+app.use("/api/parameters", parameterRoutes);
+
+app.use('/api/dissolvedoxygen', dissolvedOxygenRoutes)
 app.use('/api/InverterSolis', inverterSolisRoutes)
 app.use('/api/pyranometer', pyranometerRoutes)
 app.use('/api/rtd', rtdRoutes)
-app.use('/api/displayitems', displayItemRoutes)
-app.use("/api/accounts", accountRoutes); // Rute untuk akun
-app.use("/api/sensors", sensorRoutes);  // Rute untuk sensor
-app.use("/api/parameters", parameterRoutes);  // Rute untuk sensor
-app.use("/api/auth", authRoutes)
-// app.use("/api/:device", authRoutes)
-app.use("/api/all", TESTROUTES)
-
-// Start Server
-// app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+app.use("/api/custom", customRoutes)
 
 server.listen(port, () => {
     console.log(`Express server started on port ${port}`)

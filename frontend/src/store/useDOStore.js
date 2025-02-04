@@ -8,7 +8,7 @@ export const useDOStore = create((set, get) => ({
 
     getDO: async () => {
         try {
-            const res = await axiosInstance.get('/DO/graph')
+            const res = await axiosInstance.get('/dissolvedoxygen/graph')
             // const array = res.data.map(DO => DO.oksigen_terlarut)
             // set({DO: array})
             // console.log(res.data)
@@ -27,7 +27,7 @@ export const useDOStore = create((set, get) => ({
 
     getLatestDO: async () => {
       try {
-          const res = await axiosInstance.get('/DO')
+          const res = await axiosInstance.get('/dissolvedoxygen/')
           // const data = await response.json();
           // setDO({value: data[0].oksigen_terlarut});
           set({latestDO: res.data[0].oksigen_terlarut})

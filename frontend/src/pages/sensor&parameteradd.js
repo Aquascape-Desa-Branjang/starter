@@ -30,14 +30,6 @@ const SensorParameterAdd = () => {
      fetchSensors()
   }, []);
 
-  const updateSensors = async () => {
-    try {
-      await axios.get("http://localhost:5000/api/sensors/update");
-    } catch (error) {
-      console.error("Error updating sensors:", error);
-    }
-  }
-
   const handleSensorChange = async (e) => {
     setFormData({ ...formData, sensor: e.target.value });
     try {
@@ -62,7 +54,6 @@ const SensorParameterAdd = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:5000/api/displayitems", formData);
-      updateSensors()
       navigate("/sensor&parameter");
     } catch (error) {
       console.error("Error adding sensor & parameter:", error);
