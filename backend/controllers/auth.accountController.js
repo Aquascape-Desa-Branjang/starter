@@ -16,6 +16,12 @@ const login = async (req, res) => {
             return res.status(400).json({message: "Invalid credentials"})
         }
 
+        if (account.status === 'non active') {
+            return res
+                .status(400)
+                .json({ message: 'Your account is non-active. Please contact admin.' });
+        }
+
         generateToken(account._id, res)
 
         res.status(201).json({

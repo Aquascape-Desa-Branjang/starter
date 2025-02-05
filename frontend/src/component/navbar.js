@@ -1,56 +1,25 @@
-// Navbar.js
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "../ikon/icon.png";
-import defaultProfile from "../ikon/profile.png"; // Gambar default jika tidak ada foto profil
+import defaultProfile from "../ikon/profile.png";
 import dashboard from "../ikon/halaman/dashboard.png";
 import monitoring from "../ikon/halaman/monitoring.png";
 import plts from "../ikon/halaman/plts.png";
 import usermanagement from "../ikon/halaman/usermanagement.png";
-import logout from "../ikon/logout.png";
-import {jwtDecode} from "jwt-decode"; // Perbaiki import
+import logouticon from "../ikon/logouticon.png";
 import {useAuthStore} from "../store/useAuthStore";
 
 const Navbar = () => {
   const [isUserManagementOpen, setIsUserManagementOpen] = useState(false);
-  const navigate = useNavigate();
-  const [userRole, setUserRole] = useState("Guest"); // Default: Guest
-  const [userName, setUserName] = useState("Guest"); // Default: Guest
-  const [profileImage, setProfileImage] = useState(defaultProfile); // Default image
-  const {disconnectSocket} = useAuthStore()
-
-  // Ambil token dan data pengguna dari localStorage
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        setUserRole(decodedToken.role || "User");
-        setUserName(decodedToken.name || "Guest");
-
-        const storedPhoto = decodedToken.photo; // Ambil dari token langsung
-        if (storedPhoto) {
-          setProfileImage(storedPhoto); // Simpan foto profil dari token
-        } else {
-          setProfileImage(defaultProfile); // Gunakan default jika tidak ada foto
-        }
-      } catch (error) {
-        console.error("Error decoding JWT:", error);
-        setUserRole("User");
-        setUserName("Guest");
-        setProfileImage(defaultProfile); // Gunakan default jika error
-      }
-    }
-  }, []);
+  const {authAccount, logout, disconnectSocket} = useAuthStore()
 
   const toggleUserManagement = () => {
     setIsUserManagementOpen(!isUserManagementOpen);
   };
 
   const handleLogout = () => {
-    localStorage.clear(); // Hapus semua data dari localStorage
     disconnectSocket()
-    navigate("/"); // Redirect ke halaman login
+    logout()
   };
 
   return (
@@ -72,13 +41,13 @@ const Navbar = () => {
         <div className="text-gray-400 text-sm uppercase tracking-wide">Profile</div>
         <div className="flex items-center mt-2">
           <img
-            src={profileImage ? `data:image/png;base64,${profileImage}` : defaultProfile}
-            alt={userName}
+            src={authAccount.photo ? `data:image/png;base64,${authAccount.photo}` : defaultProfile}
+            alt="Profile"
             className="w-10 h-10 rounded-full"
           />
           <div className="ml-4 text-left">
-            <h3 className="text-lg font-bold">{userName}</h3> {/* Tampilkan nama pengguna */}
-            <p className="text-sm text-gray-300">{userRole}</p>
+            <h3 className="text-lg font-bold">{authAccount.name}</h3> {/* Tampilkan nama pengguna */}
+            <p className="text-sm text-gray-300">{authAccount.role}</p>
           </div>
         </div>
       </div>
@@ -89,7 +58,7 @@ const Navbar = () => {
 
         <ul className="space-y-4">
           <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer">
-            <Link to="/dashboard" className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center space-x-3">
               <img src={dashboard} alt="Dashboard" className="w-5 h-5" />
               <span className="font-bold">Dashboard</span>
             </Link>
@@ -107,7 +76,7 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {userRole === "Admin" && (
+          {authAccount.role === "Admin" && (
             <>
               <li className="text-gray-400 text-sm mt-6 uppercase tracking-wide">Admin Portal</li>
               <li className="hover:bg-green-700 p-2 rounded-md cursor-pointer" onClick={toggleUserManagement}>
@@ -141,7 +110,7 @@ const Navbar = () => {
           onClick={handleLogout}
           className="flex items-center justify-center hover:bg-green-700 p-2 rounded-md cursor-pointer w-full"
         >
-          <img src={logout} alt="Logout" className="w-5 h-5" />
+          <img src={logouticon} alt="Logout" className="w-5 h-5" />
           <span className="font-bold ml-4">Log Out</span>
         </button>
       </div>

@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import gambarudang from '../gambar/gambarudang.png';
 import showicon from '../ikon/show.png';
 import hideicon from '../ikon/hide.png';
 import logo from '../ikon/icon.png';
-import {jwtDecode} from 'jwt-decode'; // Import jwt-decode
 import {useAuthStore} from "../store/useAuthStore";
+import {Loader2} from "lucide-react";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [passwordType, setPasswordType] = useState('password');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
-  const {connectSocket} = useAuthStore()
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const {login, isLoggingIn, connectSocket} = useAuthStore()
+
+  const validateForm = () => {
+    if (!formData.email.trim()) return toast.error("Email is required");
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
+    if (!formData.password) return toast.error("Password is required");
+
+    return true;
+  };
 
   const togglePasswordVisibility = () => {
     setPasswordType(passwordType === 'password' ? 'text' : 'password');
@@ -21,40 +29,13 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage('');
 
-    try {
-      const response = await fetch('http://localhost:5000/api/accounts/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+    const success = validateForm();
 
-      const data = await response.json();
-
-      if (response.ok) {
-        const decodedToken = jwtDecode(data.token);
-        const userName = decodedToken.name || 'Guest';
-        const userPhoto = decodedToken.photo || ''; // Gunakan default jika kosong
-
-        // Simpan token dan data pengguna ke localStorage
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('userName', userName);
-        localStorage.setItem('userRole', decodedToken.role);
-        localStorage.setItem('userPhoto', userPhoto); // Simpan foto profil
-
-        connectSocket()
-
-        navigate('/dashboard');
-      } else {
-        setErrorMessage(data.message || 'Login failed. Please check your credentials.');
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred while logging in.');
+    if (success === true) {
+        await login(formData);
     }
-  };
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen font-bold">
@@ -83,8 +64,8 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 placeholder="Enter your email"
               />
@@ -98,8 +79,8 @@ const Login = () => {
                 <input
                   type={passwordType}
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   placeholder="Enter your password"
                 />
@@ -119,10 +100,17 @@ const Login = () => {
             <button
               type="submit"
               className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+              disabled={isLoggingIn}
             >
-              Login
+              {isLoggingIn ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin align-middle" />
+                    Loading...
+                  </>
+              ) : (
+                  "Login"
+              )}
             </button>
-            {errorMessage && <div className="mt-4 text-red-500 text-center">{errorMessage}</div>}
           </form>
         </div>
       </div>
