@@ -53,7 +53,7 @@ app.use('/api/vfd', vfdRoutes)
 app.use('/api/ws', wsRoutes)
 app.use("/api/custom", customRoutes)
 
-server.listen(port, () => {
+server.listen(port, 'localhost', () => {
     console.log(`Express server started on port ${port}`)
     mongoose
         // .connect("mongodb://localhost:27017/capstone")

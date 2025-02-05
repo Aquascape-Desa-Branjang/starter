@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import {axiosInstance} from "../lib/axios"
 import {io} from "socket.io-client"
+import toast from "react-hot-toast";
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -8,34 +9,43 @@ export const useAuthStore = create((set, get) => ({
     authAccount: null,
     socket: null,
     errorMessage: null,
+    isLoggingIn: null,
+    isCheckingAuth: false,
 
     checkAuth: async () => {
+        set({isCheckingAuth: true});
         try {
             const res = await axiosInstance.get("/auth/check");
 
             set({authAccount: res.data});
             get().connectSocket()
         } catch (error) {
-            console.log("Error in checkAuth:", error);
             set({authAccount: null});
+        } finally {
+            set({isCheckingAuth: false});
         }
     },
 
     login: async (data) => {
+        set({isLoggingIn: true});
         try {
             const res = await axiosInstance.post("/auth/login", data);
             set({authAccount: res.data});
+            toast.success("Logged in successfully");
 
             get().connectSocket()
         } catch (error) {
             set({errorMessage: error.response.data.message});
+        } finally {
+            set({isLoggingIn: false});
         }
     },
 
     logout: async () => {
         try {
             await axiosInstance.post("/auth/logout");
-            set({authUser: null});
+            set({authAccount: null});
+            toast.success("Logged out successfully");
 
             get().disconnectSocket()
         } catch (error) {
