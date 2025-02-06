@@ -5,7 +5,7 @@ const {io} = require('../lib/socket');
 //get
 const getVFD = async (req, res) => {
     try {
-        const VFD = await mongoose.connection.db.collection('vfd').find({}).sort({createdAt: -1}).limit(1).toArray()
+        const VFD = await mongoose.connection.db.collection('vfds').find({}).sort({createdAt: -1}).limit(1).toArray()
         res.status(200).json(VFD)
     } catch (error) {
         console.error("Error fetching VFD :", error);
@@ -15,7 +15,7 @@ const getVFD = async (req, res) => {
 
 const getVFDgraph = async (req, res) => {
     try {
-        const VFD = await mongoose.connection.db.collection('vfd').find({}).sort({createdAt: -1}).limit(10).toArray()
+        const VFD = await mongoose.connection.db.collection('vfds').find({}).sort({createdAt: -1}).limit(10).toArray()
         res.status(200).json(VFD)
     } catch (error) {
         console.error("Error fetching VFD :", error);

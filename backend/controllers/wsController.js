@@ -4,7 +4,7 @@ const {io} = require('../lib/socket');
 
 const getWS = async (req, res) => {
     try {
-        const WS = await mongoose.connection.db.collection('weatherstation').find({}).sort({createdAt: -1}).limit(1).toArray()
+        const WS = await mongoose.connection.db.collection('weatherstations').find({}).sort({createdAt: -1}).limit(1).toArray()
         res.status(200).json(WS)
     } catch (error) {
         console.error("Error fetching Weather Station :", error);
@@ -14,7 +14,7 @@ const getWS = async (req, res) => {
 
 const getWSgraph = async (req, res) => {
     try {
-        const WS = await mongoose.connection.db.collection('weatherstation').find({}).sort({createdAt: -1}).limit(10).toArray()
+        const WS = await mongoose.connection.db.collection('weatherstations').find({}).sort({createdAt: -1}).limit(10).toArray()
         res.status(200).json(WS)
     } catch (error) {
         console.error("Error fetching Weather Station :", error);
