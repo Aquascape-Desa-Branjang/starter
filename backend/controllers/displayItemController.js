@@ -152,6 +152,46 @@ const getGraph = async (req, res) => {
     }
 };
 
+const getLatestData = async (req, res) => {
+    try {
+        const response = await displayItem.find({})
+        const results = []
+
+        for (const item of response) {
+            const { sensor, device, parameter } = item;
+
+            try {
+                const collection = mongoose.connection.db.collection(sensor);
+
+                const latestData = await collection.find(
+                    { deviceId: device },
+                    {
+                        projection: {
+                            [parameter]: 1
+                        }
+                    }
+                ).sort({ createdAt: -1 }).limit(1).toArray();
+
+                const transformedData = latestData.map(dataItem => ({
+                    value: dataItem[parameter]
+                }));
+
+                results.push({
+                    ...item.toObject(), // Convert Mongoose document to plain object
+                    value: transformedData.length > 0 ? transformedData[0].value : null // Add latest value
+                });
+            } catch (error) {
+                console.error(`Error fetching data for sensor: ${sensor}, device: ${device}, parameter: ${parameter}`, error);
+            }
+        }
+
+        res.status(200).json(results)
+    } catch (error) {
+        console.error("Error fetching display items:", error);
+        res.status(500).json({error: error.message})
+    }
+}
+
 
 
 module.exports = {
@@ -161,5 +201,6 @@ module.exports = {
     deleteDisplayItem,
     updateDisplayItem,
     getData,
-    getGraph
+    getGraph,
+    getLatestData
 }

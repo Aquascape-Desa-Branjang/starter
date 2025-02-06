@@ -15,31 +15,42 @@ import downloadIcon from "../ikon/download.png"; // Ikon download
 
 // Daftarkan chart.js
 ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement
+    Title,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement
 );
 
 const CardSensor = ({ name, value, data }) => {
   const [showDetail, setShowDetail] = useState(false);
 
   // Fungsi untuk menghitung nilai tertinggi, terendah, dan rata-rata
-  const getHighestValue = () => Math.max(...data);
-  const getLowestValue = () => Math.min(...data);
+  const getHighestValue = () => Math.max(...data.map(item => item.value));
+  const getLowestValue = () => Math.min(...data.map(item => item.value));
   const getAverageValue = () =>
-    (data.reduce((acc, curr) => acc + curr, 0) / data.length).toFixed(2);
+      (data.reduce((acc, curr) => acc + curr.value, 0) / data.length).toFixed(2);
 
   // Konfigurasi untuk grafik garis menggunakan data yang tersedia
   const chartData = {
-    labels: data.map((_, index) => `Data ${index + 1}`),
+    labels: data.map(item => {
+      try {
+        const date = new Date(item.createdAt);
+        if (isNaN(date)) {
+          throw new Error("Invalid date format");
+        }
+        return date.toLocaleString(); // Format tanggal sesuai kebutuhan
+      } catch (error) {
+        console.error("Error parsing date:", error);
+        return "Invalid Date";
+      }
+    }),
     datasets: [
       {
         label: "Sensor Value",
-        data: data,
+        data: data.map(item => item.value),
         borderColor: "#1d4ed8",
         backgroundColor: "rgba(29, 78, 216, 0.1)",
         fill: true,
@@ -81,75 +92,75 @@ const CardSensor = ({ name, value, data }) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg text-center border border-gray-300">
-      <h2 className="text-xl font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
-        {name}
-      </h2>
-      <p
-        className="text-4xl font-semibold text-blue-500"
-        style={{ fontFamily: "Inter, sans-serif" }}
-      >
-        {value}
-      </p>
-      <button
-        className="text-black-500 underline mt-2 font-bold"
-        onClick={() => setShowDetail(true)}
-      >
-        Detail
-      </button>
+      <div className="bg-white p-4 rounded-lg shadow-lg text-center border border-gray-300">
+        <h2 className="text-xl font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
+          {name}
+        </h2>
+        <p
+            className="text-4xl font-semibold text-blue-500"
+            style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          {value}
+        </p>
+        <button
+            className="text-black-500 underline mt-2 font-bold"
+            onClick={() => setShowDetail(true)}
+        >
+          Detail
+        </button>
 
-      {/* Pop-up Modal */}
-      {showDetail && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[70%] md:w-[65%] lg:w-[45%] max-w-5xl">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-left">{name} Details</h3>
-              <div className="flex gap-2">
-                <button
-                  className="bg-transparent p-2 rounded-lg"
-                  onClick={downloadChart}
-                  title="Download Chart"
-                >
-                  <img src={downloadIcon} alt="Download" className="h-6 w-6" />
-                </button>
-                <button
-                  className="bg-transparent p-2 rounded-lg"
-                  onClick={() => setShowDetail(false)}
-                  title="Close"
-                >
-                  <img src={closeIcon} alt="Close" className="h-6 w-6" />
-                </button>
+        {/* Pop-up Modal */}
+        {showDetail && (
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-[70%] md:w-[65%] lg:w-[45%] max-w-5xl">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-bold text-left">{name} Details</h3>
+                  <div className="flex gap-2">
+                    <button
+                        className="bg-transparent p-2 rounded-lg"
+                        onClick={downloadChart}
+                        title="Download Chart"
+                    >
+                      <img src={downloadIcon} alt="Download" className="h-6 w-6" />
+                    </button>
+                    <button
+                        className="bg-transparent p-2 rounded-lg"
+                        onClick={() => setShowDetail(false)}
+                        title="Close"
+                    >
+                      <img src={closeIcon} alt="Close" className="h-6 w-6" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-6 text-left">
+                  {/* Kotak Data */}
+                  <div className="flex flex-col gap-4 w-full md:w-1/4">
+                    <div className="bg-white-100 p-4 rounded border border-gray-300 shadow-md text-left">
+                      <p className="font-bold text-green-700">Highest</p>
+                      <p className="text-3xl font-bold text-blue-500">{getHighestValue()}</p>
+                    </div>
+                    <div className="bg-white-100 p-4 rounded border border-gray-300 shadow-md text-left">
+                      <p className="font-bold text-yellow-700">Average</p>
+                      <p className="text-3xl font-bold text-blue-500">{getAverageValue()}</p>
+                    </div>
+                    <div className="bg-white-100 p-4 rounded border border-gray-300 shadow-md text-left">
+                      <p className="font-bold text-red-700">Lowest</p>
+                      <p className="text-3xl font-bold text-blue-500">{getLowestValue()}</p>
+                    </div>
+                  </div>
+
+                  {/* Grafik Line */}
+                  <div className="w-full md:w-2/3">
+                    <div style={{ height: "300px", width: "100%" }}> {/* Tinggi grafik 500px */}
+                      <Line data={chartData} options={chartOptions} />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div className="flex flex-col md:flex-row gap-6 text-left">
-              {/* Kotak Data */}
-              <div className="flex flex-col gap-4 w-full md:w-1/4">
-                <div className="bg-white-100 p-4 rounded border border-gray-300 shadow-md text-left">
-                  <p className="font-bold text-green-700">Highest</p>
-                  <p className="text-3xl font-bold text-blue-500">{getHighestValue()}</p>
-                </div>
-                <div className="bg-white-100 p-4 rounded border border-gray-300 shadow-md text-left">
-                  <p className="font-bold text-yellow-700">Average</p>
-                  <p className="text-3xl font-bold text-blue-500">{getAverageValue()}</p>
-                </div>
-                <div className="bg-white-100 p-4 rounded border border-gray-300 shadow-md text-left">
-                  <p className="font-bold text-red-700">Lowest</p>
-                  <p className="text-3xl font-bold text-blue-500">{getLowestValue()}</p>
-                </div>
-              </div>
-
-              {/* Grafik Line */}
-              <div className="w-full md:w-2/3">
-                <div style={{ height: "300px", width: "100%" }}> {/* Tinggi grafik 500px */}
-                  <Line data={chartData} options={chartOptions} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
   );
 };
 

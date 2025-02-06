@@ -6,7 +6,8 @@ const {
     getDisplayItem,
     updateDisplayItem,
     getData,
-    getGraph
+    getGraph,
+    getLatestData
 } = require('../controllers/displayItemController');
 
 const router = express.Router();
@@ -14,6 +15,8 @@ const router = express.Router();
 router.get('/monitoring', getData)
 
 router.get('/monitoring/graph', getGraph)
+
+router.get('/monitoring/latest', getLatestData)
 
 router.get('/', getDisplayItems);
 

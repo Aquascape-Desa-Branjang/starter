@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const dissolvedOxygen = require('../models/dissolvedOxygen');
+const displayItem = require('../models/displayItem');
 const {io} = require('../lib/socket');
 
 const getDO = async (req, res) => {
@@ -26,6 +27,8 @@ const addDO = async (req, res) => {
     const requestBody = req.body
     const { deviceId } = req.params
 
+    const response = await displayItem.find({sensor: 'dissolvedoxygens', device: deviceId})
+
     try {
         requestBody.deviceId = deviceId
         for (const key in requestBody) {
@@ -39,7 +42,11 @@ const addDO = async (req, res) => {
         }
         const DO = await dissolvedOxygen.create(requestBody)
 
-        io.emit("newData", requestBody.oksigen_terlarut)
+        if(response) {
+            io.emit(`${response.data.socket}`)
+        }
+
+        // io.emit("newData", requestBody.oksigen_terlarut)
 
         res.status(200).json(DO)
     } catch (error) {

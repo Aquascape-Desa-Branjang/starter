@@ -6,6 +6,7 @@ const displaySchema = new mongoose.Schema({
     device: {type: String, required: true},
     parameter: {type: String, required: true},
     unit: {type: String, required: true},
+    socket: {type: String, required: true}
 });
 
 module.exports = mongoose.model("DisplayItem", displaySchema);

@@ -4,7 +4,7 @@ const {io} = require('../lib/socket');
 
 const getInverterSRNE = async (req, res) => {
     try {
-        const InverterSRNE = await mongoose.connection.db.collection('invertersrne').find({}).sort({createdAt: -1}).limit(1).toArray()
+        const InverterSRNE = await mongoose.connection.db.collection('invertersrnes').find({}).sort({createdAt: -1}).limit(1).toArray()
         res.status(200).json(InverterSRNE)
     } catch (error) {
         console.error("Error fetching Inverter SRNE:", error);
@@ -14,7 +14,7 @@ const getInverterSRNE = async (req, res) => {
 
 const getInverterSRNEgraph = async (req, res) => {
     try {
-        const InverterSRNE = await mongoose.connection.db.collection('invertersrne').find({}).sort({createdAt: -1}).limit(10).toArray()
+        const InverterSRNE = await mongoose.connection.db.collection('invertersrnes').find({}).sort({createdAt: -1}).limit(10).toArray()
         res.status(200).json(InverterSRNE)
     } catch (error) {
         console.error("Error fetching Inverter SRNE graph:", error);
