@@ -6,7 +6,7 @@ export const usePLTSStore = create((set, get) => ({
     VFD: [],              // Menyimpan array data output_power dari VFD
     latestVFD: null,      // Menyimpan data terbaru dari output_power VFD
     InverterSRNE: [],     // Menyimpan array data pv_power dan battery_level dari InverterSRNE
-    latestInverterSRNE: { pv_power: null, battery_level: null }, // Menyimpan data terbaru dari pv_power dan battery_level
+    latestInverterSRNE: null, // Menyimpan data terbaru dari pv_power dan battery_level
 
     // Fungsi untuk mengambil data VFD (10 data terakhir)
     getVFD: async () => {
@@ -27,11 +27,9 @@ export const usePLTSStore = create((set, get) => ({
     getLatestVFD: async () => {
         try {
             const res = await axiosInstance.get('/vfd/');
-            if (res.data.length > 0) {
-                set({ latestVFD: res.data[0].output_power });
-            } else {
-                console.error("No data found for VFD.");
-            }
+            set({latestVFD: {
+                    output_power: res.data[0].output_power
+                }})
         } catch (error) {
             console.log("Error in getLatestVFD:", error.message);
         }

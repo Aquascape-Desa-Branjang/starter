@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const inverterSolis = require('../models/inverterSolis');
 const {io} = require('../lib/socket');
+const displayItem = require("../models/displayItem");
 
 const getInverterSolis = async (req, res) => {
     try {
@@ -26,6 +27,8 @@ const addInverterSolis = async (req, res) => {
     const requestBody = req.body
     const { deviceId } = req.params
 
+    const response = await displayItem.find({sensor: 'invertersolis', device: deviceId}).limit(1)
+
     try {
         requestBody.deviceId = deviceId
         for (const key in requestBody) {
@@ -39,18 +42,9 @@ const addInverterSolis = async (req, res) => {
         }
         const InverterSolis = await inverterSolis.create(requestBody)
 
-        io.emit("newData", requestBody.active_power)
-        io.emit("newData", requestBody.total_energy)
-        io.emit("newData", requestBody.this_month_energy)
-        io.emit("newData", requestBody.last_month_energy)
-        io.emit("newData", requestBody.today_energy)
-        io.emit("newData", requestBody.last_day_energy)
-        io.emit("newData", requestBody.this_year_energy)
-        io.emit("newData", requestBody.last_year_energy)
-        io.emit("newData", requestBody.dc_voltage)
-        io.emit("newData", requestBody.dc_current)
-        io.emit("newData", requestBody.inverter_temperature)
-        io.emit("newData", requestBody.ac_frequency)
+        if(response) {
+            io.emit(`invertersolis${deviceId}`, InverterSolis)
+        }
 
         res.status(200).json(InverterSolis)
     } catch (error) {

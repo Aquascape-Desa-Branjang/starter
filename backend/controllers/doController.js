@@ -26,8 +26,7 @@ const getDOgraph = async (req, res) => {
 const addDO = async (req, res) => {
     const requestBody = req.body
     const { deviceId } = req.params
-
-    const response = await displayItem.find({sensor: 'dissolvedoxygens', device: deviceId})
+    const response = await displayItem.find({sensor: 'dissolvedoxygens', device: deviceId}).limit(1)
 
     try {
         requestBody.deviceId = deviceId
@@ -43,11 +42,8 @@ const addDO = async (req, res) => {
         const DO = await dissolvedOxygen.create(requestBody)
 
         if(response) {
-            io.emit(`${response.data.socket}`)
+            io.emit(`dissolvedoxygens${deviceId}`, DO)
         }
-
-        // io.emit("newData", requestBody.oksigen_terlarut)
-
         res.status(200).json(DO)
     } catch (error) {
         res.status(400).json({error: error.message})

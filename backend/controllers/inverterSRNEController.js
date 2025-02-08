@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const inverterSRNE = require('../models/inverterSRNE');
 const {io} = require('../lib/socket');
+const displayItem = require("../models/displayItem");
 
 const getInverterSRNE = async (req, res) => {
     try {
@@ -26,6 +27,8 @@ const addInverterSRNE = async (req, res) => {
     const requestBody = req.body
     const { deviceId } = req.params
 
+    const response = await displayItem.find({sensor: 'invertersrnes', device: deviceId}).limit(1)
+
     try {
         requestBody.deviceId = deviceId
         for (const key in requestBody) {
@@ -39,34 +42,9 @@ const addInverterSRNE = async (req, res) => {
         }
         const InverterSRNE = await inverterSRNE.create(requestBody)
 
-        io.emit("newData", requestBody.inverter_power)
-        io.emit("newData", requestBody.battery_level)
-        io.emit("newData", requestBody.battery_last_equalization)
-        io.emit("newData", requestBody.battery_voltage)
-        io.emit("newData", requestBody.pv_voltage)
-
-        io.emit("newData", requestBody.pv_current)
-        io.emit("newData", requestBody.pv_power)
-        io.emit("newData", requestBody.charge_power)
-        io.emit("newData", requestBody.battery_charge_state)
-        io.emit("newData", requestBody.inverter_operation)
-
-        io.emit("newData", requestBody.inverter_current)
-        io.emit("newData", requestBody.main_charge_current)
-        io.emit("newData", requestBody.pv_charge_current)
-        io.emit("newData", requestBody.pv_daily_consumption)
-        io.emit("newData", requestBody.battery_charge_daily)
-        
-        io.emit("newData", requestBody.battery_discharge_daily)
-        io.emit("newData", requestBody.load_daily_consumption)
-        io.emit("newData", requestBody.inverter_uptime)
-        io.emit("newData", requestBody.pv_generated)
-        io.emit("newData", requestBody.main_load_power_daily)
-
-        io.emit("newData", requestBody.dc_dc_temperature)
-        io.emit("newData", requestBody.dc_ac_temperature)
-        io.emit("newData", requestBody.translator_temperature)
-        io.emit("newData", requestBody.load_ratio)
+        if(response) {
+            io.emit(`invertersrnes${deviceId}`, InverterSRNE)
+        }
 
         res.status(200).json(InverterSRNE)
     } catch (error) {

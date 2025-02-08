@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 const ws = require ('../models/weatherStation');
 const {io} = require('../lib/socket');
+const displayItem = require('../models/displayItem')
 
 const getWS = async (req, res) => {
     try {
-        const WS = await mongoose.connection.db.collection('weatherstation').find({}).sort({createdAt: -1}).limit(1).toArray()
+        const WS = await mongoose.connection.db.collection('weatherstations').find({}).sort({createdAt: -1}).limit(1).toArray()
         res.status(200).json(WS)
     } catch (error) {
         console.error("Error fetching Weather Station :", error);
@@ -14,7 +15,7 @@ const getWS = async (req, res) => {
 
 const getWSgraph = async (req, res) => {
     try {
-        const WS = await mongoose.connection.db.collection('weatherstation').find({}).sort({createdAt: -1}).limit(10).toArray()
+        const WS = await mongoose.connection.db.collection('weatherstations').find({}).sort({createdAt: -1}).limit(10).toArray()
         res.status(200).json(WS)
     } catch (error) {
         console.error("Error fetching Weather Station :", error);
@@ -25,6 +26,8 @@ const getWSgraph = async (req, res) => {
 const addWS = async (req, res) => {
     const requestBody = req.body
     const { deviceId } = req.params
+
+    const response = await displayItem.find({sensor: 'weatherstations', device: deviceId}).limit(1)
 
     try {
         requestBody.deviceId = deviceId
@@ -39,19 +42,9 @@ const addWS = async (req, res) => {
         }
         const WS = await ws.create(requestBody)
 
-        io.emit("newData", requestBody.indoor_temperature)
-        io.emit("newData", requestBody.indoor_humidity)
-        io.emit("newData", requestBody.barometric_pressure)
-        io.emit("newData", requestBody.wind_direction)
-        io.emit("newData", requestBody.rain_fall)
-
-        io.emit("newData", requestBody.wind_speed)
-        io.emit("newData", requestBody.dew_point)
-        io.emit("newData", requestBody.outdoor_humidity)
-        io.emit("newData", requestBody.outdoor_temperature)
-        io.emit("newData", requestBody.uv_index)
-
-        io.emit("newData", requestBody.light)
+        if(response) {
+            io.emit(`weatherstations${deviceId}`, WS)
+        }
 
         res.status(200).json(WS)
     } catch (error) {

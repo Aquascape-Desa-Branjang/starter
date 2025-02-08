@@ -32,6 +32,14 @@ const SensorParameterAdd = () => {
      fetchSensors()
   }, []);
 
+  const set = formData.sensor && formData.device
+
+  useEffect(() => {
+    if(set){
+      setFormData({ ...formData, socket: formData.sensor + formData.device});
+    }
+  }, [set]);
+
   const handleSensorChange = async (e) => {
     setFormData({ ...formData, sensor: e.target.value });
     try {
@@ -54,7 +62,6 @@ const SensorParameterAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormData({ ...formData, socket: formData.sensor + formData.device + formData.parameter });
     try {
       await axios.post("http://localhost:5000/api/displayitems", formData);
       navigate("/sensor&parameter");

@@ -4,8 +4,35 @@ function getRandomNumber() {
 }
 
 // Function to send data to the API DO
-async function sendDataToAPIDO() {
-    const apiUrl = 'http://192.168.18.11:5000/api/dissolvedoxygen/A'; // Replace with your API endpoint
+async function sendDataToAPIDOA() {
+    const apiUrl = 'http://localhost:5000/api/dissolvedoxygen/A'; // Replace with your API endpoint
+    const randomNumber = getRandomNumber();
+    const data = {
+        oksigen_terlarut: randomNumber
+    }; // Replace with the data you want to send
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST', // or 'GET', 'PUT', 'DELETE', etc.
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        console.log('API Response:', responseData);
+    } catch (error) {
+        console.error('Error sending data to API:', error);
+    }
+}
+
+async function sendDataToAPIDOC() {
+    const apiUrl = 'http://localhost:5000/api/dissolvedoxygen/C'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
         oksigen_terlarut: randomNumber
@@ -33,7 +60,7 @@ async function sendDataToAPIDO() {
 
 // Function to send data to the API Inverter Solis
 async function sendDataToAPISolis() {
-    const apiUrl = 'http://192.168.18.11:5000/api/InverterSolis/A'; // Replace with your API endpoint
+    const apiUrl = 'http://localhost:5000/api/InverterSolis/A'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
         active_power: randomNumber,
@@ -72,7 +99,7 @@ async function sendDataToAPISolis() {
 
 // Function to send data to the API Inverter SRNE
 async function sendDataToAPISRNE() {
-    const apiUrl = 'http://192.168.18.11:5000/api/InverterSRNE/A'; // Replace with your API endpoint
+    const apiUrl = 'http://localhost:5000/api/InverterSRNE/A'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
         inverter_power: randomNumber,
@@ -128,7 +155,7 @@ async function sendDataToAPISRNE() {
 
 // Function to send data to the API WS
 async function sendDataToAPIWS() {
-    const apiUrl = 'http://192.168.18.11:5000/api/ws/A'; // Replace with your API endpoint
+    const apiUrl = 'http://localhost:5000/api/ws/A'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
         indoor_temperature: randomNumber,
@@ -168,7 +195,7 @@ async function sendDataToAPIWS() {
 
 // Function to send data to the API Pyranometer
 async function sendDataToAPIPyranometer() {
-    const apiUrl = 'http://192.168.18.11:5000/api/pyranometer/A'; // Replace with your API endpoint
+    const apiUrl = 'http://localhost:5000/api/pyranometer/A'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
         radiasi_matahari : randomNumber
@@ -196,7 +223,7 @@ async function sendDataToAPIPyranometer() {
 
 // Function to send data to the API RTD
 async function sendDataToAPIRTD() {
-    const apiUrl = 'http://192.168.18.11:5000/api/rtd/A'; // Replace with your API endpoint
+    const apiUrl = 'http://localhost:5000/api/rtd/A'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
         suhu_permukaan_photovoltaic : randomNumber
@@ -224,7 +251,7 @@ async function sendDataToAPIRTD() {
 
 // Function to send data to the API VFD
 async function sendDataToAPIVFD() {
-    const apiUrl = 'http://192.168.18.11:5000/api/vfd/A'; // Replace with your API endpoint
+    const apiUrl = 'http://localhost:5000/api/vfd/A'; // Replace with your API endpoint
     const randomNumber = getRandomNumber();
     const data = {
         running_frequency: randomNumber,
@@ -300,10 +327,11 @@ async function sendDataToAPIVFD() {
 }
 
 // Set interval to send data every 3 seconds (3000 milliseconds)
-setInterval(sendDataToAPIDO, 3000);
-setInterval(sendDataToAPISolis, 3000);
-setInterval(sendDataToAPISRNE, 3000);
-setInterval(sendDataToAPIWS, 3000);
-setInterval(sendDataToAPIPyranometer, 3000);
-setInterval(sendDataToAPIRTD, 3000);
-setInterval(sendDataToAPIVFD, 3000);
+setInterval(sendDataToAPIDOA, 3000);
+setInterval(sendDataToAPIDOC, 2800);
+setInterval(sendDataToAPISolis, 2900);
+setInterval(sendDataToAPISRNE, 2700);
+setInterval(sendDataToAPIWS, 2800);
+setInterval(sendDataToAPIPyranometer, 2850);
+setInterval(sendDataToAPIRTD, 2950);
+setInterval(sendDataToAPIVFD, 3100);

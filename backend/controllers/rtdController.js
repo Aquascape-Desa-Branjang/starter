@@ -1,7 +1,7 @@
 const rtd = require ('../models/RTD');
 const mongoose = require('mongoose');
 const {io} = require('../lib/socket');
-
+const displayItem = require('../models/displayItem');
 
 //get
 const getRTDData = async (req, res) => {
@@ -19,6 +19,8 @@ const addRTDData = async (req, res) => {
     const requestBody = req.body
     const { deviceId } = req.params
 
+    const response = await displayItem.find({sensor: 'rtds', device: deviceId}).limit(1)
+
     try {
         requestBody.deviceId = deviceId
         for (const key in requestBody) {
@@ -30,10 +32,11 @@ const addRTDData = async (req, res) => {
                 })
             }
         }
-        const response = await rtd.create(requestBody)
+        const rtddata = await rtd.create(requestBody)
 
-        io.emit("newData", requestBody.suhu_permukaan_photovoltaic)
-
+        if(response) {
+            io.emit(`rtds${deviceId}`, rtddata)
+        }
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error: error.message})

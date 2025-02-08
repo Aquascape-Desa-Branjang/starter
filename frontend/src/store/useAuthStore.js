@@ -54,7 +54,7 @@ export const useAuthStore = create((set, get) => ({
     },
 
     connectSocket: () => {
-        const socket = io(BASE_URL, {});
+        const socket = io(BASE_URL);
         socket.connect()
         set({socket: socket})
     },

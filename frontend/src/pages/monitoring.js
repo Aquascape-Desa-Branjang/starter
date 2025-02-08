@@ -1,18 +1,18 @@
 // Monitoring.js
 import React, {useEffect, useState} from 'react';
-import CardSensor from '../component/cardsensor'; // Import komponen CardSensor
+import CardSensor from '../component/cardsensor';
 import Header from '../component/header';
-import {useDOStore} from "../store/useDOStore";
-import {useDataStore} from "../store/useDataStore"; // Import komponen Header
-
+import {useDataStore} from "../store/useDataStore";
 
 const Monitoring = () => {
-  const {latestData, getLatestData, isValueLoading, getGraph, isGraphLoading, graph} = useDataStore()
+  const {latestData, getLatestData, isValueLoading, getGraph, isGraphLoading, graph, subscribe} = useDataStore()
 
   useEffect( () => {
     getLatestData()
     getGraph()
-  }, [getLatestData, getGraph])
+
+    subscribe()
+  }, [getLatestData, getGraph, subscribe])
 
   useEffect(() => {
     if (latestData && graph !== null) {
@@ -20,6 +20,7 @@ const Monitoring = () => {
       console.log('Graph data:', graph)
     }
   }, [latestData, graph]); // Log latestData whenever it changes
+
 
   return (
     <div className="flex h-fullscreen bg-[#F9F4F4]">
@@ -54,7 +55,6 @@ const Monitoring = () => {
                   ))) : (
                       <div>Not found</div>
               )}
-                {/*<CardSensor key={1} name={"Dissolved Oxygen (mg/L)"} value={latestDO} data={DO} />*/}
             </div>
               )}
           </div>
