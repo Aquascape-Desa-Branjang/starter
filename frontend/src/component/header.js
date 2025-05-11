@@ -14,6 +14,7 @@ const Header = ({ pageName, databaseName, notifications }) => {
         </div>
       </div>
     </header>
+    
   );
 };
 
