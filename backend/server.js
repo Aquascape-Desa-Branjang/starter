@@ -1,10 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const Sequelize = require("sequelize");
+const sequelize = require('./config/db');
+require('./models/setting');
 
 const accountRoutes = require("./routes/accountRoutes");
 const displayItemRoutes = require("./routes/displayItemRoutes");
@@ -24,12 +24,7 @@ const customRoutes = require("./routes/customRoutes")
 
 const {io, app, server} = require("./lib/socket")
 
-const defineSettingModel = require("./models/setting");
-const seedSettings = require("./seeders/settingSeeder");
-
 dotenv.config()
-
-const port = 5000;
 
 // Middleware
 app.use(cors({
@@ -67,17 +62,8 @@ app.use("/api/custom", customRoutes)
 //         .then(() => console.log("Connected to MongoDB (capstone database)"))
 //         .catch((err) => console.error("Error connecting to MongoDB:", err));
 // })
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: 'mysql',
-  }
-);
-
-const Setting = defineSettingModel(sequelize);
+const Setting = require("./models/setting");
+const seedSettings = require("./seeders/settingSeeder");
 
 server.listen(process.env.PORT, 'localhost', async () => {
   console.log(`Express server started on port ${process.env.PORT}`);
