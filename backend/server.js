@@ -4,12 +4,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const Sequelize = require("sequelize");
 
 const accountRoutes = require("./routes/accountRoutes");
 const displayItemRoutes = require("./routes/displayItemRoutes");
 const authRoutes = require("./routes/authRoutes");
 const sensorRoutes = require("./routes/sensorRoutes");
 const parameterRoutes = require("./routes/parameterRoutes");
+const settingRoutes = require("./routes/settingRoutes");
 
 const dissolvedOxygenRoutes = require("./routes/dissolvedOxygenRoutes");
 const inverterSolisRoutes = require("./routes/inverterSolisRoutes");
@@ -21,6 +23,9 @@ const wsRoutes = require("./routes/wsRoutes");
 const customRoutes = require("./routes/customRoutes")
 
 const {io, app, server} = require("./lib/socket")
+
+const defineSettingModel = require("./models/setting");
+const seedSettings = require("./seeders/settingSeeder");
 
 dotenv.config()
 
@@ -43,6 +48,7 @@ app.use('/api/displayitems', displayItemRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/sensors", sensorRoutes);
 app.use("/api/parameters", parameterRoutes);
+app.use("/api/settings", settingRoutes);
 
 app.use('/api/dissolvedoxygen', dissolvedOxygenRoutes)
 app.use('/api/InverterSolis', inverterSolisRoutes)
@@ -53,11 +59,37 @@ app.use('/api/vfd', vfdRoutes)
 app.use('/api/ws', wsRoutes)
 app.use("/api/custom", customRoutes)
 
-server.listen(port, 'localhost', () => {
-    console.log(`Express server started on port ${port}`)
-    mongoose
-        // .connect("mongodb://localhost:27017/capstone")
-        .connect(process.env.MONGODB_URI)
-        .then(() => console.log("Connected to MongoDB (capstone database)"))
-        .catch((err) => console.error("Error connecting to MongoDB:", err));
-})
+// server.listen(port, 'localhost', () => {
+//     console.log(`Express server started on port ${port}`)
+//     mongoose
+//         // .connect("mongodb://localhost:27017/capstone")
+//         .connect(process.env.MONGODB_URI)
+//         .then(() => console.log("Connected to MongoDB (capstone database)"))
+//         .catch((err) => console.error("Error connecting to MongoDB:", err));
+// })
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+  }
+);
+
+const Setting = defineSettingModel(sequelize);
+
+server.listen(process.env.PORT, 'localhost', async () => {
+  console.log(`Express server started on port ${process.env.PORT}`);
+
+  try {
+    await sequelize.authenticate();
+    console.log('Connected to MySQL (capstone database)');
+
+    await sequelize.sync();
+    await seedSettings(Setting); 
+
+  } catch (err) {
+    console.error('Error connecting to MySQL:', err);
+  }
+});
