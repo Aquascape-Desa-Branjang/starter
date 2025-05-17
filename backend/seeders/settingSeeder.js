@@ -3,7 +3,8 @@ module.exports = async (Setting) => {
     { key: 'site_name', value: 'My Cool Website' },
     { key: 'contact_email', value: 'admin@example.com' },
     { key: 'maintenance_mode', value: 'off' },
-    { key: 'homepage_title', value: 'Welcome to Our Site!' },
+    { key: 'home_title', value: 'Welcome to Our Site!' },
+    { key: 'home_sub-title', value: 'Pleasure to meet you!' },
     { key: 'footer_text', value: '© 2025 My Company' },
   ];
 

@@ -1,20 +1,22 @@
 const express = require('express');
-const Setting = require('../models/setting'); // Model User untuk database
+const Setting = require('../models/setting');
 const {
   getSetting,
   getSettings,
   editSetting,
 } = require('../controllers/settingController');
+const {
+  getSettingHome,
+  setSettingHome,
+} = require('../controllers/settingHomeController');
 
 const router = express.Router();
 
-// Route untuk mendapatkan semua akun
 router.get('/', getSettings);
+router.get('/home', getSettingHome);
+router.put('/home', setSettingHome);
 
-// Route untuk mendapatkan satu akun berdasarkan ID
 router.get('/:id', getSetting);
-
-// Route untuk mengedit akun berdasarkan ID
 router.put('/:id', editSetting);
 
 module.exports = router;
