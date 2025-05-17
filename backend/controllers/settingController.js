@@ -1,6 +1,5 @@
 const Setting = require("../models/setting");
 
-// Mendapatkan semua akun
 const getSettings = async (req, res) => {
     try {
         const settings = await Setting.findAll({
@@ -9,12 +8,11 @@ const getSettings = async (req, res) => {
         });
         res.json(settings);
     } catch (error) {
-        console.error("Error fetching accounts:", error);
-        res.status(500).json({ message: "Error fetching accounts" });
+        console.error("Error fetching settings:", error);
+        res.status(500).json({ message: "Error fetching settings" });
     }
 };
 
-// Mendapatkan akun berdasar ID
 const getSetting = async (req, res) => {
     try {
         const { id } = req.params;
@@ -28,12 +26,11 @@ const getSetting = async (req, res) => {
 
         res.json(setting);
   } catch (error) {
-        console.error("Error fetching accounts:", error);
-        res.status(500).json({ message: "Error fetching accounts" });
+        console.error("Error fetching settings:", error);
+        res.status(500).json({ message: "Error fetching settings" });
   }
 };
 
-// Mengedit akun berdasarkan ID
 const editSetting = async (req, res) => {
     try {
         const { id } = req.params;
@@ -54,8 +51,8 @@ const editSetting = async (req, res) => {
 
         res.json({ message: 'Setting updated successfully', value: setting.value });
     } catch (error) {
-        console.error("Error updating account:", error);
-        res.status(500).json({ message: "Error updating account" });
+        console.error("Error updating setting:", error);
+        res.status(500).json({ message: "Error updating setting" });
     }
 };
 
