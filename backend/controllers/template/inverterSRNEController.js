@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const inverterSRNE = require('../models/inverterSRNE');
-const {io} = require('../lib/socket');
-const displayItem = require("../models/displayItem");
+const inverterSRNE = require('../../models/inverterSRNE');
+const {io} = require('../../lib/socket');
+const displayItem = require("../../models/displayItem");
 
 const getInverterSRNE = async (req, res) => {
     try {
