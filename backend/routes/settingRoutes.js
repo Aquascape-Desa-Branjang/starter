@@ -9,12 +9,18 @@ const {
   getSettingHome,
   setSettingHome,
 } = require('../controllers/settingHomeController');
+const {
+  getSettingGeneral,
+  setSettingGeneral,
+} = require('../controllers/settingGeneralController');
 
 const router = express.Router();
 
 router.get('/', getSettings);
 router.get('/home', getSettingHome);
 router.put('/home', setSettingHome);
+router.get('/general', getSettingGeneral);
+router.put('/general', setSettingGeneral);
 
 router.get('/:id', getSetting);
 router.put('/:id', editSetting);

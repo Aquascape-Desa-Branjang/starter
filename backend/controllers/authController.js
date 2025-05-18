@@ -9,7 +9,7 @@ const authenticate = async (req, res) => {
         const user = await User.findOne({ where: { username } });
         
         if (username !== "ktp") {
-            return res.status(401).json({ message: "Invalid credentials" });
+            return res.status(401).json({ message: "Invalid username or password" });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
