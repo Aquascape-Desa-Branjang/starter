@@ -6,10 +6,6 @@ const cookieParser = require("cookie-parser");
 const sequelize = require('./config/db');
 require('./models/setting');
 
-const Setting = require("./models/setting");
-const seedSettings = require("./seeders/settingSeeder");
-const User = require("./models/user");
-const seedUsers = require("./seeders/userSeeder");
 const verifyToken = require("./middleware/authMiddleware");
 
 const authRoutes = require("./routes/authRoutes");
@@ -42,8 +38,6 @@ server.listen(process.env.PORT, 'localhost', async () => {
     console.log('Connected to MySQL (capstone database)');
 
     await sequelize.sync();
-    await seedSettings(Setting); 
-    await seedUsers(User); 
 
   } catch (err) {
     console.error('Error connecting to MySQL:', err);
