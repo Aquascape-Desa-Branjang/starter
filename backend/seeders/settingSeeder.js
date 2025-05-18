@@ -1,4 +1,5 @@
-module.exports = async (Setting) => {
+module.exports = async () => {
+  const Setting = require("../models/setting");
   const predefinedSettings = [
     { key: 'home_title', value: 'Welcome to Aquascape!' },
     { key: 'home_sub-title', value: 'Feel free to look around!' },
@@ -14,9 +15,7 @@ module.exports = async (Setting) => {
   for (const setting of predefinedSettings) {
     await Setting.findOrCreate({
       where: { key: setting.key },
-      defaults: { value: setting.value, password: '-', role: '-', status: 'active', photo: null }
+      defaults: { value: setting.value}
     });
   }
-
-  console.log('✅ Settings seeded (if not already present)');
 };

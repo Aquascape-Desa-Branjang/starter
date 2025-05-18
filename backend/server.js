@@ -62,8 +62,6 @@ app.use("/api/custom", customRoutes)
 //         .then(() => console.log("Connected to MongoDB (capstone database)"))
 //         .catch((err) => console.error("Error connecting to MongoDB:", err));
 // })
-const Setting = require("./models/setting");
-const seedSettings = require("./seeders/settingSeeder");
 
 server.listen(process.env.PORT, 'localhost', async () => {
   console.log(`Express server started on port ${process.env.PORT}`);
@@ -73,7 +71,6 @@ server.listen(process.env.PORT, 'localhost', async () => {
     console.log('Connected to MySQL (capstone database)');
 
     await sequelize.sync();
-    await seedSettings(Setting); 
 
   } catch (err) {
     console.error('Error connecting to MySQL:', err);
