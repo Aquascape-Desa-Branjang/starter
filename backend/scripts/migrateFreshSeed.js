@@ -12,7 +12,7 @@ async function migrateFreshSeed() {
 
     for (const file of modelFiles) {
       require(path.join(modelsDir, file));
-      console.log("Dropping and recreating" + file);
+      console.log("Dropping and recreating: " + file);
     }
 
     await sequelize.sync({ force: true });
