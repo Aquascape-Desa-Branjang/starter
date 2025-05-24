@@ -57,10 +57,10 @@ const Navbar = ({ isOpen, onClose }) => {
           <Link to="/tentang" className="block hover:text-cyan-300" onClick={onClose}>
             Tentang
           </Link>
-          <Link to="/produk" className="block hover:text-cyan-300" onClick={onClose}>
+          <Link to="/guest/produk" className="block hover:text-cyan-300" onClick={onClose}>
             Produk
           </Link>
-          <Link to="/berita" className="block hover:text-cyan-300" onClick={onClose}>
+          <Link to="/guest/berita" className="block hover:text-cyan-300" onClick={onClose}>
             Berita
           </Link>
           <Link to="/kontak" className="block hover:text-cyan-300" onClick={onClose}>
