@@ -1,7 +1,7 @@
-const rtd = require ('../models/RTD');
+const rtd = require ('../../models/RTD');
 const mongoose = require('mongoose');
-const {io} = require('../lib/socket');
-const displayItem = require('../models/displayItem');
+const {io} = require('../../lib/socket');
+const displayItem = require('../../models/displayItem');
 
 //get
 const getRTDData = async (req, res) => {

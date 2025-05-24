@@ -1,5 +1,5 @@
-const Parameter = require("../models/parameter");
-const Sensor = require("../models/sensor");
+const Parameter = require("../../models/parameter");
+const Sensor = require("../../models/sensor");
 const mongoose = require("mongoose");
 
 exports.addParameter = async (req, res) => {

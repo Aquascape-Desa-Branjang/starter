@@ -1,6 +1,6 @@
-const displayItem = require('../models/displayItem');
-const {io} = require('../lib/socket');
-const Parameter = require("../models/parameter");
+const displayItem = require('../../models/displayItem');
+const {io} = require('../../lib/socket');
+const Parameter = require("../../models/parameter");
 const mongoose = require("mongoose")
 
 const addDisplayItem = async (req, res) => {

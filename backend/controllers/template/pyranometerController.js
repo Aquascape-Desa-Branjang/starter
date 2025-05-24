@@ -1,7 +1,7 @@
-const pyr = require ('../models/pyranometer');
+const pyr = require ('../../models/pyranometer');
 const mongoose = require('mongoose');
-const {io} = require('../lib/socket');
-const displayItem = require('../models/displayItem');
+const {io} = require('../../lib/socket');
+const displayItem = require('../../models/displayItem');
 
 //get
 const getPyranometerData = async (req, res) => {
