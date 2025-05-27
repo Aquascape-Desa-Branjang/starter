@@ -1,6 +1,7 @@
 import React from "react";
 import CardProduk from "../../component/cardproduk";
 import dummyproduk from "../../gambar/dummyproduk.png";
+import headerImg from "../../gambar/header.png";
 
 export default function Beranda() {
   const produk = [
@@ -36,8 +37,27 @@ export default function Beranda() {
 
   return (
     <main className="bg-[#0a1d2c] text-white min-h-screen">
+      
+      {/* Gambar Header dengan Overlay dan Teks */}
+      <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
+        <img
+          src={headerImg}
+          alt="Header"
+          className="w-full h-full object-cover"
+        />
+        {/* Overlay hitam semi-transparan */}
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
+          <div className="p-6 md:p-10 lg:p-14 text-left">
+            <p className="text-white text-lg md:text-2xl">Selamat Datang di</p>
+            <h1 className="text-[#5EEAD4] text-2xl md:text-5xl font-bold">
+              Anto Aquarium & Art
+            </h1>
+          </div>
+        </div>
+      </div>
+      
       {/* Tentang Kami */}
-      <section className="text-center py-10 px-4">
+      <section id="tentang" className="text-center py-5 px-4">
         <h2 className="text-2xl font-bold mb-2">Tentang Kami</h2>
         <p className="text-gray-300 max-w-md mx-auto mb-6">
           Menghadirkan keindahan alam bawah air ke dalam ruangan, melalui seni aquascape yang memikat dan menenangkan.
@@ -58,14 +78,14 @@ export default function Beranda() {
         </div>
         <button
           onClick={() => alert("Kenali lebih dekat")}
-          className="inline-block bg-green-400 text-[#0a1d2c] font-semibold px-6 py-2 rounded-full hover:bg-green-500 transition"
+          className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full hover:bg-green-500 transition"
         >
           Kenali kami lebih dekat →
         </button>
       </section>
 
       {/* Produk Unggulan */}
-      <section className="py-10 px-4">
+      <section className="px-4">
         <h2 className="text-2xl font-bold text-center mb-1">Produk Unggulan</h2>
         <p className="text-center text-gray-300 mb-6">
           Karya terbaik yang menghidupkan ruang dan jiwa.
@@ -88,7 +108,7 @@ export default function Beranda() {
         <div className="text-center mt-8">
           <button
             onClick={() => alert("Lihat semua produk")}
-            className="inline-block bg-green-400 text-[#0a1d2c] font-semibold px-6 py-2 rounded-full hover:bg-green-500 transition"
+            className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition"
           >
             Lihat Semua Produk →
           </button>

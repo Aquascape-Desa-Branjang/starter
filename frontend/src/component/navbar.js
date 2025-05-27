@@ -54,7 +54,7 @@ const Navbar = ({ isOpen, onClose }) => {
           <Link to="/" className="block hover:text-cyan-300" onClick={onClose}>
             Beranda
           </Link>
-          <Link to="/tentang" className="block hover:text-cyan-300" onClick={onClose}>
+          <Link to="/#tentang" className="block hover:text-cyan-300" onClick={onClose}>
             Tentang
           </Link>
           <Link to="/guest/produk" className="block hover:text-cyan-300" onClick={onClose}>
@@ -63,7 +63,7 @@ const Navbar = ({ isOpen, onClose }) => {
           <Link to="/guest/berita" className="block hover:text-cyan-300" onClick={onClose}>
             Berita
           </Link>
-          <Link to="/kontak" className="block hover:text-cyan-300" onClick={onClose}>
+          <Link to="/footer" className="block hover:text-cyan-300" onClick={onClose}>
             Kontak
           </Link>
         </nav>

@@ -1,26 +1,63 @@
 import React from "react";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp, FaShoppingBag } from "react-icons/fa";
 import footerContent from "./footer.json";
 import logo from "../gambar/logo.png";
+import footerImg from "../gambar/footer.png";
 
 const Footer = () => {
   return (
     <footer className="w-full bg-[#0F172A] text-white text-sm pt-8 pb-6">
-      <div className="px-4 sm:px-6 max-w-screen-xl mx-auto">
-        
-        {/* Kontak */}
-        <div className="bg-[#182033] p-6 rounded-lg mb-6">
-          <p className="text-lg font-semibold mb-3">Punya pertanyaan atau order? Hubungi kami</p>
-          <div className="flex flex-col gap-2">
-            <a href="https://instagram.com/anto.aquarium" className="flex items-center gap-2 text-white">
-              <FaInstagram className="text-xl" /> anto.aquarium
-            </a>
-            <a href="https://wa.me/6285123456789" className="flex items-center gap-2 text-white">
-              <FaWhatsapp className="text-xl" /> 085123456789
-            </a>
+      {/* Kontak & Gambar */}
+      <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden mb-6">
+        {/* Gambar latar belakang */}
+        <img
+          src={footerImg}
+          alt="Footer"
+          className="w-full h-full object-cover"
+        />
+
+        {/* Overlay & Konten */}
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-between px-6 md:px-20">
+          {/* Teks di kiri */}
+          <div className="text-white max-w-md">
+            <p className="text-lg md:text-5xl font-medium leading-loose">
+              Punya pertanyaan<br />
+              atau order?<br />
+              Hubungi kami
+            </p>
+          </div>
+
+          {/* Kontak di kanan */}
+          <div className="bg-[#2D3E59] bg-opacity-90 text-white p-3 md:p-6 rounded-xl w-fit space-y-3 shadow-lg">
+            <div className="flex items-center gap-4">
+              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
+                <FaInstagram className="text-xl" />
+              </div>
+              <a href="https://instagram.com/anto.aquarium_" >
+                anto.aquarium_
+              </a>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
+                <FaShoppingBag className="text-xl" />
+              </div>
+              <a href="https://wa.me/085123456789" >
+                anto.aquarium_
+              </a>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
+                <FaWhatsapp className="text-xl" />
+              </div>
+              <a href="https://wa.me/081575576328">
+                081575576328
+              </a>
+            </div>
           </div>
         </div>
+      </div>
 
+      <div className="px-4 sm:px-6 max-w-screen-xl mx-auto">
         {/* Baris logo dan slogan sejajar */}
         <div className="flex items-center gap-4 mb-2">
           <img src={logo} alt="Logo" className="w-30 h-20" />
@@ -34,7 +71,7 @@ const Footer = () => {
         {/* Address dan Navigation */}
         <div className="flex flex-col md:flex-row justify-between gap-6 mb-6">
           <div className="md:w-1/2 min-w-0">
-            <h4 className="font-semibold  mb-2">Address</h4>
+            <h4 className="font-semibold mb-2">Address</h4>
             <p className="text-gray-400" style={{ whiteSpace: "pre-line" }}>
               {footerContent.address}
             </p>
@@ -53,7 +90,10 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-white pt-4 text-center text-xs text-white">
-          Copyright © 2025. All Right Reserved. Anto Aquarium & Art
+          Copyright © 2025. All Right Reserved.{" "}
+          <a href="/admin/login" className="text-white">
+            Anto Aquarium & Art
+          </a>
         </div>
       </div>
     </footer>

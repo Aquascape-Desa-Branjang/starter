@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import dummyproduk from "../../gambar/dummyproduk.png";
 import CardProduk from "../../component/cardproduk";
+import { FaShoppingBag } from "react-icons/fa";
 
 export default function ProdukDetail() {
   const { id } = useParams();
@@ -51,24 +52,12 @@ export default function ProdukDetail() {
     return (
       <div className="min-h-screen bg-[#0a1d2c] text-white flex flex-col items-center justify-center p-4">
         <h2 className="text-3xl font-bold mb-4">Produk Tidak Ditemukan</h2>
-        <button
-          onClick={() => navigate(-1)}
-          className="bg-green-400 text-[#0a1d2c] px-6 py-2 rounded-full hover:bg-green-500 transition"
-        >
-          Kembali
-        </button>
       </div>
     );
   }
 
   return (
     <main className="min-h-screen bg-[#0a1d2c] text-white p-4 w-full">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-6 bg-green-400 text-[#0a1d2c] px-4 py-1 rounded-full hover:bg-green-500 transition"
-      >
-        ← Kembali
-      </button>
 
       <h1 className="text-2xl font-bold mb-1">{produk.nama}</h1>
       <p className="text-sm text-gray-400 mb-4">Limbah Plastik</p>
@@ -85,33 +74,47 @@ export default function ProdukDetail() {
       <p className="text-sm text-gray-300 mb-6">{produk.detailLain}</p>
 
       <div className="bg-white text-[#0a1d2c] rounded-lg p-4 text-sm space-y-1 mb-6">
-        <p><strong>Harga:</strong> Rp. 100.000</p>
+        <p><strong>Harga:</strong> {produk.harga}</p>
         <p><strong>Harga Grosir:</strong></p>
         <p>- Rp. 1.000.000 (min. 10 pcs)</p>
         <p>- Rp. 4.000.000 (min. 40 pcs)</p>
         <p>- Rp. 10.000.000 (min. 100 pcs)</p>
         <button
           onClick={() => alert(`Beli ${produk.nama}`)}
-          className="mt-4 w-full bg-[#66DDAA] text-[#0a1d2c] font-semibold px-4 py-2 rounded-full hover:bg-green-500 transition"
+          className="mt-4 bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-3 rounded-full transition w-full text-center flex items-center justify-center gap-2"
         >
-          Beli di Shopee 🛒
+          Beli di Shopee <FaShoppingBag/>
         </button>
       </div>
 
-      <h2 className="text-lg font-semibold mb-4">Produk Serupa</h2>
-      <div className="grid grid-cols-2 gap-4">
-        {produkSerupa.map((item) => (
-          <CardProduk
-            key={item.id}
-            id={item.id}
-            gambar={item.gambar}
-            nama={item.nama}
-            harga={item.harga}
-            detail="Lihat detail"
-            onBeli={() => alert(`Beli ${item.nama}`)}
-          />
-        ))}
-      </div>
+      {/* Produk Serupa */}
+      <section className="px-4">
+        <h2 className="text-2xl font-bold text-left mb-4">Produk Serupa</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {produkSerupa.map((item) => (
+            <CardProduk
+              key={item.id}
+              id={item.id}
+              gambar={item.gambar}
+              nama={item.nama}
+              harga={item.harga}
+              detail="Lihat detail"
+              onBeli={() => alert(`Beli ${item.nama}`)}
+            />
+          ))}
+        </div>
+      </section>
+
+        <div className="text-center my-5 mb-2">
+          <button
+            onClick={() => alert("Lihat semua produk")}
+            className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition"
+          >
+            Lihat Semua Produk →
+          </button>
+        </div>
+
     </main>
   );
 }

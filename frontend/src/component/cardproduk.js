@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaShoppingBag } from "react-icons/fa";
 
 export default function CardProduk({ id, gambar, nama, harga, detail, onBeli }) {
   return (
@@ -10,19 +11,20 @@ export default function CardProduk({ id, gambar, nama, harga, detail, onBeli }) 
         className="w-full h-52 object-cover rounded-lg"
       />
       <h3 className="mt-4 text-xl font-semibold text-white">{nama}</h3>
-      <p className="text-base text-gray-300">{harga}</p>
+      <p className="text-base text-white">{harga}</p>
       <Link
         to={`/guest/produkdetail/${id}`}
-        className="text-sm text-green-400 hover:underline mt-1"
+        className="text-sm text-white mt-1"
       >
         {detail}
       </Link>
-      <button
-        onClick={onBeli}
-        className="mt-4 bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-2 rounded-full hover:bg-green-500 transition w-full text-center"
-      >
-        Beli di Shopee 🛒
-      </button>
+        <button
+          onClick={onBeli}
+          className="mt-4 bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-3 rounded-full transition w-full text-center flex items-center justify-center gap-2"
+        >
+          Beli di Shopee
+          <FaShoppingBag/>
+        </button>
     </div>
   );
 }

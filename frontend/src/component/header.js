@@ -15,6 +15,7 @@ const Header = () => {
 
   return (
     <>
+      {/* Bagian atas header */}
       <header className="flex items-center justify-between px-4 py-3 bg-[#0F172A] text-white shadow-md">
         <img src={logo} alt="Logo" className="w-21 h-14" />
 
@@ -29,6 +30,7 @@ const Header = () => {
         </button>
       </header>
 
+      {/* Sidebar */}
       <Navbar isOpen={isSidebarOpen} onClose={closeSidebar} />
     </>
   );
