@@ -48,7 +48,7 @@ export default function Beranda() {
         {/* Overlay hitam semi-transparan */}
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
           <div className="p-6 md:p-10 lg:p-14 text-left">
-            <p className="text-white text-lg md:text-2xl">Selamat Datang di</p>
+            <p className="text-white text-lg md:text-2xl font-bold">Selamat Datang di</p>
             <h1 className="text-[#5EEAD4] text-2xl md:text-5xl font-bold">
               Anto Aquarium & Art
             </h1>
@@ -105,15 +105,15 @@ export default function Beranda() {
           ))}
         </div>
 
-        <div className="text-center mt-8">
-          <button
-            onClick={() => alert("Lihat semua produk")}
-            className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition"
-          >
-            Lihat Semua Produk →
-          </button>
-        </div>
       </section>
+
+      <div className="w-full text-center mt-8">
+        <a
+          href="/guest/produk"
+          className="inline-block bg-[#66DDAA] hover:bg-[#57c49b] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition duration-200 text-center shadow-md"          >
+            Lihat Semua Produk →
+        </a>
+      </div>
     </main>
   );
 }

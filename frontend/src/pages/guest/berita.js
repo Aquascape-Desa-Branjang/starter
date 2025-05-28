@@ -1,4 +1,3 @@
-// src/pages/guest/beranda.js
 import React from "react";
 
 export default function Beranda() {

@@ -57,8 +57,7 @@ export default function ProdukDetail() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0a1d2c] text-white p-4 w-full">
-
+    <main className="min-h-screen bg-[#0a1d2c] text-white p-4">
       <h1 className="text-2xl font-bold mb-1">{produk.nama}</h1>
       <p className="text-sm text-gray-400 mb-4">Limbah Plastik</p>
 
@@ -106,14 +105,14 @@ export default function ProdukDetail() {
         </div>
       </section>
 
-        <div className="text-center my-5 mb-2">
-          <button
-            onClick={() => alert("Lihat semua produk")}
-            className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition"
-          >
-            Lihat Semua Produk →
-          </button>
-        </div>
+      <div className="w-full text-center mt-8">
+        <a
+          href="/guest/produk"
+          className="inline-block bg-[#66DDAA] hover:bg-[#57c49b] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition duration-200 text-center shadow-md"
+        >
+          Lihat Semua Produk →
+        </a>
+      </div>
 
     </main>
   );
