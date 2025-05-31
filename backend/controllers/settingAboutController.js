@@ -15,7 +15,13 @@ const getSettingAbout = async (req, res) => {
             return res.status(404).json({ message: 'About settings not found' });
         }
 
-        res.json(about);
+        const result = {};
+        about.forEach(s => {
+            const plainKey = s.key.replace(/^about_/, '');
+            result[plainKey] = s.value;
+        });
+
+        res.json(result);
   } catch (error) {
         console.error("Error fetching About settings:", error);
         res.status(500).json({ message: "Error fetching About settings" });
@@ -29,28 +35,33 @@ const setSettingAbout = async (req, res) => {
             return res.status(400).json({ message: 'Request body must be an object of key→value pairs' });
         }
 
-        const aboutKeys = Object.keys(updates).filter(k => k.startsWith('about_'));
-        if (aboutKeys.length === 0) {
-            return res.status(400).json({ message: 'No valid about_* keys provided' });
-        }
+        const mappedKeys = Object.keys(updates).map(k => `about_${k}`);
+        const updateMap = {};
+        Object.keys(updates).forEach(k => {
+            updateMap[`about_${k}`] = updates[k];
+        });
 
         const settings = await Setting.findAll({
-            where: { key: { [Op.in]: aboutKeys } },
+            where: { key: { [Op.in]: mappedKeys } },
             attributes: ['id','key','value']
         });
 
         const foundKeys = settings.map(s => s.key);
-        const notFound = aboutKeys.filter(k => !foundKeys.includes(k));
+        const notFound = mappedKeys.filter(k => !foundKeys.includes(k));
         if (notFound.length) {
-            return res.status(404).json({ message: `Settings not found for keys: ${notFound.join(', ')}` });
+            const cleaned = notFound.map(k => k.replace(/^about_/, ''));
+            return res.status(404).json({ message: `Settings not found for keys: ${cleaned.join(', ')}` });
         }
 
         await Promise.all(settings.map(s =>
-            s.update({ value: updates[s.key] })
+            s.update({ value: updateMap[s.key] })
         ));
 
         const result = {};
-        settings.forEach(s => result[s.key] = s.value);
+        settings.forEach(s => {
+            const plainKey = s.key.replace(/^about_/, '');
+            result[plainKey] = s.value;
+        });
 
         res.json({ message: 'About settings updated', updated: result });
     } catch (err) {
