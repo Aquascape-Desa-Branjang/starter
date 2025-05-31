@@ -4,14 +4,10 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 // Sisi Admin
-import Login from "./pages/admin/login";
-import BerandaAdmin from "./pages/admin/berandaadmin";
-import BeritaAdmin from "./pages/admin/beritaadmin";
-import BeritaBaru from "./pages/admin/beritabaru";
-import BeritaEdit from "./pages/admin/beritaedit";
-import ProdukAdmin from "./pages/admin/produkadmin";
-import ProdukBaru from "./pages/admin/produkbaru";
-import ProdukEdit from "./pages/admin/produkedit";
+import LoginNIK from "./pages/admin/loginnik";
+import LoginTGLLahir from "./pages/admin/logintgllahir";
+import PengaturanBeranda from "./pages/admin/pengaturanberanda";
+import PengaturanProduk from "./pages/admin/pengaturanproduk";
 
 // Sisi Guest
 import Beranda from "./pages/guest/beranda";   // <-- default import yang benar
@@ -45,14 +41,10 @@ function App() {
         <Route path="/guest/produkdetail/:id" element={<ProdukDetail />} />
 
         {/* Admin Routes */}
-        <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin/beranda" element={<BerandaAdmin />} />
-        <Route path="/admin/berita" element={<BeritaAdmin />} />
-        <Route path="/admin/berita/baru" element={<BeritaBaru />} />
-        <Route path="/admin/berita/edit/:id" element={<BeritaEdit />} />
-        <Route path="/admin/produk" element={<ProdukAdmin />} />
-        <Route path="/admin/produk/baru" element={<ProdukBaru />} />
-        <Route path="/admin/produk/edit/:id" element={<ProdukEdit />} />
+        <Route path="/admin/loginnik" element={<LoginNIK />} />
+        <Route path="/admin/logintgllahir" element={<LoginTGLLahir />} />
+        <Route path="/admin/pengaturanberanda" element={<PengaturanBeranda />} />
+        <Route path="/admin/pengaturanproduk" element={<PengaturanProduk />} />
 
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" />} />
