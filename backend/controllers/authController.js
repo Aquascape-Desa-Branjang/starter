@@ -8,7 +8,7 @@ const authenticate = async (req, res) => {
     try {
         const user = await User.findOne({ where: { username } });
         
-        if (username !== "ktp") {
+        if (username !== user.username) {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 

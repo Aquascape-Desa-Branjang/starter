@@ -11,6 +11,18 @@ module.exports = async () => {
     { key: 'general_name', value: 'Anto Aquarium & Art' },
     { key: 'general_slogan', value: 'Setiap aquarium adalah canvas, dan setiap batu, kayu, serta tanaman adalah goresan seni.' },
     { key: 'general_copyright', value: 'Copyright  2025, All Right Reserved, Anto Aquarium & Art' },
+
+    { key: 'about_s1_title', value: '/public/uploads/logo.png' },
+    { key: 'about_s1_description', value: 'Anto Aquarium & Art' },
+    { key: 'about_s1_image', value: 'Setiap aquarium adalah canvas, dan setiap batu, kayu, serta tanaman adalah goresan seni.' },
+    
+    { key: 'about_s2_title', value: '/public/uploads/logo.png' },
+    { key: 'about_s2_description', value: 'Anto Aquarium & Art' },
+    { key: 'about_s2_image', value: 'Setiap aquarium adalah canvas, dan setiap batu, kayu, serta tanaman adalah goresan seni.' },
+
+    { key: 'about_s3_galleries', value: 'Anto Aquarium & Art' },
+    
+    { key: 'about_s4_contacts', value: 'Setiap aquarium adalah canvas, dan setiap batu, kayu, serta tanaman adalah goresan seni.' },
     
     { key: 'contact_email', value: 'admin@example.com' },
     { key: 'maintenance_mode', value: 'off' },
