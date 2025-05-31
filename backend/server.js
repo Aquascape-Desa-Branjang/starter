@@ -1,30 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const sequelize = require('./config/db');
+require('./models/setting');
 
-const accountRoutes = require("./routes/accountRoutes");
-const displayItemRoutes = require("./routes/displayItemRoutes");
+const verifyToken = require("./middleware/authMiddleware");
+
 const authRoutes = require("./routes/authRoutes");
-const sensorRoutes = require("./routes/sensorRoutes");
-const parameterRoutes = require("./routes/parameterRoutes");
-
-const dissolvedOxygenRoutes = require("./routes/dissolvedOxygenRoutes");
-const inverterSolisRoutes = require("./routes/inverterSolisRoutes");
-const inverterSRNERoutes = require("./routes/inverterSRNERoutes");
-const pyranometerRoutes = require("./routes/pyranometerRoutes");
-const rtdRoutes = require("./routes/rtdRoutes");
-const vfdRoutes = require("./routes/vfdRoutes");
-const wsRoutes = require("./routes/wsRoutes");
-const customRoutes = require("./routes/customRoutes")
+const settingRoutes = require("./routes/settingRoutes");
 
 const {io, app, server} = require("./lib/socket")
 
 dotenv.config()
-
-const port = 5000;
 
 // Middleware
 app.use(cors({
@@ -38,26 +27,19 @@ app.use(bodyParser.json({ limit: "20mb" })); // Menguraikan JSON
 app.use(bodyParser.urlencoded({ extended: true, limit: "20mb" })); // Menguraikan URL-encoded
 
 // API Routes
-app.use("/api/accounts", accountRoutes);
-app.use('/api/displayitems', displayItemRoutes)
 app.use("/api/auth", authRoutes)
-app.use("/api/sensors", sensorRoutes);
-app.use("/api/parameters", parameterRoutes);
+app.use("/api/settings", verifyToken, settingRoutes);
 
-app.use('/api/dissolvedoxygen', dissolvedOxygenRoutes)
-app.use('/api/InverterSolis', inverterSolisRoutes)
-app.use('/api/InverterSRNE', inverterSRNERoutes)
-app.use('/api/pyranometer', pyranometerRoutes)
-app.use('/api/rtd', rtdRoutes)
-app.use('/api/vfd', vfdRoutes)
-app.use('/api/ws', wsRoutes)
-app.use("/api/custom", customRoutes)
+server.listen(process.env.PORT, 'localhost', async () => {
+  console.log(`Express server started on port ${process.env.PORT}`);
 
-server.listen(port, 'localhost', () => {
-    console.log(`Express server started on port ${port}`)
-    mongoose
-        // .connect("mongodb://localhost:27017/capstone")
-        .connect(process.env.MONGODB_URI)
-        .then(() => console.log("Connected to MongoDB (capstone database)"))
-        .catch((err) => console.error("Error connecting to MongoDB:", err));
-})
+  try {
+    await sequelize.authenticate();
+    console.log('Connected to MySQL (capstone database)');
+
+    await sequelize.sync();
+
+  } catch (err) {
+    console.error('Error connecting to MySQL:', err);
+  }
+});

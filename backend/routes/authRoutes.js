@@ -1,12 +1,9 @@
 const express = require('express');
-const {checkAuth, login, logout} = require('../controllers/auth.accountController');
-const {protectRoute} = require('../middleware/auth.middleware');
+const authenticate = require('../controllers/authController');
 
 const router = express.Router();
 
-router.post('/login', login);
-router.post('/logout', logout);
-router.get('/check', protectRoute, checkAuth);
+router.post('/login', authenticate);
 
 module.exports = router;
 

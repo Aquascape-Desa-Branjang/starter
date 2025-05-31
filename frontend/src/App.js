@@ -1,70 +1,58 @@
-import React, {useEffect} from "react";
-import {Navigate, Route, Routes, useLocation} from "react-router-dom";
-import Login from "./pages/login";
-import Dashboard from "./pages/dashboard";
-import Monitoring from "./pages/monitoring";
-import Plts from "./pages/plts";
-import SensorParameter from "./pages/sensor&parameter";
-import AddSensorParameter from "./pages/sensor&parameteradd";
-import EditSensorParameter from "./pages/sensor&parameteredit";
-import UserAdmin from "./pages/user&admin";
-import AddUserAdmin from "./pages/user&adminadd";
-import EditUserAdmin from "./pages/user&adminedit";
-import ManualKontrol from "./pages/manualkontrol";
-import Navbar from "./component/navbar";
-import {Loader} from 'lucide-react'
-import {useAuthStore} from "./store/useAuthStore";
-import {Toaster} from "react-hot-toast";
+// src/App.js
+import React from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
+// Sisi Admin
+import LoginNIK from "./pages/admin/loginnik";
+import LoginTGLLahir from "./pages/admin/logintgllahir";
+import PengaturanBeranda from "./pages/admin/pengaturanberanda";
+import PengaturanProduk from "./pages/admin/pengaturanproduk";
+
+// Sisi Guest
+import Beranda from "./pages/guest/beranda";   // <-- default import yang benar
+import Berita from "./pages/guest/berita";
+import BeritaDetail from "./pages/guest/beritadetail";
+import Produk from "./pages/guest/produk";
+import ProdukDetail from "./pages/guest/produkdetail";
+
+// Komponen
+import Header from "./component/header";
+import Footer from "./component/footer";
 
 function App() {
-  const {authAccount, checkAuth, isCheckingAuth} = useAuthStore()
   const location = useLocation();
+  const hideLayoutPaths = ["/admin/login"];
 
-  const showNavbar = !["/login"].includes(location.pathname);
-
-  useEffect(() => {
-    checkAuth()
-  }, [checkAuth]);
-
-  // console.log(authAccount)
-
-  if(isCheckingAuth && !authAccount) return (
-    <div className="flex items-center justify-center h-screen">
-      <Loader className="size-10 animate-spin" />
-    </div>
-  )
+  const isLayoutHidden = hideLayoutPaths.includes(location.pathname);
 
   return (
-    <div className="flex">
-      {showNavbar && authAccount && <Navbar />}
+    <>
+      <Toaster position="top-right" reverseOrder={false} />
 
-      <div className="main-content flex-1 overflow-y-auto">
-        <Routes>
-          <Route path="/" element={authAccount ? <Dashboard /> : <Navigate to="/login" />} />
-          <Route path="/login" element={!authAccount ? <Login /> : <Navigate to="/" />} />
-          <Route path="/monitoring" element={authAccount ? <Monitoring /> : <Navigate to="/login" />} />
-          <Route path="/plts" element={authAccount ? <Plts /> : <Navigate to="/login" />} />
-          <Route path="/sensor&parameter" element={authAccount ? (authAccount.role === "Admin" ? <SensorParameter/> : <Navigate to="/" />) : <Navigate to="/login" />} />
-          <Route path="/sensor&parameteradd" element={authAccount ? (authAccount.role === "Admin" ? <AddSensorParameter/> : <Navigate to="/" />) : <Navigate to="/login" />} />
-          <Route path="/sensor&parameteredit/:_id" element={authAccount ? (authAccount.role === "Admin" ? <EditSensorParameter/> : <Navigate to="/" />) : <Navigate to="/login" />} />
-          <Route path="/user&admin" element={authAccount ? (authAccount.role === "Admin" ? <UserAdmin/> : <Navigate to="/" />) : <Navigate to="/login" />} />
-          <Route path="/user&adminadd" element={authAccount ? (authAccount.role === "Admin" ? <AddUserAdmin/> : <Navigate to="/" />) : <Navigate to="/login" />} />
-          <Route path="/user&adminedit/:_id" element={authAccount ? (authAccount.role === "Admin" ? <EditUserAdmin/> : <Navigate to="/" />) : <Navigate to="/login" />} />
-          <Route path="/manualkontrol" element={authAccount ? <ManualKontrol /> : <Navigate to="/login" />} />
-        </Routes>
+      {!isLayoutHidden && <Header />}
 
-        <Toaster />
-      </div>
-    </div>
+      <Routes>
+        {/* Guest Routes */}
+        <Route path="/" element={<Beranda />} />
+        <Route path="/guest/berita" element={<Berita />} />
+        <Route path="/guest/beritadetail/:id" element={<BeritaDetail />} />
+        <Route path="/guest/produk" element={<Produk />} />
+        <Route path="/guest/produkdetail/:id" element={<ProdukDetail />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin/loginnik" element={<LoginNIK />} />
+        <Route path="/admin/logintgllahir" element={<LoginTGLLahir />} />
+        <Route path="/admin/pengaturanberanda" element={<PengaturanBeranda />} />
+        <Route path="/admin/pengaturanproduk" element={<PengaturanProduk />} />
+
+        {/* Fallback Route */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+
+      {!isLayoutHidden && <Footer />}
+    </>
   );
 }
-
-// function AppWrapper() {
-//   return (
-//     <Router>
-//       <App />
-//     </Router>
-//   );
-// }
 
 export default App;
