@@ -1,5 +1,4 @@
 import React from "react";
-import dummyproduk from "../../gambar/dummyproduk.png";
 import headerImg from "../../gambar/tentang/bg-tentang.jpg";
 import ownerImg from "../../gambar/tentang/owner.jpg";
 import mengenal1Img from "../../gambar/tentang/mengenal-1.jpg";
@@ -7,37 +6,7 @@ import mengenal2Img from "../../gambar/tentang/mengenal-2.jpg";
 import mengenal3Img from "../../gambar/tentang/mengenal-3.jpg";
 import cintaImg from "../../gambar/tentang/cinta.jpg";
 
-export default function Beranda() {
-  const produk = [
-    {
-      id: 1,
-      gambar: dummyproduk,
-      nama: "Pot Dunia Bawah Air",
-      harga: "Rp. 10.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 2,
-      gambar: dummyproduk,
-      nama: "Pot Dunia Bawah Air",
-      harga: "Rp. 10.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 3,
-      gambar: dummyproduk,
-      nama: "Pot Dunia Bawah Air",
-      harga: "Rp. 10.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 4,
-      gambar: dummyproduk,
-      nama: "Pot Dunia Bawah Air",
-      harga: "Rp. 10.000",
-      detail: "Lihat detail",
-    },
-  ];
+export default function Tentang() {
 
   return (
     <main className="bg-[#0a1d2c] text-white min-h-screen">
