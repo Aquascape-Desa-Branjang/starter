@@ -15,7 +15,13 @@ const getSettingHome = async (req, res) => {
             return res.status(404).json({ message: 'Home settings not found' });
         }
 
-        res.json(home);
+        const result = {};
+        home.forEach(s => {
+            const plainKey = s.key.replace(/^home_/, '');
+            result[plainKey] = s.value;
+        });
+
+        res.json(result);
   } catch (error) {
         console.error("Error fetching Home settings:", error);
         res.status(500).json({ message: "Error fetching Home settings" });
@@ -29,28 +35,33 @@ const setSettingHome = async (req, res) => {
             return res.status(400).json({ message: 'Request body must be an object of key→value pairs' });
         }
 
-        const homeKeys = Object.keys(updates).filter(k => k.startsWith('home_'));
-        if (homeKeys.length === 0) {
-            return res.status(400).json({ message: 'No valid home_* keys provided' });
-        }
+        const mappedKeys = Object.keys(updates).map(k => `home_${k}`);
+        const updateMap = {};
+        Object.keys(updates).forEach(k => {
+            updateMap[`home_${k}`] = updates[k];
+        });
 
         const settings = await Setting.findAll({
-            where: { key: { [Op.in]: homeKeys } },
+            where: { key: { [Op.in]: mappedKeys } },
             attributes: ['id','key','value']
         });
 
         const foundKeys = settings.map(s => s.key);
-        const notFound = homeKeys.filter(k => !foundKeys.includes(k));
+        const notFound = mappedKeys.filter(k => !foundKeys.includes(k));
         if (notFound.length) {
-            return res.status(404).json({ message: `Settings not found for keys: ${notFound.join(', ')}` });
+            const cleaned = notFound.map(k => k.replace(/^home_/, ''));
+            return res.status(404).json({ message: `Settings not found for keys: ${cleaned.join(', ')}` });
         }
 
         await Promise.all(settings.map(s =>
-            s.update({ value: updates[s.key] })
+            s.update({ value: updateMap[s.key] })
         ));
 
         const result = {};
-        settings.forEach(s => result[s.key] = s.value);
+        settings.forEach(s => {
+            const plainKey = s.key.replace(/^home_/, '');
+            result[plainKey] = s.value;
+        });
 
         res.json({ message: 'Home settings updated', updated: result });
     } catch (err) {
