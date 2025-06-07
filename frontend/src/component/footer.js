@@ -17,39 +17,37 @@ const Footer = () => {
         />
 
         {/* Overlay & Konten */}
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-between px-6 md:px-20">
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex xl:flex-col gap-2 xl:gap-6 items-center justify-between px-4 md:px-28 xl:py-20">
           {/* Teks di kiri */}
-          <div className="text-white max-w-md">
-            <p className="text-lg md:text-5xl font-medium leading-loose">
-              Punya pertanyaan<br />
-              atau order?<br />
-              Hubungi kami
+          <div className="text-white">
+            <p className="text-2xl md:text-5xl xl:text-4xl xl:text-center font-zilla-slab text-default-text font-medium leading-tight xl:leading-snug">
+              Punya pertanyaan atau order?<br/> Hubungi kami
             </p>
           </div>
 
           {/* Kontak di kanan */}
-          <div className="bg-[#2D3E59] bg-opacity-90 text-white p-3 md:p-6 rounded-xl w-fit space-y-3 shadow-lg">
-            <div className="flex items-center gap-4">
-              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
-                <FaInstagram className="text-xl" />
+          <div className="bg-[#2D3E59] bg-opacity-90 text-white p-4 pe-10 md:p-6 xl:pe-16 xl:ps-8 xl:py-8 rounded-xl w-fit space-y-2 xl:space-y-6 shadow-lg">
+            <div className="flex items-center gap-2">
+              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-2 xl:p-3">
+                <FaInstagram className="text-base xl:text-xl" />
               </div>
-              <a href="https://instagram.com/anto.aquarium_" >
+              <a href="https://instagram.com/anto.aquarium_" className="font-light text-xs leading-none xl:text-base" >
                 anto.aquarium_
               </a>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
-                <FaShoppingBag className="text-xl" />
+            <div className="flex items-center gap-2">
+              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-2 xl:p-3">
+                <FaShoppingBag className="text-base xl:text-xl" />
               </div>
-              <a href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM" >
+              <a href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM" className="font-light text-xs leading-none xl:text-base" >
                 anto.aquarium_
               </a>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
-                <FaWhatsapp className="text-xl" />
+            <div className="flex items-center gap-2">
+              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-2 xl:p-3">
+                <FaWhatsapp className="text-base xl:text-xl" />
               </div>
-              <a href="https://wa.me/+6281575576328">
+              <a href="https://wa.me/+6281575576328" className="font-light text-xs leading-none xl:text-base">
                 081575576328
               </a>
             </div>
