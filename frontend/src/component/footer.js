@@ -85,7 +85,7 @@ const Footer = () => {
               <li><a href="#home" className="hover:underline font-normal text-base xl:text-xl">Home</a></li>
               <li><a href="#tentang" className="hover:underline font-normal text-base xl:text-xl">Tentang</a></li>
               <li><a href="/produk" className="hover:underline font-normal text-base xl:text-xl">Produk</a></li>
-              <li><a href="/berita" className="hover:underline font-normal text-base xl:text-xl">Berita</a></li>
+              {/* <li><a href="/berita" className="hover:underline font-normal text-base xl:text-xl">Berita</a></li> */}
               <li><a href="#kontak" className="hover:underline font-normal text-base xl:text-xl">Kontak</a></li>
             </ul>
           </div>
