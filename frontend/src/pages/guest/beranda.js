@@ -36,7 +36,7 @@ export default function Beranda() {
   ];
 
   return (
-    <main className="bg-default-bg text-white min-h-screen pb-12">
+    <main className="bg-[#0a1d2b] text-white min-h-screen pb-12 xl:pb-24">
       
       {/* Gambar Header dengan Overlay dan Teks */}
       <div className="relative w-full h-full">
@@ -61,7 +61,7 @@ export default function Beranda() {
       </div>
       
       {/* Tentang Kami */}
-      <section id="tentang" className="text-center xl:pt-24 xl:pb-12 xl:px-28 py-12 px-4">
+      <section id="tentang" className="text-center xl:pt-24 xl:pb-12 xl:px-28 pt-12 pb-6 px-4">
         <div className="flex flex-col items-center justify-center gap-3 xl:gap-4 mb-8 xl:mb-12">
           <h2 className="text-4xl xl:text-6xl text-default-text leading-none font-bold font-zilla-slab">Tentang Kami</h2>
 
@@ -90,8 +90,8 @@ export default function Beranda() {
       </section>
 
       {/* Produk Unggulan */}
-      <section className="px-4 pt-12 xl:px-24">
-        <div className="flex flex-col items-center justify-center gap-3 xl:gap-4 mb-4 xl:mb-8">
+      <section className="px-4 xl:pt-12 xl:px-24 pt-6">
+        <div className="flex flex-col items-center justify-center gap-3 xl:gap-4 mb-8">
           <h2 className="text-4xl xl:text-6xl text-default-text leading-none font-bold font-zilla-slab">Produk Unggulan</h2>
 
           <p className="text-sm xl:text-lg leading-tight font-normal text-default-text mx-auto">
