@@ -3,17 +3,17 @@ const Product = require('../models/product');
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.findAll({ order: [['order', 'ASC']] });
+    const products = await Product.findAll();
     res.json(products);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch products' });
+    res.status(500).json({ error: error });
   }
 };
 
 const create = async (req, res) => {
     try {
-      const categories = await ProductCategory.findAll();
-        res.status(201).json(categories);
+      const categories = await ProductCategory.findAll({ order: [['order', 'ASC']] });
+        res.status(201).json({ productCategories: categories });
     } catch (error) {
         res.status(500).json({ error: 'Failed to get categories' });
     }
@@ -40,15 +40,15 @@ const store = async (req, res) => {
 
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create product' });
+    res.status(500).json({ error: error });
   }
 };
 
 const edit = async (req, res) => {
   try {
-        const categories = await ProductCategory.findAll();
+        const categories = await ProductCategory.findAll({ order: [['order', 'ASC']] });
         const product = await Product.findByPk(req.params.id);
-        res.status(201).json([categories, product]);
+        res.status(201).json({productCategories: categories, product: product});
     } catch (error) {
         res.status(500).json({ error: 'Failed to get categories and product' });
     }

@@ -12,6 +12,7 @@ const authRoutes = require("./routes/authRoutes");
 const settingRoutes = require("./routes/settingRoutes");
 const productCategoryRoutes = require("./routes/productCategoryRoutes");
 const productRoutes = require("./routes/productRoutes");
+const newsRoutes = require("./routes/newsRoutes");
 
 const {io, app, server} = require("./lib/socket")
 
@@ -29,10 +30,11 @@ app.use(bodyParser.json({ limit: "20mb" })); // Menguraikan JSON
 app.use(bodyParser.urlencoded({ extended: true, limit: "20mb" })); // Menguraikan URL-encoded
 
 // API Routes
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
 app.use("/api/settings", verifyToken, settingRoutes);
 app.use("/api/product-categories", verifyToken, productCategoryRoutes);
 app.use("/api/products", verifyToken, productRoutes);
+app.use("/api/news", verifyToken, newsRoutes);
 
 server.listen(process.env.PORT, 'localhost', async () => {
   console.log(`Express server started on port ${process.env.PORT}`);
