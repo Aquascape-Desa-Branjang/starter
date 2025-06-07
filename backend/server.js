@@ -10,6 +10,7 @@ const verifyToken = require("./middleware/authMiddleware");
 
 const authRoutes = require("./routes/authRoutes");
 const settingRoutes = require("./routes/settingRoutes");
+const productCategoryRoutes = require("./routes/productCategoryRoutes");
 
 const {io, app, server} = require("./lib/socket")
 
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "20mb" })); // Menguraika
 // API Routes
 app.use("/api/auth", authRoutes)
 app.use("/api/settings", verifyToken, settingRoutes);
+app.use("/api/product-categories", verifyToken, productCategoryRoutes);
 
 server.listen(process.env.PORT, 'localhost', async () => {
   console.log(`Express server started on port ${process.env.PORT}`);
