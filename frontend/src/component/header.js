@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <>
       {/* Bagian atas header */}
-      <header className="flex items-center justify-between sticky top-0 start-0 z-30 px-4 py-3 bg-[#0F172A] text-white shadow-md xl:px-28 xl:py-5">
+      <header className="flex items-center bg-default-bg-navbar justify-between sticky top-0 start-0 z-30 px-4 py-3 text-white shadow-md xl:px-28 xl:py-5">
         <img src={logo} alt="Logo" className="w-auto h-14" />
 
         {/* Hamburger Button */}

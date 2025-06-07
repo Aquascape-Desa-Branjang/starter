@@ -36,7 +36,7 @@ export default function Beranda() {
   ];
 
   return (
-    <main className="bg-[#0a1d2c] text-white min-h-screen">
+    <main className="bg-[#0a1d2c] text-white min-h-screen pb-8">
       
       {/* Gambar Header dengan Overlay dan Teks */}
       <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
