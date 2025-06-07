@@ -41,7 +41,7 @@ const Footer = () => {
               <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
                 <FaShoppingBag className="text-xl" />
               </div>
-              <a href="https://wa.me/085123456789" >
+              <a href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM" >
                 anto.aquarium_
               </a>
             </div>
@@ -49,7 +49,7 @@ const Footer = () => {
               <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
                 <FaWhatsapp className="text-xl" />
               </div>
-              <a href="https://wa.me/081575576328">
+              <a href="https://wa.me/+6281575576328">
                 081575576328
               </a>
             </div>
