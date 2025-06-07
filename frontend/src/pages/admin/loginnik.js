@@ -8,17 +8,10 @@ const Login = () => {
   const navigate = useNavigate();
   const [nik, setNik] = useState("");
 
-  const validNik = "3175034211234567";
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (nik === validNik) {
-      toast.success("Login berhasil!");
-      navigate("/admin/logintgllahir");
-    } else {
-      toast.error("Nomor identitas salah!");
-    }
+    localStorage.setItem("login_nik", nik);
+    navigate("/admin/logintgllahir");
   };
 
   return (
