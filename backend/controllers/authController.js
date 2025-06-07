@@ -26,7 +26,7 @@ const authenticate = async (req, res) => {
         res.json({ message: "Authenticated", token });
     } catch (error) {
         console.error("Authentication error:", error);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ error: error });
     }
 };
 
