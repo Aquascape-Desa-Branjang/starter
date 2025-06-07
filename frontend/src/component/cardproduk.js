@@ -13,7 +13,7 @@ export default function CardProduk({ id, gambar, nama, harga, detail, onBeli }) 
       <h3 className="mt-4 text-xl font-semibold text-white">{nama}</h3>
       <p className="text-base text-white">{harga}</p>
       <Link
-        to={`/guest/produkdetail/${id}`}
+        to={`/produkdetail/${id}`}
         className="text-sm text-white mt-1"
       >
         {detail}

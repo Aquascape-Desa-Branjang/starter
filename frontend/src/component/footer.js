@@ -81,8 +81,8 @@ const Footer = () => {
             <ul className="text-gray-300 space-y-1">
               <li><a href="#home" className="hover:underline">Home</a></li>
               <li><a href="#tentang" className="hover:underline">Tentang</a></li>
-              <li><a href="/guest/produk" className="hover:underline">Produk</a></li>
-              <li><a href="/guest/berita" className="hover:underline">Berita</a></li>
+              <li><a href="/produk" className="hover:underline">Produk</a></li>
+              <li><a href="/berita" className="hover:underline">Berita</a></li>
               <li><a href="#kontak" className="hover:underline">Kontak</a></li>
             </ul>
           </div>

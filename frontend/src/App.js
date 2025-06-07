@@ -36,11 +36,11 @@ function App() {
       <Routes>
         {/* Guest Routes */}
         <Route path="/" element={<Beranda />} />
-        <Route path="/guest/berita" element={<Berita />} />
-        <Route path="/guest/beritadetail/:id" element={<BeritaDetail />} />
-        <Route path="/guest/produk" element={<Produk />} />
-        <Route path="/guest/produkdetail/:id" element={<ProdukDetail />} />
-        <Route path="/guest/tentang" element={<Tentang />} />
+        <Route path="/berita" element={<Berita />} />
+        <Route path="/beritadetail/:id" element={<BeritaDetail />} />
+        <Route path="/produk" element={<Produk />} />
+        <Route path="/produkdetail/:id" element={<ProdukDetail />} />
+        <Route path="/tentang" element={<Tentang />} />
 
         {/* Admin Routes */}
         <Route path="/admin/loginnik" element={<LoginNIK />} />

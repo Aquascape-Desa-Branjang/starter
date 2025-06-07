@@ -109,7 +109,7 @@ export default function Beranda() {
 
       <div className="w-full text-center mt-8">
         <a
-          href="/guest/produk"
+          href="/produk"
           className="inline-block bg-[#66DDAA] hover:bg-[#57c49b] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition duration-200 text-center shadow-md"          >
             Lihat Semua Produk →
         </a>
