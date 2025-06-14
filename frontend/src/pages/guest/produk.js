@@ -38,9 +38,9 @@ export default function Produk() {
           gambar: item.image,
           nama: item.name,
           harga: item.retail_price,
-          // detail: item.description,
+          slug: item.slug,
+          onBeli: item.shopee_link
         }));
-
         setSemuaProduk(mappedProduk);
         
         setLoadingProduk(false);

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingBag } from "react-icons/fa";
 
-export default function CardProduk({ id, gambar, nama, harga, onBeli }) {
+export default function CardProduk({ id, slug, gambar, nama, harga, onBeli }) {
   return (
     <div className="bg-[#112e42] w-full p-4 rounded-xl shadow-lg flex flex-col items-start sm:max-w-md mx-auto">
       <img
@@ -13,7 +13,7 @@ export default function CardProduk({ id, gambar, nama, harga, onBeli }) {
       <h3 className="mt-4 text-xl font-semibold text-white">{nama}</h3>
       <p className="text-base text-white">Rp. {harga.toLocaleString("id-ID")}</p>
       <Link
-        to={`/guest/produkdetail/${id}`}
+        to={`/guest/produkdetail/${slug}`}
         className="text-sm text-white mt-1"
       >
         <p className="hover:underline text-base text-white">Lihat Detail</p>
