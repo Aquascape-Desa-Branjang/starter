@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ArrowRight } from "lucide-react";
+import Cookies from "js-cookie";
+import axios from "axios";
+
 import logo from "../../gambar/logo.png";
 
 const LoginTanggalLahir = () => {
@@ -11,22 +14,34 @@ const LoginTanggalLahir = () => {
   const [thn, setThn] = useState("");
   const [kode, setKode] = useState("");
 
-  // Nilai valid untuk uji coba
-  const validTgl = "07";
-  const validBln = "06";
-  const validThn = "19";
-  const validKode = "45"; // bisa juga disamakan dengan tahun, opsional
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (tgl === validTgl && bln === validBln && thn === validThn && kode === validKode) {
+    const nik = localStorage.getItem("login_nik");
+    const password = `${tgl}${bln}${thn}${kode}`;
+    console.log('nik:');
+    console.log(nik);
+
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/login`, {
+        username: nik,
+        password,
+      });
+
+      Cookies.set("token", response.data.token, {
+        expires: 2,
+        secure: true,
+        sameSite: "Strict",
+      });
+
       toast.success("Login berhasil!");
       navigate("/admin/pengaturanproduk");
-    } else {
-      toast.error("Tanggal lahir tidak sesuai!");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Username atau password tidak valid!");
+      navigate("/admin/loginnik");
     }
   };
+
 
   return (
     <div className="min-h-screen bg-[#162232] flex flex-col items-center justify-center text-white px-4">

@@ -1,4 +1,4 @@
-const Sensor = require("../models/sensor");
+const Sensor = require("../../models/sensor");
 const mongoose = require("mongoose");
 
 // Menambahkan sensor baru

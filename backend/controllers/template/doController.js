@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const dissolvedOxygen = require('../models/dissolvedOxygen');
-const displayItem = require('../models/displayItem');
-const {io} = require('../lib/socket');
+const dissolvedOxygen = require('../../models/dissolvedOxygen');
+const displayItem = require('../../models/displayItem');
+const {io} = require('../../lib/socket');
 
 const getDO = async (req, res) => {
     try {

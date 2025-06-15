@@ -15,6 +15,7 @@ import Berita from "./pages/guest/berita";
 import BeritaDetail from "./pages/guest/beritadetail";
 import Produk from "./pages/guest/produk";
 import ProdukDetail from "./pages/guest/produkdetail";
+import Tentang from "./pages/guest/tentang";
 
 // Komponen
 import Header from "./component/header";
@@ -39,6 +40,7 @@ function App() {
         <Route path="/guest/beritadetail/:id" element={<BeritaDetail />} />
         <Route path="/guest/produk" element={<Produk />} />
         <Route path="/guest/produkdetail/:id" element={<ProdukDetail />} />
+        <Route path="/guest/tentang" element={<Tentang />} />
 
         {/* Admin Routes */}
         <Route path="/admin/loginnik" element={<LoginNIK />} />

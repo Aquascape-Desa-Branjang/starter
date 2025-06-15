@@ -54,7 +54,7 @@ const Navbar = ({ isOpen, onClose }) => {
           <Link to="/" className="block hover:text-cyan-300" onClick={onClose}>
             Beranda
           </Link>
-          <Link to="/#tentang" className="block hover:text-cyan-300" onClick={onClose}>
+          <Link to="/guest/tentang" className="block hover:text-cyan-300" onClick={onClose}>
             Tentang
           </Link>
           <Link to="/guest/produk" className="block hover:text-cyan-300" onClick={onClose}>
