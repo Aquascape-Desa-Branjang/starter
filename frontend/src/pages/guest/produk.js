@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import CardProduk from "../../component/cardproduk";
 import {handleDownloadPDF} from "../../component/ecatalog";
@@ -6,81 +8,81 @@ import dummyproduk from "../../gambar/dummyproduk.png";
 import headerImg from "../../gambar/header1.jpg";
 
 export default function Produk() {
-  const semuaProduk = [
-    {
-      id: 1,
-      kategori: "Pot",
-      gambar: dummyproduk,
-      nama: "Pot Dunia Bawah Air",
-      harga: "Rp. 10.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 2,
-      kategori: "Aksesoris",
-      gambar: dummyproduk,
-      nama: "Hiasan Karang Laut",
-      harga: "Rp. 15.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 3,
-      kategori: "Pot",
-      gambar: dummyproduk,
-      nama: "Pot Mini Karakter",
-      harga: "Rp. 12.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 4,
-      kategori: "Dekorasi",
-      gambar: dummyproduk,
-      nama: "Rumah Siput Dekoratif",
-      harga: "Rp. 18.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 5,
-      kategori: "Pot",
-      gambar: dummyproduk,
-      nama: "Pot Dunia Bawah Air",
-      harga: "Rp. 10.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 6,
-      kategori: "Aksesoris",
-      gambar: dummyproduk,
-      nama: "Hiasan Karang Laut",
-      harga: "Rp. 15.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 7,
-      kategori: "Pot",
-      gambar: dummyproduk,
-      nama: "Pot Mini Karakter",
-      harga: "Rp. 12.000",
-      detail: "Lihat detail",
-    },
-    {
-      id: 8,
-      kategori: "Dekorasi",
-      gambar: dummyproduk,
-      nama: "Rumah Siput Dekoratif Banget",
-      harga: "Rp. 18.000",
-      detail: "Lihat detail",
-    },
-  ];
+  const API_KEY = process.env.REACT_APP_API_KEY;
+
+  const [semuaProduk, setSemuaProduk] = useState([]);
+  const [semuaKategori, setsemuaKategori] = useState([]);
+  const [loadingProduk, setLoadingProduk] = useState(true);
+  const [loadingKategori, setLoadingKategori] = useState(true);
+  const [errorProduk, setErrorProduk] = useState(null);
+  const [errorKategori, setErrorKategori] = useState(null);
 
   const [kategori, setKategori] = useState("");
   const [cariNama] = useState("");
   const [halaman, setHalaman] = useState(1);
   const itemPerHalaman = 4;
 
+  useEffect(() => {
+    axios
+      .get("https://backend-aquascape.wibukoding.com/api/products", {
+        headers: {
+          Authorization: "Bearer ${API_KEY}"
+        }
+      })
+      .then((response) => {
+        const apiData = response.data.data;
+
+        const mappedProduk = apiData.map((item) => ({
+          id: item.id,
+          kategori: (item.product_categories || []).map((cat) => String(cat.id)),
+          gambar: item.image,
+          nama: item.name,
+          harga: item.retail_price,
+          slug: item.slug,
+          onBeli: item.shopee_link
+        }));
+        setSemuaProduk(mappedProduk);
+        
+        setLoadingProduk(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setErrorProduk("Gagal memuat data produk.");
+        setLoadingProduk(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("https://backend-aquascape.wibukoding.com/api/product-categories", {
+        headers: {
+          Authorization: "Bearer ${API_KEY}"
+        }
+      })
+      .then((response) => {
+        const apiData = response.data.data;
+
+        const mappedKategori = apiData.map((item) => ({
+          id: item.id,
+          order: item.order,
+          nama: item.name,
+        }))
+        .sort((a, b) => a.order - b.order);;
+
+        setsemuaKategori(mappedKategori);
+        
+        setLoadingKategori(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setErrorKategori("Gagal memuat data kategori.");
+        setLoadingKategori(false);
+      });
+  }, []);
+
   const produkTersaring = semuaProduk.filter((item) => {
     return (
-      (kategori === "" || item.kategori === kategori) &&
+      (kategori === "" || item.kategori.includes(kategori)) &&
       item.nama.toLowerCase().includes(cariNama.toLowerCase())
     );
   });
@@ -113,9 +115,18 @@ export default function Produk() {
           onChange={(e) => setKategori(e.target.value)}
         >
           <option value="">Semua Ragam</option>
-          <option value="Pot">Pot</option>
-          <option value="Aksesoris">Aksesoris</option>
-          <option value="Dekorasi">Dekorasi</option>
+          
+          {loadingKategori ? (
+            <option value="">Memuat Kategori...</option>
+          ) : errorKategori ? (
+            <option value="">{errorKategori}</option>
+          ) : (
+            semuaKategori.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.nama}
+              </option>
+          ) 
+          ))}
         </select>
 
         {/* Tombol Download PDF */}
@@ -129,10 +140,14 @@ export default function Produk() {
 
       {/* Daftar Produk */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
-        {produkDitampilkan.length > 0 ? (
-          produkDitampilkan.map((item) => (
-            <CardProduk key={item.id} {...item} />
-          ))
+        {loadingProduk ? (
+          <p className="col-span-full text-center text-gray-300">Memuat produk...</p>
+        ) : errorProduk ? (
+          <p className="col-span-full text-center text-red-400">{errorProduk}</p>
+        ) : produkDitampilkan.length > 0 ? (
+            produkDitampilkan.map((item) => (
+              <CardProduk key={item.id} {...item} />
+            ))
         ) : (
           <p className="col-span-full text-center text-gray-300">Produk tidak ditemukan.</p>
         )}

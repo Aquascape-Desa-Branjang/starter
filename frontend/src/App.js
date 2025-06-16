@@ -39,7 +39,7 @@ function App() {
         <Route path="/guest/berita" element={<Berita />} />
         <Route path="/guest/beritadetail/:id" element={<BeritaDetail />} />
         <Route path="/guest/produk" element={<Produk />} />
-        <Route path="/guest/produkdetail/:id" element={<ProdukDetail />} />
+        <Route path="/guest/produkdetail/:slug" element={<ProdukDetail />} />
         <Route path="/guest/tentang" element={<Tentang />} />
 
         {/* Admin Routes */}

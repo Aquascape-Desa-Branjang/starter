@@ -1,52 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+
 import dummyproduk from "../../gambar/dummyproduk.png";
 import CardProduk from "../../component/cardproduk";
 import { FaShoppingBag } from "react-icons/fa";
 
 export default function ProdukDetail() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
+  const API_KEY = process.env.REACT_APP_API_KEY;
 
-  const produkList = [
-    {
-      id: "1",
-      gambar: dummyproduk,
-      nama: "Pot Dunia Bawah Air",
-      harga: "Rp. 100.000",
-      deskripsi: `As an avid indoor gardener, pruning is an essential process to keep your potted plants healthy and aesthetically pleasing. 
-      Pruning potted plants helps adjust their form, control growth rate, stimulate new growth, and increase plant longevity. 
-      To successfully prune your potted plants, it is important to understand the plant characteristics, pruning objectives, and techniques.`,
-      detailLain: `This article will introduce some common pruning techniques for potted plants and how to prune based on the nature and growth stage of the plants.`,
-    },
-    {
-      id: "2",
-      gambar: dummyproduk,
-      nama: "Tong Dunia Bawah Laut",
-      harga: "Rp. 120.000",
-      deskripsi: "Unik dan artistik, cocok untuk tema laut.",
-      detailLain: "Dari limbah plastik, ramah lingkungan.",
-    },
-    {
-      id: "3",
-      gambar: dummyproduk,
-      nama: "Tong Dunia Bawah Laut (Mini)",
-      harga: "Rp. 90.000",
-      deskripsi: "Versi mini, cocok untuk anak-anak.",
-      detailLain: "Ukuran kecil, ringan dan praktis.",
-    },
-    {
-      id: "4",
-      gambar: dummyproduk,
-      nama: "Tong Dunia Bawah Laut (Glow)",
-      harga: "Rp. 130.000",
-      deskripsi: "Terdapat efek glow in the dark.",
-      detailLain: "Material unik dan menyala.",
-    },
-  ];
+  const [produk, setProduk] = useState(null);
+  const [produkSerupa, setProdukSerupa] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorProduk, setErrorProduk] = useState(null);
 
-  const produk = produkList.find((p) => p.id === id);
-  const produkSerupa = produkList.filter((p) => p.id !== id);
+    useEffect(() => {
+    axios
+      .get("https://backend-aquascape.wibukoding.com/api/products", {
+        headers: {
+          Authorization: `Bearer ${API_KEY}`
+        }
+      })
+      .then((response) => {
+        const apiData = response.data.data;
+        const semuaProduk = apiData.map((item) => ({
+            id: item.id,
+            slug: item.slug,
+            gambar: item.image,
+            nama: item.name,
+            harga: item.retail_price,
+            deskripsi: item.description,
+          }))
+
+        const produkUtama = semuaProduk.find((item) => item.slug.toString() === slug);
+
+        console.log("data: "+semuaProduk[0].slug);
+        console.log("slug: "+slug);
+        const serupa = semuaProduk.filter((item) => item.slug.toString() !== slug);
+
+        setProduk(produkUtama || null);
+        setProdukSerupa(serupa);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setErrorProduk("Gagal memuat data produk.");
+        setLoading(false);
+      });
+  }, [slug, API_KEY]);
 
   if (!produk) {
     return (
@@ -70,7 +73,7 @@ export default function ProdukDetail() {
       <p className="text-sm leading-relaxed mb-4 whitespace-pre-line">
         {produk.deskripsi}
       </p>
-      <p className="text-sm text-gray-300 mb-6">{produk.detailLain}</p>
+      {/* <p className="text-sm text-gray-300 mb-6">{produk.detailLain}</p> */}
 
       <div className="bg-white text-[#0a1d2c] rounded-lg p-4 text-sm space-y-1 mb-6">
         <p><strong>Harga:</strong> {produk.harga}</p>
