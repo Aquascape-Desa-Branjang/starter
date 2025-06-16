@@ -1,5 +1,5 @@
 import React from "react";
-import { FaInstagram, FaWhatsapp, FaShoppingBag } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import footerContent from "./footer.json";
 import logo from "../gambar/logo.png";
 import footerImg from "../gambar/footer.png";
@@ -39,9 +39,17 @@ const Footer = () => {
             </div>
             <div className="flex items-center gap-4">
               <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
-                <FaShoppingBag className="text-xl" />
+                <img
+                  src="https://www.svgrepo.com/show/504865/shopee.svg"
+                  alt="Shopee Logo"
+                  className="w-6 h-6"
+                />
               </div>
-              <a href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM" >
+              <a
+                href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 anto.aquarium_
               </a>
             </div>
@@ -90,10 +98,10 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-white pt-4 text-center text-xs text-white">
-          Copyright © 2025. All Right Reserved.{" "}
-          <a href="/admin/loginnik" className="text-white">
+          Tim KKNT-107 Undip, Desa Branjang 2025 .Copyright © 2025. All Right Reserved. Anto Aquarium & Art{" "}
+          {/* <a href="/admin/loginnik" className="text-white">
             Anto Aquarium & Art
-          </a>
+          </a> */}
         </div>
       </div>
     </footer>

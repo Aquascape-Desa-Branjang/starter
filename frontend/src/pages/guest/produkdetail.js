@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import dummyproduk from "../../gambar/dummyproduk.png";
 import CardProduk from "../../component/cardproduk";
-import { FaShoppingBag } from "react-icons/fa";
 
 export default function ProdukDetail() {
   const { slug } = useParams();
@@ -81,12 +80,19 @@ export default function ProdukDetail() {
         <p>- Rp. 1.000.000 (min. 10 pcs)</p>
         <p>- Rp. 4.000.000 (min. 40 pcs)</p>
         <p>- Rp. 10.000.000 (min. 100 pcs)</p>
-        <button
-          onClick={() => alert(`Beli ${produk.nama}`)}
+        <a
+          href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM"
+          target="_blank"
+          rel="noopener noreferrer"
           className="mt-4 bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-3 rounded-full transition w-full text-center flex items-center justify-center gap-2"
         >
-          Beli di Shopee <FaShoppingBag/>
-        </button>
+          Beli di Shopee
+          <img
+            src="https://www.svgrepo.com/show/504865/shopee.svg"
+            alt="Shopee Logo"
+            className="w-6 h-6"
+          />
+        </a>
       </div>
 
       {/* Produk Serupa */}
