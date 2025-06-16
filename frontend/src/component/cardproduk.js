@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function CardProduk({ id, gambar, nama, harga, detail}) {
+export default function CardProduk({ id, slug, gambar, nama, harga, onBeli }) {
   return (
     <div className="bg-[#112e42] w-full p-4 rounded-xl shadow-lg flex flex-col items-start sm:max-w-md mx-auto">
       <img
@@ -10,12 +10,12 @@ export default function CardProduk({ id, gambar, nama, harga, detail}) {
         className="w-full h-52 object-cover rounded-lg"
       />
       <h3 className="mt-4 text-xl font-semibold text-white">{nama}</h3>
-      <p className="text-base text-white">{harga}</p>
+      <p className="text-base text-white">Rp. {harga.toLocaleString("id-ID")}</p>
       <Link
-        to={`/guest/produkdetail/${id}`}
+        to={`/guest/produkdetail/${slug}`}
         className="text-sm text-white mt-1"
       >
-        {detail}
+        <p className="hover:underline text-base text-white">Lihat Detail</p>
       </Link>
       <a
         href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM"
