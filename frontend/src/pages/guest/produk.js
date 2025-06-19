@@ -20,7 +20,7 @@ export default function Produk() {
 
   useEffect(() => {
     axios
-      .get("http://backend-aquascape.wibukoding.com/api/products")
+      .get("https://backend-aquascape.wibukoding.com/api/products")
       .then((response) => {
         const apiData = response.data.data;
 
@@ -46,7 +46,7 @@ export default function Produk() {
 
   useEffect(() => {
     axios
-      .get("http://backend-aquascape.wibukoding.com/api/product-categories")
+      .get("https://backend-aquascape.wibukoding.com/api/product-categories")
       .then((response) => {
         const apiData = response.data.data;
 
@@ -71,7 +71,7 @@ export default function Produk() {
   const handleDownloadPDF = async () => {
     try {
       const response = await axios.get(
-        "http://backend-aquascape.wibukoding.com/api/products/catalog",
+        "https://backend-aquascape.wibukoding.com/api/products/catalog",
         {
           responseType: "blob",
         }
