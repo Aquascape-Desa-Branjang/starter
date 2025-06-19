@@ -1,7 +1,7 @@
 import React from "react";
 import CardProduk from "../../component/cardproduk";
 import dummyproduk from "../../gambar/dummyproduk.png";
-import headerImg from "../../gambar/header.png";
+import headerImg from "../../gambar/header.jpg";
 
 export default function Beranda() {
   const produk = [
@@ -36,18 +36,22 @@ export default function Beranda() {
   ];
 
   return (
-    <main className="bg-[#0a1d2c] text-white min-h-screen">
+    <main className="bg-[#0a1d2b] text-white min-h-screen pb-12 xl:pb-24">
       
       {/* Gambar Header dengan Overlay dan Teks */}
-      <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
-        <img
-          src={headerImg}
-          alt="Header"
-          className="w-full h-full object-cover"
-        />
+      <div className="relative w-full h-full">
+        <div className="relative overflow-hidden w-full h-auto max-h-96">
+          <img
+            src={headerImg}
+            alt="Header"
+            className="w-full h-full object-cover bg-no-repeat object-center"
+          />
+          
+          <div className="absolute inset-0 bg-black bg-opacity-35 pointer-events-none" />
+        </div>
         {/* Overlay hitam semi-transparan */}
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
-          <div className="p-6 md:p-10 lg:p-14 text-left">
+          <div className="p-6 md:p-10 lg:p-14 text-left xl:ps-28">
             <p className="text-white text-lg md:text-2xl font-bold">Selamat Datang di</p>
             <h1 className="text-[#5EEAD4] text-2xl md:text-5xl font-bold">
               Anto Aquarium & Art
@@ -57,41 +61,45 @@ export default function Beranda() {
       </div>
       
       {/* Tentang Kami */}
-      <section id="tentang" className="text-center py-5 px-4">
-        <h2 className="text-2xl font-bold mb-2">Tentang Kami</h2>
-        <p className="text-gray-300 max-w-md mx-auto mb-6">
-          Menghadirkan keindahan alam bawah air ke dalam ruangan, melalui seni aquascape yang memikat dan menenangkan.
-        </p>
-        <div className="max-w-md mx-auto mb-6">
+      <section id="tentang" className="text-center xl:pt-24 xl:pb-12 xl:px-28 pt-12 pb-6 px-4">
+        <div className="flex flex-col items-center justify-center gap-3 xl:gap-4 mb-8 xl:mb-12">
+          <h2 className="text-4xl xl:text-6xl text-default-text leading-none font-bold font-zilla-slab">Tentang Kami</h2>
+
+          <p className="text-sm xl:text-lg leading-tight font-normal text-default-text mx-auto">
+            Menghadirkan keindahan alam bawah air ke dalam ruangan, melalui seni aquascape yang memikat dan menenangkan.
+          </p>
+        </div>
+
+        <div className="max-w-md xl:max-w-xl mx-auto mb-7 xl:mb-8">
           <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden relative">
-            <img
-              src="https://via.placeholder.com/640x360"
-              alt="Video Thumbnail"
-              className="w-full h-full object-cover"
-            />
-            <button className="absolute inset-0 flex items-center justify-center" aria-label="Play video">
-              <div className="bg-white text-green-500 w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold">
-                ▶
-              </div>
-            </button>
+            <iframe
+              src="https://drive.google.com/file/d/1w2QaBklme6rxoKxR7hwed5O4AdFxnynp/preview"
+              title="Google Drive Embed"
+              allow="autoplay"
+              className="w-full h-full border-0"
+            ></iframe>
           </div>
         </div>
-        <button
-          onClick={() => alert("Kenali lebih dekat")}
-          className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full hover:bg-green-500 transition"
+
+        <a
+          href="/tentang"
+          className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold w-full xl:w-80 px-5 py-3 rounded-full hover:brightness-90 transition"
         >
           Kenali kami lebih dekat →
-        </button>
+        </a>
       </section>
 
       {/* Produk Unggulan */}
-      <section className="px-4">
-        <h2 className="text-2xl font-bold text-center mb-1">Produk Unggulan</h2>
-        <p className="text-center text-gray-300 mb-6">
-          Karya terbaik yang menghidupkan ruang dan jiwa.
-        </p>
+      <section className="px-4 xl:pt-12 xl:px-24 pt-6">
+        <div className="flex flex-col items-center justify-center gap-3 xl:gap-4 mb-8">
+          <h2 className="text-4xl xl:text-6xl text-default-text leading-none font-bold font-zilla-slab">Produk Unggulan</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <p className="text-sm xl:text-lg leading-tight font-normal text-default-text mx-auto">
+            Karya terbaik yang menghidupkan ruang dan jiwa.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {produk.map((item) => (
             <CardProduk
               key={item.id}
@@ -107,11 +115,12 @@ export default function Beranda() {
 
       </section>
 
-      <div className="w-full text-center mt-8">
+      <div className="w-full text-center mt-7 px-4">
         <a
-          href="/guest/produk"
-          className="inline-block bg-[#66DDAA] hover:bg-[#57c49b] text-[#0a1d2c] font-semibold px-5 py-2 w-80 rounded-full transition duration-200 text-center shadow-md"          >
-            Lihat Semua Produk →
+          href="/produk"
+          className="inline-block bg-[#66DDAA] text-[#0a1d2c] font-semibold w-full xl:w-80 px-5 py-3 rounded-full hover:brightness-90 transition"
+        >
+          Lihat Semua Produk →
         </a>
       </div>
     </main>

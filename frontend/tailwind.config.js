@@ -11,6 +11,7 @@ module.exports = {
       colors: {
         'primary': '#66DDAA',
         'default-text': '#F1F5F9',
+        'default-text-secondary': '#C9FFEE',
         'default-bg': '#1e293b',
         'default-bg-navbar': '#0F172A',
       },

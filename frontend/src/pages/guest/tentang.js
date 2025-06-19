@@ -12,15 +12,20 @@ export default function Tentang() {
     <main className="bg-[#0a1d2c] text-white min-h-screen">
       
       {/* Gambar Header dengan Overlay dan Teks */}
-      <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
-        <img
-          src={headerImg}
-          alt="Header"
-          className="w-full h-full object-cover"
-        />
+      <div className="relative w-full h-full">
+        <div className="relative overflow-hidden w-full h-auto xl:h-96">
+          <img
+            src={headerImg}
+            alt="Header"
+            className="w-full h-full object-cover bg-no-repeat object-[center_30%]"
+          />
+          
+          <div className="absolute inset-0 bg-black bg-opacity-35 pointer-events-none" />
+        </div>
+        
         {/* Overlay hitam semi-transparan */}
         <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center">
-          <div className="p-8 md:p-10 lg:p-14 flex flex-col items-center justify-center gap-2 text-center">
+          <div className="p-8 md:p-10 lg:p-14 flex flex-col items-center justify-center gap-2 xl:gap-4 text-center m-auto">
             <h1 className="font-zilla-slab text-primary leading-none text-4xl md:text-5xl font-bold">
               Tentang Kami
             </h1>
@@ -33,21 +38,21 @@ export default function Tentang() {
       </div>
 
       {/* Tentang Kami */}
-      <section id="tentang" className="text-center pt-12 px-4 flex flex-col gap-7">
+      <section id="tentang" className="text-center pt-12 px-4 flex flex-col gap-7 xl:pt-24 xl:pb-12 xl:px-28 py-6">
         <div className="flex flex-col gap-6">
-          <h3 className="font-zilla-slab font-bold text-4xl leading-none text-default-text">Mengenal Aquascape</h3>
+          <h3 className="font-zilla-slab font-bold text-4xl leading-none text-default-text xl:text-6xl">Mengenal Aquascape</h3>
 
-          <p className="text-default-text font-normal text-sm leading-normal">
+          <p className="text-default-text font-normal text-sm leading-normal xl:text-lg xl:w-8/12 xl:mx-auto">
             Aquascape adalah kerajinan menghias aquarium dengan menggabungkan keindahan tanaman, kayu, dan batu. Aquascape bertujuan untuk menciptakan pemandangan bawah air yang menyerupai ekosistem alam.
           </p>
 
-          <p className="text-default-text font-normal text-sm leading-normal">
+          <p className="text-default-text font-normal text-sm leading-normal xl:text-lg xl:w-8/12 xl:mx-auto">
             Kerajinan ini tidak hanya mempercantik tampilan aquarium, tetapi juga menghadirkan nuansa alam yang tenang, menyegarkan, dan mendekatkan manusia dengan keindahan alam yang sulit dijangkau.
           </p>
         </div>
         
-        <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-lg overflow-hidden w-full h-auto">
+        <div className="grid grid-cols-2 gap-3 xl:gap-8">
+          <div className="rounded-lg overflow-hidden w-full h-auto xl:max-h-full">
             <img
               src={mengenal1Img}
               alt="Mengenal Aquascape"
@@ -55,8 +60,8 @@ export default function Tentang() {
             />
           </div>
 
-          <div className="grid grid-rows-2 gap-3">
-            <div className="rounded-lg overflow-hidden w-full h-auto">
+          <div className="grid grid-rows-2 gap-3 xl:gap-8">
+            <div className="rounded-lg overflow-hidden w-full h-auto xl:max-h-56">
               <img
                 src={mengenal2Img}
                 alt="Mengenal Aquascape"
@@ -64,7 +69,7 @@ export default function Tentang() {
               />
             </div>
 
-            <div className="rounded-lg overflow-hidden w-full h-auto">
+            <div className="rounded-lg overflow-hidden w-full h-auto xl:max-h-56">
               <img
                 src={mengenal3Img}
                 alt="Mengenal Aquascape"
@@ -76,21 +81,21 @@ export default function Tentang() {
       </section>
 
        {/* owner */}
-      <section id="owner" className="text-center pt-12 px-4 flex flex-col gap-7">
-        <div className="flex flex-col gap-3">
-          <h3 className="font-zilla-slab font-bold text-4xl leading-none text-default-text">Perjalanan Awal</h3>
+      <section id="owner" className="text-center pt-6 px-4 flex flex-col gap-7 xl:py-12 xl:px-28 py-6">
+        <div className="flex flex-col gap-6">
+          <h3 className="font-zilla-slab font-bold text-4xl leading-none text-default-text xl:text-6xl">Perjalanan Awal</h3>
 
-          <p className="text-default-text font-normal text-sm leading-normal">
+          <p className="text-default-text font-normal text-sm leading-normal xl:text-lg xl:w-8/12 xl:mx-auto">
             Berawal dari akuarium yang hanya berisi kayu dan batu batuan biasa, menimbulkan ide untuk membuat hiasan akuarium yang lebih menarik.
           </p>
 
-          <p className="text-default-text font-normal text-sm leading-normal">
+          <p className="text-default-text font-normal text-sm leading-normal xl:text-lg xl:w-8/12 xl:mx-auto">
             Bahkan Limbah plastik yang kerap dibuang atau di bakar, dapat disulap menjadi karya seni yang indah.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 gap-3 mb-6">
-          <div className="rounded-lg overflow-hidden w-full h-auto">
+        <div className="grid grid-cols-1 gap-3">
+          <div className="rounded-lg overflow-hidden w-full h-auto mx-auto xl:w-1/2">
             <img
               src={ownerImg}
               alt="Owner"
@@ -101,17 +106,17 @@ export default function Tentang() {
       </section>
 
       {/* Cinta */}
-      <section id="cinta" className="text-center pt-12 px-4 flex flex-col gap-7">
-        <div className="flex flex-col gap-3">
-          <h3 className="font-zilla-slab font-bold text-4xl leading-none text-default-text">Dibuat dengan Cinta</h3>
+      <section id="cinta" className="text-center pt-6 px-4 flex flex-col gap-7 xl:py-12 xl:px-28 py-6 pb-12 xl:pb-24">
+        <div className="flex flex-col gap-6">
+          <h3 className="font-zilla-slab font-bold text-4xl leading-none text-default-text xl:text-6xl">Dibuat dengan Cinta</h3>
 
-          <p className="text-default-text font-normal text-sm leading-normal">
+          <p className="text-default-text font-normal text-sm leading-normal xl:text-lg xl:w-8/12 xl:mx-auto">
             Bukan sekadar produk, tapi karya yang tumbuh dari rasa, imajinasi, dan perhatian.
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 gap-3 mb-6">
-          <div className="rounded-lg overflow-hidden w-full h-auto">
+
+        <div className="grid grid-cols-1 gap-3">
+          <div className="rounded-lg overflow-hidden w-full h-auto mx-auto xl:w-1/2">
             <img
               src={cintaImg}
               alt="Dibuat dengan Cinta"
