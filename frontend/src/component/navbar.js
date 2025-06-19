@@ -60,9 +60,9 @@ const Navbar = ({ isOpen, onClose }) => {
           <Link to="/produk" className="block hover:text-cyan-300" onClick={onClose}>
             Produk
           </Link>
-          {/* <Link to="/berita" className="block hover:text-cyan-300" onClick={onClose}>
+          <Link to="/berita" className="block hover:text-cyan-300" onClick={onClose}>
             Berita
-          </Link> */}
+          </Link>
           <Link to="https://wa.me/+6281575576328" target="_blank" className="group hover:text-cyan-300 flex flex-row gap-2 items-center" onClick={onClose}>
             Kontak
 

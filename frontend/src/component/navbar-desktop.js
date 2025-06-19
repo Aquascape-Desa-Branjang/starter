@@ -14,9 +14,9 @@ const NavbarDesktop = () => {
       <Link to="/produk" className="block hover:text-cyan-300">
         Produk
       </Link>
-      {/* <Link to="/berita" className="block hover:text-cyan-300">
+      <Link to="/berita" className="block hover:text-cyan-300">
         Berita
-      </Link> */}
+      </Link>
       <Link to="https://wa.me/+6281575576328" target="_blank" className="group hover:text-cyan-300 flex flex-row gap-2 items-center">
         Kontak
 

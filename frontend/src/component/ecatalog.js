@@ -1,6 +1,5 @@
 import jsPDF from "jspdf";
 
-// Fungsi konversi gambar ke Base64
 const getBase64ImageFromURL = (url) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -18,7 +17,6 @@ const getBase64ImageFromURL = (url) => {
   });
 };
 
-// Fungsi utama download PDF
 const handleDownloadPDF = async (produkTersaring) => {
   const doc = new jsPDF("p", "mm", "a4");
   const produkPerHalaman = 4;

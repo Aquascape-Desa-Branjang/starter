@@ -1,5 +1,5 @@
 import React from "react";
-import { FaInstagram, FaWhatsapp, FaShoppingBag } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import footerContent from "./footer.json";
 import logo from "../gambar/logo.png";
 import footerImg from "../gambar/footer.png";
@@ -35,11 +35,19 @@ const Footer = () => {
                 anto.aquarium_
               </a>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-2 xl:p-3">
-                <FaShoppingBag className="text-base xl:text-xl" />
+            <div className="flex items-center gap-4">
+              <div className="bg-[#C4F2DF] text-[#182033] rounded-full p-1">
+                <img
+                  src="https://www.svgrepo.com/show/504865/shopee.svg"
+                  alt="Shopee Logo"
+                  className="w-6 h-6"
+                />
               </div>
-              <a href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM" className="font-light text-xs leading-none xl:text-base" >
+              <a
+                href="https://shopee.co.id/adiluhungbagas?uls_trackid=52t6u6or00c5&utm_content=3qK6mwic43ZSNJGhMqCjp7gSQNRM"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 anto.aquarium_
               </a>
             </div>
@@ -82,21 +90,21 @@ const Footer = () => {
           <div className="min-w-0 col-span-1 xl:col-span-1 xl:justify-self-end pe-16">
             <h4 className="font-light mb-2 font-zilla-slab text-default-text-secondary text-sm xl:text-lg">Navigation</h4>
             <ul className="text-gray-300 space-y-1">
-              <li><a href="#home" className="hover:underline font-normal text-base xl:text-xl">Home</a></li>
-              <li><a href="#tentang" className="hover:underline font-normal text-base xl:text-xl">Tentang</a></li>
+              <li><a href="/" className="hover:underline font-normal text-base xl:text-xl">Home</a></li>
+              <li><a href="/tentang" className="hover:underline font-normal text-base xl:text-xl">Tentang</a></li>
               <li><a href="/produk" className="hover:underline font-normal text-base xl:text-xl">Produk</a></li>
-              {/* <li><a href="/berita" className="hover:underline font-normal text-base xl:text-xl">Berita</a></li> */}
-              <li><a href="#kontak" className="hover:underline font-normal text-base xl:text-xl">Kontak</a></li>
+              <li><a href="/berita" className="hover:underline font-normal text-base xl:text-xl">Berita</a></li>
+              <li><a href="https://wa.me/+6281575576328" target="__blank" className="hover:underline font-normal text-base xl:text-xl">Kontak</a></li>
             </ul>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-white pt-4 text-center text-xs xl:pt-6 xl:text-base text-white font-medium">
-          Copyright © 2025. All Right Reserved.{" "}
-          <a href="/admin/loginnik" className="text-white">
+        <div className="border-t border-white pt-4 text-center text-xs text-white">
+          Tim KKNT-107 Undip, Desa Branjang 2025 .Copyright © 2025. All Right Reserved. Anto Aquarium & Art{" "}
+          {/* <a href="/admin/loginnik" className="text-white">
             Anto Aquarium & Art
-          </a>
+          </a> */}
         </div>
       </div>
     </footer>

@@ -11,8 +11,8 @@ import PengaturanProduk from "./pages/admin/pengaturanproduk";
 
 // Sisi Guest
 import Beranda from "./pages/guest/beranda";   // <-- default import yang benar
-// import Berita from "./pages/guest/berita";
-// import BeritaDetail from "./pages/guest/beritadetail";
+import Berita from "./pages/guest/berita";
+import BeritaDetail from "./pages/guest/beritadetail";
 import Produk from "./pages/guest/produk";
 import ProdukDetail from "./pages/guest/produkdetail";
 import Tentang from "./pages/guest/tentang";
@@ -38,8 +38,10 @@ function App() {
         <Route path="/" element={<Beranda />} />
         {/* <Route path="/berita" element={<Berita />} /> */}
         {/* <Route path="/beritadetail/:id" element={<BeritaDetail />} /> */}
+        <Route path="/berita" element={<Berita />} />
+        <Route path="/beritadetail/:id" element={<BeritaDetail />} />
         <Route path="/produk" element={<Produk />} />
-        <Route path="/produkdetail/:id" element={<ProdukDetail />} />
+        <Route path="/produkdetail/:slug" element={<ProdukDetail />} />
         <Route path="/tentang" element={<Tentang />} />
 
         {/* Admin Routes */}
