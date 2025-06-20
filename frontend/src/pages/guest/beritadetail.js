@@ -1,78 +1,47 @@
 import React from "react";
-import { useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import dummyImg from "../../gambar/dummyberita.png";
 import CardBerita from "../../component/cardberita";
 
 export default function BeritaDetail() {
   const { id } = useParams();
-      
-  const beritaList = [
-    {
-      id: "1",
-      gambar: dummyImg,
-      judul: "Inovasi Daur Ulang Limbah Plastik Jadi Dekorasi",
-      isi: `Para kreator muda di Yogyakarta berhasil mengubah limbah plastik menjadi dekorasi bernilai seni tinggi. Mereka menggunakan teknik pewarnaan alami dan bentuk organik untuk menarik perhatian pasar domestik maupun internasional.`,
-      detailLain: `Proyek ini melibatkan komunitas lokal dan bertujuan meningkatkan kesadaran akan bahaya limbah plastik, sekaligus menciptakan peluang ekonomi baru.`,
-    },
-    {
-      id: "2",
-      gambar: dummyImg,
-      judul: "Kampanye Hijau Lewat Karya Seni",
-      isi: `Melalui pameran seni bertema lingkungan, seniman dari berbagai daerah memamerkan karya berbahan limbah daur ulang. Lukisan, patung, hingga instalasi multimedia dibuat dari sampah rumah tangga yang telah diolah.`,
-      detailLain: `Kampanye ini mendapat dukungan dari pemerintah daerah dan mengundang banyak perhatian dari masyarakat umum serta media nasional.`,
-    },
-    {
-      id: "3",
-      gambar: dummyImg,
-      judul: "Dekorasi Ramah Lingkungan Semakin Diminati",
-      isi: `Tren dekorasi rumah kini mulai bergeser ke arah yang lebih berkelanjutan. Produk-produk seperti vas dari botol bekas, pot dari plastik terurai, dan hiasan dinding dari kayu daur ulang menjadi pilihan utama para desainer interior.`,
-      detailLain: `Konsumen mulai sadar bahwa keindahan tidak harus mengorbankan lingkungan, sehingga permintaan akan dekorasi hijau meningkat tajam.`,
-    },
-    {
-      id: "4",
-      gambar: dummyImg,
-      judul: "Anak Muda Bangun UMKM dari Limbah Plastik",
-      isi: `Sekelompok mahasiswa membentuk UMKM berbasis daur ulang yang mengolah limbah plastik menjadi produk bernilai jual seperti gantungan kunci, souvenir, dan perlengkapan kantor.`,
-      detailLain: `UMKM ini tidak hanya menghasilkan produk, tetapi juga membuka lapangan kerja bagi warga sekitar.`,
-    },
-    {
-      id: "5",
-      gambar: dummyImg,
-      judul: "Pendidikan Lingkungan Dikenalkan Lewat Kegiatan Kreatif",
-      isi: `Sekolah-sekolah di Bandung kini mulai mengintegrasikan pendidikan lingkungan dalam kegiatan seni dan kerajinan tangan. Siswa diajak membuat karya dari sampah plastik sebagai bagian dari kurikulum.`,
-      detailLain: `Guru dan orang tua mendukung pendekatan ini karena mampu meningkatkan kesadaran lingkungan sejak usia dini.`,
-    },
-    {
-      id: "6",
-      gambar: dummyImg,
-      judul: "Karya Daur Ulang Indonesia Tembus Pasar Ekspor",
-      isi: `Produk kerajinan tangan dari plastik daur ulang buatan Indonesia kini berhasil menembus pasar Eropa. Desain etnik dan kualitas bahan menjadi nilai jual utama yang disukai konsumen mancanegara.`,
-      detailLain: `Para pelaku UMKM berharap dukungan pemerintah agar bisa meningkatkan produksi dan kapasitas ekspor.`,
-    },
-    {
-      id: "7",
-      gambar: dummyImg,
-      judul: "Festival Lingkungan Hidup Angkat Isu Sampah",
-      isi: `Festival tahunan di Surabaya mengangkat tema pelestarian lingkungan dengan berbagai kegiatan seperti lomba daur ulang, pameran karya seni, dan talkshow bersama aktivis lingkungan.`,
-      detailLain: `Ribuan pengunjung hadir dalam acara tersebut dan banyak peserta muda menunjukkan karya inovatif mereka.`,
-    },
-    {
-      id: "8",
-      gambar: dummyImg,
-      judul: "Start-up Hijau Hadirkan Solusi Baru Pengolahan Sampah",
-      isi: `Sebuah start-up baru di Jakarta meluncurkan aplikasi yang memudahkan masyarakat mengelola sampah plastik dari rumah. Aplikasi ini terintegrasi dengan sistem pengumpulan dan pusat daur ulang.`,
-      detailLain: `Solusi digital ini diharapkan bisa menjadi bagian dari gerakan menuju kota bebas sampah plastik.`,
-    },
-  ];
-
-  const berita = beritaList.find((b) => b.id === id);
-  const beritaLain = beritaList.filter((b) => b.id !== id);
-  const dummyName = berita.judul;
+  const [semuaBerita, setSemuaBerita] = useState([]);
+  const [loading, setLoading] = useState(true);
   
+      
   useEffect(() => {
+    document.title = "Antoaquarium | Berita";
+
+    axios
+      .get("https://admin.antoaquarium.my.id/api/article")
+      .then((response) => {
+        const apiData = response.data.data;
+
+        const mappedBerita = apiData.map((item) => ({
+          id: item.id,
+          gambar: `https://admin.antoaquarium.my.id/storage/${item.image}`,
+          nama: item.title,
+          description: item.description,
+          slug: item.slug,
+        }));
+
+        setSemuaBerita(mappedBerita);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+      const dummyName = berita.judul;
       document.title = "Antoaquarium | " + dummyName;
-    }, []);
+  }, []);
+  
+
+  const berita = semuaBerita.find((b) => b.id === id);
+  const beritaLain = semuaBerita.filter((b) => b.id !== id);
+  
 
   if (!berita) {
     return (
