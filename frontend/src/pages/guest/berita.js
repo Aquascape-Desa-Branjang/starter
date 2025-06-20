@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+import { useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import CardBerita from "../../component/cardberita";
 import headerImg from "../../gambar/header1.jpg";
 import dummyImage from "../../gambar/dummyberita.png";
 
 export default function Berita() {
+  useEffect(() => {
+    document.title = "Antoaquarium | Berita";
+  }, []);
   const semuaBerita = [
     {
       id: 1,

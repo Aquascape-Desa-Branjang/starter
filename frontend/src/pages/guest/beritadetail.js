@@ -1,11 +1,12 @@
 import React from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import dummyImg from "../../gambar/dummyberita.png";
 import CardBerita from "../../component/cardberita";
 
 export default function BeritaDetail() {
   const { id } = useParams();
-
+      
   const beritaList = [
     {
       id: "1",
@@ -67,6 +68,11 @@ export default function BeritaDetail() {
 
   const berita = beritaList.find((b) => b.id === id);
   const beritaLain = beritaList.filter((b) => b.id !== id);
+  const dummyName = berita.judul;
+  
+  useEffect(() => {
+      document.title = "Antoaquarium | " + dummyName;
+    }, []);
 
   if (!berita) {
     return (

@@ -17,7 +17,7 @@ export default function ProdukDetail() {
 
     useEffect(() => {
     axios
-      .get("https://backend-aquascape.wibukoding.com/api/products", {
+      .get("https://admin.antoaquarium.my.id/api/products", {
         headers: {
           Authorization: `Bearer ${API_KEY}`
         }
@@ -27,13 +27,13 @@ export default function ProdukDetail() {
         const semuaProduk = apiData.map((item) => ({
             id: item.id,
             slug: item.slug,
-            gambar: item.image,
+            gambar: `https://admin.antoaquarium.my.id/storage/${item.image}`,
             nama: item.name,
             harga: item.retail_price,
             deskripsi: item.description,
           }))
 
-        const produkUtama = semuaProduk.find((item) => item.slug.toString() === slug);
+        const produkUtama = semuaProduk.find((item) => item.id.toString() === slug);
 
         console.log("data: "+semuaProduk[0].slug);
         console.log("slug: "+slug);
