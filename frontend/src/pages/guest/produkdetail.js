@@ -16,6 +16,7 @@ export default function ProdukDetail() {
   const [errorProduk, setErrorProduk] = useState(null);
 
     useEffect(() => {
+      
     axios
       .get("https://admin.antoaquarium.my.id/api/products", {
         headers: {
@@ -33,7 +34,7 @@ export default function ProdukDetail() {
             deskripsi: item.description,
           }))
 
-        const produkUtama = semuaProduk.find((item) => item.id.toString() === slug);
+        const produkUtama = semuaProduk.find((item) => item.slug.toString() === slug);
 
         console.log("data: "+semuaProduk[0].slug);
         console.log("slug: "+slug);
@@ -57,7 +58,7 @@ export default function ProdukDetail() {
       </div>
     );
   }
-
+  document.title = "Antoaquarium | " + produk.nama
   return (
     <main className="min-h-screen bg-[#0a1d2c] text-white p-4">
       <h1 className="text-2xl font-bold mb-1">{produk.nama}</h1>
@@ -107,7 +108,7 @@ export default function ProdukDetail() {
               gambar={item.gambar}
               nama={item.nama}
               harga={item.harga}
-              detail="Lihat detail"
+              slug={item.slug}
               onBeli={() => alert(`Beli ${item.nama}`)}
             />
           ))}

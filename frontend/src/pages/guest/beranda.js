@@ -25,7 +25,7 @@ export default function Beranda() {
           gambar: `https://admin.antoaquarium.my.id/storage/${item.image}`,
           nama: item.name,
           harga: item.retail_price,
-          detail: item.slug,
+          slug: item.slug,
           onBeli: item.shopee_link
         }));
 
@@ -102,6 +102,7 @@ export default function Beranda() {
                 id={item.id}
                 gambar={item.gambar}
                 nama={item.nama}
+                slug={item.slug}
                 harga={item.harga}
                 detail={item.detail}
                 onBeli={() => window.open(item.onBeli, "_blank")}
