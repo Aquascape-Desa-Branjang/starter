@@ -15,15 +15,15 @@ export default function BeritaDetail() {
     document.title = "Antoaquarium | Berita";
 
     axios
-      .get("https://admin.antoaquarium.my.id/api/article")
+      .get("https://admin.antoaquarium.my.id/api/articles")
       .then((response) => {
         const apiData = response.data.data;
 
         const mappedBerita = apiData.map((item) => ({
           id: item.id,
           gambar: `https://admin.antoaquarium.my.id/storage/${item.image}`,
-          nama: item.title,
-          description: item.description,
+          judul: item.title,
+          cuplikan: item.description,
           slug: item.slug,
         }));
 
@@ -63,9 +63,9 @@ export default function BeritaDetail() {
         className="w-full max-h-[70vh] object-contain rounded-lg mb-4"
       />
 
-      <p className="text-sm leading-relaxed mb-4 whitespace-pre-line">
+      <div className="text-sm leading-relaxed mb-4 whitespace-pre-line">
         {berita.isi}
-      </p>
+      </div>
       <p className="text-sm text-gray-300 mb-6">{berita.detailLain}</p>
 
       {/* Berita Lainnya */}

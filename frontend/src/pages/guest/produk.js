@@ -19,6 +19,7 @@ export default function Produk() {
   const itemPerHalaman = 4;
 
   useEffect(() => {
+    document.title = "Antoaquarium | Karya Kami"
     axios
       .get("https://admin.antoaquarium.my.id/api/products", {
         headers: {

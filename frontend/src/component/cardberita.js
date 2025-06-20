@@ -13,7 +13,7 @@ export default function CardBerita({ id, gambar, judul, cuplikan, slug}) {
       <h3 className="mt-4 text-xl font-semibold text-white">{judul}</h3>
       <p className="text-base text-white mt-2 line-clamp-3">{cuplikan}</p>
       <Link
-        to={`/guest/beritadetail/${slug}`}
+        to={`/beritadetail/${slug}`}
         className="mt-4 bg-[#66DDAA] text-[#0a1d2c] font-semibold px-5 py-3 rounded-full transition w-full text-center flex items-center justify-center gap-2"
       >
         Baca Selengkapnya

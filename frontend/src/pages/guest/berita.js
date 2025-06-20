@@ -14,15 +14,15 @@ export default function Berita() {
     document.title = "Antoaquarium | Berita";
 
     axios
-      .get("https://admin.antoaquarium.my.id/api/article")
+      .get("https://admin.antoaquarium.my.id/api/articles")
       .then((response) => {
         const apiData = response.data.data;
 
         const mappedBerita = apiData.map((item) => ({
           id: item.id,
           gambar: `https://admin.antoaquarium.my.id/storage/${item.image}`,
-          nama: item.title,
-          description: item.description,
+          judul: item.title,
+          cuplikan: item.description,
           slug: item.slug,
         }));
 
