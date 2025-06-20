@@ -3,13 +3,9 @@ import axios from "axios";
 
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import CardProduk from "../../component/cardproduk";
-import {handleDownloadPDF} from "../../component/ecatalog";
-import dummyproduk from "../../gambar/dummyproduk.png";
 import headerImg from "../../gambar/header1.jpg";
 
 export default function Produk() {
-  const API_KEY = process.env.REACT_APP_API_KEY;
-
   const [semuaProduk, setSemuaProduk] = useState([]);
   const [semuaKategori, setsemuaKategori] = useState([]);
   const [loadingProduk, setLoadingProduk] = useState(true);
@@ -39,10 +35,10 @@ export default function Produk() {
           nama: item.name,
           harga: item.retail_price,
           slug: item.slug,
-          onBeli: item.shopee_link
+          onBeli: item.shopee_link,
         }));
+
         setSemuaProduk(mappedProduk);
-        
         setLoadingProduk(false);
       })
       .catch((err) => {
@@ -62,15 +58,15 @@ export default function Produk() {
       .then((response) => {
         const apiData = response.data.data;
 
-        const mappedKategori = apiData.map((item) => ({
-          id: item.id,
-          order: item.order,
-          nama: item.name,
-        }))
-        .sort((a, b) => a.order - b.order);;
+        const mappedKategori = apiData
+          .map((item) => ({
+            id: item.id,
+            order: item.order,
+            nama: item.name,
+          }))
+          .sort((a, b) => a.order - b.order);
 
         setsemuaKategori(mappedKategori);
-        
         setLoadingKategori(false);
       })
       .catch((err) => {
@@ -79,6 +75,28 @@ export default function Produk() {
         setLoadingKategori(false);
       });
   }, []);
+
+  const handleDownloadPDF = async () => {
+    try {
+      const response = await axios.get(
+        "https://backend-aquascape.wibukoding.com/api/products/catalog",
+        {
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "katalog_produk.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Gagal mengunduh katalog:", error);
+      alert("Gagal mengunduh katalog PDF.");
+    }
+  };
 
   const produkTersaring = semuaProduk.filter((item) => {
     return (
@@ -115,7 +133,7 @@ export default function Produk() {
           onChange={(e) => setKategori(e.target.value)}
         >
           <option value="">Semua Ragam</option>
-          
+
           {loadingKategori ? (
             <option value="">Memuat Kategori...</option>
           ) : errorKategori ? (
@@ -125,13 +143,13 @@ export default function Produk() {
               <option key={item.id} value={item.id}>
                 {item.nama}
               </option>
-          ) 
-          ))}
+            ))
+          )}
         </select>
 
         {/* Tombol Download PDF */}
         <button
-          onClick={() => handleDownloadPDF(produkTersaring)}
+          onClick={handleDownloadPDF}
           className="bg-[#66DDAA] hover:bg-green-600 px-6 py-3 rounded-full text-black text-sm font-semibold shadow-md transition"
         >
           Unduh Katalog PDF
@@ -145,9 +163,7 @@ export default function Produk() {
         ) : errorProduk ? (
           <p className="col-span-full text-center text-red-400">{errorProduk}</p>
         ) : produkDitampilkan.length > 0 ? (
-            produkDitampilkan.map((item) => (
-              <CardProduk key={item.id} {...item} />
-            ))
+          produkDitampilkan.map((item) => <CardProduk key={item.id} {...item} />)
         ) : (
           <p className="col-span-full text-center text-gray-300">Produk tidak ditemukan.</p>
         )}
