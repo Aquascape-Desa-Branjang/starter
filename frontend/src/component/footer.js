@@ -101,7 +101,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-white pt-4 text-center text-xs text-white">
-          Tim KKNT-107 Undip, Desa Branjang 2025 .Copyright © 2025. All Right Reserved. Anto Aquarium & Art{" "}
+          Tim KKNT-107 Undip, Desa Branjang .Copyright © 2025. All Right Reserved. Anto Aquarium & Art{" "}
           {/* <a href="/admin/loginnik" className="text-white">
             Anto Aquarium & Art
           </a> */}

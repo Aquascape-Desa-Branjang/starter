@@ -16,8 +16,9 @@ export default function ProdukDetail() {
   const [errorProduk, setErrorProduk] = useState(null);
 
     useEffect(() => {
+      
     axios
-      .get("https://backend-aquascape.wibukoding.com/api/products", {
+      .get("https://admin.antoaquarium.my.id/api/products", {
         headers: {
           Authorization: `Bearer ${API_KEY}`
         }
@@ -27,7 +28,7 @@ export default function ProdukDetail() {
         const semuaProduk = apiData.map((item) => ({
             id: item.id,
             slug: item.slug,
-            gambar: item.image,
+            gambar: `https://admin.antoaquarium.my.id/storage/${item.image}`,
             nama: item.name,
             harga: item.retail_price,
             deskripsi: item.description,
@@ -57,7 +58,7 @@ export default function ProdukDetail() {
       </div>
     );
   }
-
+  document.title = "Antoaquarium | " + produk.nama
   return (
     <main className="min-h-screen bg-[#0a1d2c] text-white p-4">
       <h1 className="text-2xl font-bold mb-1">{produk.nama}</h1>
@@ -107,7 +108,7 @@ export default function ProdukDetail() {
               gambar={item.gambar}
               nama={item.nama}
               harga={item.harga}
-              detail="Lihat detail"
+              slug={item.slug}
               onBeli={() => alert(`Beli ${item.nama}`)}
             />
           ))}

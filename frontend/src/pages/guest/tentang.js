@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import headerImg from "../../gambar/tentang/bg-tentang.jpg";
 import ownerImg from "../../gambar/tentang/owner.jpg";
 import mengenal1Img from "../../gambar/tentang/mengenal-1.jpg";
@@ -7,7 +8,8 @@ import mengenal3Img from "../../gambar/tentang/mengenal-3.jpg";
 import cintaImg from "../../gambar/tentang/cinta.jpg";
 
 export default function Tentang() {
-
+  useEffect(() => {
+      document.title = "Antoaquarium | Beranda";},[]);
   return (
     <main className="bg-[#0a1d2c] text-white min-h-screen">
       

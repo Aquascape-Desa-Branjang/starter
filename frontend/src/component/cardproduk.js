@@ -12,7 +12,7 @@ export default function CardProduk({ id, slug, gambar, nama, harga, onBeli }) {
       <h3 className="mt-4 text-xl font-semibold text-white">{nama}</h3>
       <p className="text-base text-white">Rp. {harga.toLocaleString("id-ID")}</p>
       <Link
-        to={`/produkdetail/${id}`}
+        to={`/produkdetail/${slug}`}
         className="text-sm text-white mt-1"
       >
         <p className="hover:underline text-base text-white">Lihat Detail</p>
