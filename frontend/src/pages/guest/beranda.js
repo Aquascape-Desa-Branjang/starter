@@ -68,12 +68,14 @@ export default function Beranda() {
         </div>
         <div className="max-w-md xl:max-w-xl mx-auto mb-7 xl:mb-8">
           <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden relative">
-            <iframe
-              src="https://drive.google.com/file/d/11CHoHJ0iPX0ULenxD03N48t61b27TCtp/preview"
-              title="Google Drive Embed"
-              allow="autoplay"
-              className="w-full h-full border-0"
-            ></iframe>
+            <iframe 
+                className="w-full h-full border-0"
+                src="https://www.youtube.com/embed/Ank3BFaOAQs?si=REGkrcjobREfXTgN" 
+                title="YouTube video player" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
           </div>
         </div>
         <a
